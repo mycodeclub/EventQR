@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using EventQR.EF;
 using EventQR.Models;
+using EventQR.Services;
+using Newtonsoft.Json;
 
 namespace EventQR.Areas.EventOrganizer.Controllers
 {
@@ -14,11 +16,19 @@ namespace EventQR.Areas.EventOrganizer.Controllers
     public class SubEventsController : Controller
     {
         private readonly AppDbContext _context;
-
-        public SubEventsController(AppDbContext context)
+        private readonly IEventOrganizer _eventService;
+        private readonly Organizer _org;
+        private readonly Event _thisEvent;
+        public SubEventsController(AppDbContext context, IEventOrganizer eventService)
         {
             _context = context;
+            _eventService = eventService;
+            _org = eventService.GetLoggedInEventOrg();
+            //    string _thisEventJsonStr = HttpContext.Session.GetString("thisEvent");
+            //  _thisEvent = JsonConvert.DeserializeObject<Event>(_thisEventJsonStr);
+
         }
+
 
         // GET: EventOrganizer/SubEvents
         public async Task<IActionResult> Index()
@@ -47,10 +57,20 @@ namespace EventQR.Areas.EventOrganizer.Controllers
         }
 
         // GET: EventOrganizer/SubEvents/Create
-        public IActionResult Create()
+        public async Task<IActionResult> Create(Guid id)
         {
-            ViewData["EventId"] = new SelectList(_context.Events, "UniqueId", "UniqueId");
-            return View();
+            SubEvent _subEvent = null;
+            var currentEvent = _eventService.GetCurrentEvent();
+            if (currentEvent != null)
+            {
+                _subEvent = await _context.SubEvents.Where(s => s.UniqueId.Equals(id)
+                && s.EventId == currentEvent.UniqueId).FirstOrDefaultAsync();
+
+                _subEvent ??= new SubEvent() { StartDateTime = currentEvent.StartDate.Value.AddHours(1), EndDateTime = currentEvent.EndDate.Value.AddHours(-1) };
+
+            }
+            else _subEvent ??= new SubEvent() { StartDateTime = DateTime.Now.AddHours(1), EndDateTime = DateTime.Now.AddHours(2), };
+            return View(_subEvent);
         }
 
         // POST: EventOrganizer/SubEvents/Create
@@ -58,73 +78,40 @@ namespace EventQR.Areas.EventOrganizer.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("UniqueId,EventId,SubEventName,StartDateTime,EndDateTime,CreatedDate,LastUpdatedDate")] SubEvent subEvent)
+        public async Task<IActionResult> Create(SubEvent subEvent)
         {
             if (ModelState.IsValid)
             {
-                subEvent.UniqueId = Guid.NewGuid();
-                _context.Add(subEvent);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
-            }
-            ViewData["EventId"] = new SelectList(_context.Events, "UniqueId", "UniqueId", subEvent.EventId);
-            return View(subEvent);
-        }
-
-        // GET: EventOrganizer/SubEvents/Edit/5
-        public async Task<IActionResult> Edit(Guid? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var subEvent = await _context.SubEvents.FindAsync(id);
-            if (subEvent == null)
-            {
-                return NotFound();
-            }
-            ViewData["EventId"] = new SelectList(_context.Events, "UniqueId", "UniqueId", subEvent.EventId);
-            return View(subEvent);
-        }
-
-        // POST: EventOrganizer/SubEvents/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(Guid id, [Bind("UniqueId,EventId,SubEventName,StartDateTime,EndDateTime,CreatedDate,LastUpdatedDate")] SubEvent subEvent)
-        {
-            if (id != subEvent.UniqueId)
-            {
-                return NotFound();
-            }
-
-            if (ModelState.IsValid)
-            {
-                try
+                var currentEvent = _eventService.GetCurrentEvent();
+                if (currentEvent != null)
                 {
-                    _context.Update(subEvent);
+                    if (subEvent.UniqueId.Equals(Guid.Empty))
+                    {
+                        subEvent.UniqueId = Guid.NewGuid();
+                        subEvent.EventId = currentEvent.UniqueId;
+                        subEvent.CreatedDate = DateTime.Now;
+                        _context.Add(subEvent);
+                        await _context.SaveChangesAsync();
+                    }
+                    else if (subEvent.EventId == currentEvent.UniqueId)
+                    {
+                        var dbSubEvent = await _context.SubEvents.FindAsync(subEvent.UniqueId);
+                        if (dbSubEvent != null)
+                        {
+                            dbSubEvent.LastUpdatedDate = DateTime.Now;
+                            dbSubEvent.SubEventName = subEvent.SubEventName;
+                            dbSubEvent.StartDateTime = subEvent.StartDateTime;
+                            dbSubEvent.EndDateTime = subEvent.EndDateTime;
+                        }
+                    }
                     await _context.SaveChangesAsync();
                 }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!SubEventExists(subEvent.UniqueId))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
+
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["EventId"] = new SelectList(_context.Events, "UniqueId", "UniqueId", subEvent.EventId);
-            return View(subEvent);
+             return View(subEvent);
         }
 
-        // GET: EventOrganizer/SubEvents/Delete/5
         public async Task<IActionResult> Delete(Guid? id)
         {
             if (id == null)

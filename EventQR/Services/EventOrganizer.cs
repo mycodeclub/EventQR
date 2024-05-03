@@ -23,8 +23,11 @@ namespace EventQR.Services
 
         public Event GetCurrentEvent()
         {
-            Event currentEvent = _tempData.Peek("CurrentEvent") as Event;
+
+            string _thisEventJsonStr = _httpContextAccessor.HttpContext.Session.GetString("thisEvent");
+            var currentEvent = JsonConvert.DeserializeObject<Event>(_thisEventJsonStr);
             return currentEvent;
+
         }
 
         public async Task<Event> GetEventById(Guid _eventId)

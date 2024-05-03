@@ -8,62 +8,44 @@
 }
 @await Html.PartialAsync("_eventPartial")
 
-<h1>Index</h1>
+<div class="content">
+    <div class="card">
+        <div class="card-body">
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Event)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.SubEventName)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.StartDateTime)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.EndDateTime)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.CreatedDate)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.LastUpdatedDate)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Event.UniqueId)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.SubEventName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.StartDateTime)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.EndDateTime)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.CreatedDate)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.LastUpdatedDate)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.UniqueId">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.UniqueId">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.UniqueId">Delete</a>
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
+            <p>
+                <a class="float-right" asp-action="Create">Create New</a>
+            </p>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>
+                            @Html.DisplayNameFor(model => model.SubEventName)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.StartDateTime)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.EndDateTime)
+                        </th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td> @Html.DisplayFor(modelItem => item.SubEventName) </td>
+                            <td> @String.Format("{0:g}", item.StartDateTime.Value)   </td>
+                            <td> @String.Format("{0:g}", item.EndDateTime.Value)   </td>
+                             <td>
+                                <a asp-action="Edit" asp-route-id="@item.UniqueId">Edit</a> |
+                                <a asp-action="Details" asp-route-id="@item.UniqueId">Details</a> |
+                                <a asp-action="Delete" asp-route-id="@item.UniqueId">Delete</a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

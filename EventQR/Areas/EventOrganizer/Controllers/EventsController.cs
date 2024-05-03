@@ -46,8 +46,7 @@ namespace EventQR.Areas.EventOrganizer.Controllers
             {
                 return NotFound();
             }
-            //            HttpContext.Items["thisEvent"] = _event;
-            HttpContext.Session.SetString("thisEvent", JsonConvert.SerializeObject(_event));
+             HttpContext.Session.SetString("thisEvent", JsonConvert.SerializeObject(_event));
 
             return View(_event);
         }
