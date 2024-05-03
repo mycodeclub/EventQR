@@ -1,5 +1,7 @@
 using EventQR.EF;
 using EventQR.Models.Acc;
+using EventQR.Services;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
@@ -22,6 +24,9 @@ builder.Services.AddIdentity<AppUser, IdentityRole>(options =>
     options.Password.RequireLowercase = false;
     options.Password.RequireUppercase = false;
 }).AddEntityFrameworkStores<AppDbContext>();
+
+builder.Services.AddScoped<IClaimsTransformation, CustomClaimsTransformer>();
+builder.Services.AddScoped<IEventOrganizer, EventOrganizer>();
 
 var app = builder.Build();
 
