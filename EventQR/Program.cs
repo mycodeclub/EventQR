@@ -1,5 +1,7 @@
 using EventQR.EF;
 using EventQR.Models.Acc;
+using EventQR.Services;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
@@ -23,6 +25,9 @@ builder.Services.AddIdentity<AppUser, IdentityRole>(options =>
     options.Password.RequireUppercase = false;
 }).AddEntityFrameworkStores<AppDbContext>();
 
+builder.Services.AddScoped<IClaimsTransformation, CustomClaimsTransformer>();
+builder.Services.AddScoped<IEventOrganizer, EventOrganizer>();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -41,8 +46,8 @@ app.UseRouting();
 app.UseAuthorization();
 
 app.MapControllerRoute(name: "areas", pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}"); 
-app.MapControllerRoute(name: "default",pattern: "{controller=Home}/{action=Index}/{id?}");
+// app.MapControllerRoute(name: "default",pattern: "{controller=Home}/{action=Index}/{id?}");
 // app.MapControllerRoute(name: "default",pattern: "{controller=Account}/{action=Login}/{id?}");
-// app.MapControllerRoute(name: "default",pattern: "{controller=Account}/{action=AutoLogin}/{id?}");
+ app.MapControllerRoute(name: "default",pattern: "{controller=Account}/{action=AutoLogin}/{id?}");
 
 app.Run();
