@@ -28,8 +28,8 @@ namespace EventQR.EF
         public DbSet<EventGuest> Guests { get; set; } 
 //        public DbSet<EventMeal> EventMeals { get; set; }
   //      public DbSet<GuestMeals> GuestMeals { get; set; }
-        public DbSet<Organizer> EventOrganizers { get; set; } 
- 
+        public DbSet<Organizer> EventOrganizers { get; set; }
 
+        public DbSet<Inquery> Inqueries { get; set; }
     }
 }
