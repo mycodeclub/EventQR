@@ -4,62 +4,92 @@
     ViewData["Title"] = "Create";
     Layout = "~/Views/Shared/_OrganizerLayout.cshtml";
 }
+<div class="content">
+    <div class="card">
+        <div class="card-header">
+            <h3>Create New Event</h3>
+            <hr />
+            <form asp-action="Create">
+                <div class="col-md-12">
+                    <div asp-validation-summary=All class="text-danger"></div>
+                    <input type="hidden" asp-for="UniqueId" />
+                    <input type="hidden" asp-for="EventOrganizerId" /> 
+                </div>
+                <div class="row">
+                    <div class="col-md-4 form-group">
+                        <label asp-for="Title" class="control-label">Event Title </label>
+                        <input asp-for="Title" class="form-control" />
+                        <span asp-validation-for="Title" class="text-danger"></span>
+                    </div>
+                    <div class="col-md-4 form-group">
+                        <label asp-for="StartDate" class="control-label"> Start Date</label>
+                        <input asp-for="StartDate" class="form-control" />
+                        <span asp-validation-for="StartDate" class="text-danger"></span>
+                    </div>
+                    <div class="col-md-4 form-group">
+                        <label asp-for="EndDate" class="control-label">End Date </label>
+                        <input asp-for="EndDate" class="form-control" />
+                        <span asp-validation-for="EndDate" class="text-danger"></span>
+                    </div>
+                </div>
 
-<h1>Create</h1>
+                <div class="row">
+                    <div class="col-md-6  form-group">
+                        <label asp-for="Venue" class="control-label"> Venue (Address) </label>
+                        <textarea asp-for="Venue" class="form-control" rows="3"></textarea>
+                        <span asp-validation-for="Venue" class="text-danger"></span>
+                    </div>
 
-<h4>Event</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Create">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="EventOrganizerId" class="control-label"></label>
-                <select asp-for="EventOrganizerId" class ="form-control" asp-items="ViewBag.EventOrganizerId"></select>
+                    <div class="col-md-6 form-group">
+                        <label asp-for="Description" class="control-label"></label>
+                        <textarea asp-for="Description" class="form-control" rows="3"></textarea>
+                        <span asp-validation-for="Description" class="text-danger"></span>
+                    </div>
+                </div>
+
+
+                <div class="row text-center">
+                    <div class="col-sm-12 form-group">
+                        <label asp-for="IsSubEvents" class="control-label">  Include Sub Events </label><br />
+                        &nbsp; &nbsp; &nbsp; &nbsp;
+                        <input class="form-check-input" asp-for="IsSubEvents" onchange="CheckIfMealsIncluded(this)" type="checkbox">
+                        <label class="form-check-label" for="flexCheckChecked">
+                            Yes
+                        </label>
+                    </div>
+
+
+                </div>
+                <br /><hr />
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="form-group text-center">
+                            <input type="submit" value="Save" class="btn btn-primary" />
+                        </div>
+                    </div>
+                </div>
+            </form>
+            <div>
+                <a asp-action="Index">Back to List</a>
             </div>
-            <div class="form-group">
-                <label asp-for="Title" class="control-label"></label>
-                <input asp-for="Title" class="form-control" />
-                <span asp-validation-for="Title" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Description" class="control-label"></label>
-                <input asp-for="Description" class="form-control" />
-                <span asp-validation-for="Description" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Venue" class="control-label"></label>
-                <input asp-for="Venue" class="form-control" />
-                <span asp-validation-for="Venue" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="StartDate" class="control-label"></label>
-                <input asp-for="StartDate" class="form-control" />
-                <span asp-validation-for="StartDate" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="EndDate" class="control-label"></label>
-                <input asp-for="EndDate" class="form-control" />
-                <span asp-validation-for="EndDate" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="CreatedDate" class="control-label"></label>
-                <input asp-for="CreatedDate" class="form-control" />
-                <span asp-validation-for="CreatedDate" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="LastUpdatedDate" class="control-label"></label>
-                <input asp-for="LastUpdatedDate" class="form-control" />
-                <span asp-validation-for="LastUpdatedDate" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
-            </div>
-        </form>
+        </div>
     </div>
 </div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
+@section Scripts
+{
+    <script type="text/javascript">
+        function CheckIfMealsIncluded(thisCheck) {
+            //if (thisCheck.checked)
+            //    $('#MaxAllowMealCountDiv').show();
+            //else {
+            //    $('#MaxAllowMealCountDiv').hide();
+            //    $('#MaxAllowedMealsCount').val(0);
+        }
+                }
+    </script>
 
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+} 

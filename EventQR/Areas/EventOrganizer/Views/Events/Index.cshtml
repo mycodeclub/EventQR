@@ -5,74 +5,65 @@
     Layout = "~/Views/Shared/_OrganizerLayout.cshtml";
 }
 
-<h1>Index</h1>
+<link href="~/uitemplate/admintemp/dist/plugins/datatables/css/datatables.bootstrap.min.css" rel="stylesheet" />
+<div class="content">
+    <div class="card">
+        <div class="card-header">
+            <a class="float-right" href="~/Admin/Events/Create">Create New</a>
+            <h1>Index</h1>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.EvenOrganizer)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Title)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Description)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Venue)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.StartDate)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.EndDate)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.CreatedDate)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.LastUpdatedDate)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.EvenOrganizer.OrganizationName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Title)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Description)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Venue)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.StartDate)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.EndDate)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.CreatedDate)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.LastUpdatedDate)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.UniqueId">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.UniqueId">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.UniqueId">Delete</a>
-            </td>
-        </tr>
+            <table class="table   table-bordered table-hover" id="example1">
+                <thead>
+                    <tr>
+                        <th> @Html.DisplayNameFor(model => model.Title) </th>
+                        <th> @Html.DisplayNameFor(model => model.Duration)  </th>
+                        <th> @Html.DisplayNameFor(model => model.DaysToGo)  </th>
+                        <th>  Starting On   </th>
+                        <th> @Html.DisplayNameFor(model => model.Status) </th>
+                        <th> @Html.DisplayNameFor(model => model.IsSubEvents) </th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr onclick="window.open('/EventOrganizer/Events/SetCurrentEvent/@item.UniqueId','_blank')">
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Title)
+                                @*                                <p class="text-sm">@item.Description</p>
+                            *@                                <p class="text-sm">@item.Venue</p>
+                            </td>
+                            <td> @Html.DisplayFor(modelItem => item.Duration) </td>
+
+                            <td> @Html.DisplayFor(modelItem => item.DaysToGo) </td>
+                            <td> @Html.DisplayFor(modelItem => item.StartDate) </td>
+                            <td> @Html.DisplayFor(modelItem => item.Status) </td>
+                            <td> @Html.DisplayFor(modelItem => item.IsSubEvents) </td>
+                            <td>
+                                <a asp-action="Create" asp-route-id="@item.UniqueId">Edit</a> |
+                                <a asp-action="Details" asp-route-id="@item.UniqueId">Details</a> |
+                                @*                                <a href="/Admin/Guests/Index?eventId=@item.UniqueId">Guests</a>|*@
+                                @if (item.IsSubEvents)
+                                {
+                                    <a href="/Admin/EventMeals/Index?eventId=@item.UniqueId">Meals</a>
+                                }
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <!-- DataTable -->
+    <script src="~/uitemplate/admintemp/dist/plugins/datatables/jquery.dataTables.min.js"></script>
+    <script src="~/uitemplate/admintemp/dist/plugins/datatables/dataTables.bootstrap.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('#example1').DataTable()
+
+        });
+    </script>
 }
-    </tbody>
-</table>

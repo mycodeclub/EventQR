@@ -1,5 +1,6 @@
 ﻿using EventQR.EF;
 using Microsoft.AspNetCore.Authentication;
+using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using System.Security.Claims;
 
@@ -20,7 +21,7 @@ namespace EventQR.Services
             if (identity.IsAuthenticated)
             {
                 _ = Guid.TryParse(identity.Claims.FirstOrDefault().Value, out Guid OrganizerUserId);
-                var _organizer = await _dbcontext.Organizers.Where(o => o.OrganizerUserId.Equals(OrganizerUserId)).FirstOrDefaultAsync();
+                var _organizer = await _dbcontext.EventOrganizers.Where(o => o.OrganizerUserId.Equals(OrganizerUserId)).FirstOrDefaultAsync();
                 identity.AddClaim(new Claim("organizer", JsonConvert.SerializeObject(_organizer)));
             }
             return principal;

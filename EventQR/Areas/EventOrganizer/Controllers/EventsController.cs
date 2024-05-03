@@ -15,11 +15,12 @@ namespace EventQR.Areas.EventOrganizer.Controllers
     {
         private readonly AppDbContext _context;
         private readonly IEventOrganizer _eventService;
-
+        private readonly Organizer _org;
         public EventsController(AppDbContext context, IEventOrganizer eventService)
         {
             _context = context;
             _eventService = eventService;
+            _org = eventService.GetLoggedInEventOrg();
         }
 
         // GET: EventOrganizer/Events
@@ -48,10 +49,19 @@ namespace EventQR.Areas.EventOrganizer.Controllers
         }
 
         // GET: EventOrganizer/Events/Create
-        public IActionResult Create()
+        public async Task<IActionResult> Create(Guid id)
         {
-            
-            return View();
+            var _event = await _context.Events.FindAsync(id);
+            if (_event == null)
+                _event = new Event()
+                {
+                    EventOrganizerId = _org.UniqueId,
+                    CreatedDate = DateTime.Now,
+                    LastUpdatedDate = DateTime.Now,
+                    StartDate = DateTime.Now.AddDays(7),
+                    EndDate = DateTime.Now.AddDays(8),
+                };
+            return View(_event);
         }
 
         // POST: EventOrganizer/Events/Create
@@ -59,17 +69,35 @@ namespace EventQR.Areas.EventOrganizer.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(Event @event)
+        public async Task<IActionResult> Create(Event _event)
         {
             if (ModelState.IsValid)
             {
-                @event.UniqueId = Guid.NewGuid();
-                _context.Add(@event);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                if (_org.UniqueId == _event.EventOrganizerId)
+                {
+
+                    if (_event.UniqueId == Guid.Empty)
+                    {
+                        _event.UniqueId = Guid.NewGuid();
+                        _event.CreatedDate = DateTime.Now;
+                        _context.Add(_event);
+                    }
+                    else
+                    {
+                        _event.LastUpdatedDate = DateTime.Now;
+                        _context.Update(_event);
+                    }
+                    await _context.SaveChangesAsync();
+                    return RedirectToAction(nameof(Index));
+                }
+                else
+                {
+                    ModelState.AddModelError("Invalid User", "Not a valid Event Manager");
+                    return View(_event);
+                }
             }
-            ViewData["EventOrganizerId"] = new SelectList(_context.EventOrganizers, "UniqueId", "OrganizationName", @event.EventOrganizerId);
-            return View(@event);
+            ViewData["EventOrganizerId"] = new SelectList(_context.EventOrganizers, "UniqueId", "OrganizationName", _event.EventOrganizerId);
+            return View(_event);
         }
 
 
@@ -109,6 +137,14 @@ namespace EventQR.Areas.EventOrganizer.Controllers
         private bool EventExists(Guid id)
         {
             return _context.Events.Any(e => e.UniqueId == id);
+        }
+
+
+        public async Task<IActionResult> SetCurrentEvent(Guid id)
+        {
+            var _event = await _context.Events.FindAsync(id);
+            _eventService.SetCurrentEvent(_event);
+            return View();
         }
     }
 }

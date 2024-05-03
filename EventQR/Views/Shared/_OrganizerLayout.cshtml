@@ -79,11 +79,11 @@
                     <li class="@activeTab"><a href="/EventOrganizer/Home/Dashboard"> Dashboard </a></li>
 
                     @if (activeTabName.Equals("EventDetail")) { activeTab = "active"; } else { activeTab = string.Empty; }
-                    <li class="@activeTab"><a href="/EventOrganizer/Event/Details"> Event </a></li>
+                    <li class="@activeTab"><a href="/EventOrganizer/Events/Index"> Event </a></li>
 
 
                     @if (activeTabName.Equals("EventMeals")) { activeTab = "active"; } else { activeTab = string.Empty; }
-                    <li class="@activeTab"><a href="/EventOrganizer/EventMeals/Index">   Meals </a></li>
+                    <li class="@activeTab"><a href="/EventOrganizer/EventMeals/Index">   Sub-Event (Meals) </a></li>
 
                     @if (activeTabName.Equals("Guests")) { activeTab = "active"; } else { activeTab = string.Empty; }
                     <li class="@activeTab"><a href="/EventOrganizer/Guests/Index"> Guests </a></li>

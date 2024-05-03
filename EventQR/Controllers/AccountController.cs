@@ -1,4 +1,5 @@
 ﻿using EventQR.EF;
+using EventQR.Models;
 using EventQR.Models.Acc;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -44,22 +45,10 @@ namespace EventQR.Controllers
                 if (ModelState.IsValid)
                 {
                     appUser.UserName = appUser.Email;
-                    var result = await _userManager.CreateAsync(appUser, appUser.Password);
-                    if (result.Succeeded)
-                    {
-
-
-                        var result2 = await _userManager.AddToRoleAsync(appUser, "EventOrganizer");
-                        await _signInManager.SignInAsync(appUser, isPersistent: false).ConfigureAwait(false);
-                        return RedirectToAction("Index", "Home", new { Areas = "EventOrganizer" });
-                    }
-                    else
-                    {
-                        foreach (var error in result.Errors)
-                        {
-                            ModelState.AddModelError(string.Empty, error.Description);
-                        }
-                    }
+                    await RegisterOrg(appUser);
+                    await _signInManager.SignInAsync(appUser, isPersistent: false).ConfigureAwait(false);
+                    //   return RedirectToAction("Index", "Home", new { Areas = "EventOrganizer" });
+                    return RedirectToAction("Index", "Home", new { Area = "EventOrganizer" });
                 }
             }
             catch (Exception ex)
@@ -180,8 +169,41 @@ namespace EventQR.Controllers
 
         private async Task<bool> AutoAdminLogin()
         {
-            var result = await _signInManager.PasswordSignInAsync("admin@bpst.com", "Admin@20", true, lockoutOnFailure: false);
+            var result = await _signInManager.PasswordSignInAsync("ankit2@bpst.com", "ankit2@bpst.com", true, lockoutOnFailure: false);
             return result.Succeeded;
+        }
+
+
+        private async Task RegisterOrg(AppUser appUser)
+        {
+            appUser.UserName = appUser.Email;
+            var result = await _userManager.CreateAsync(appUser, appUser.Password);
+            if (result.Succeeded)
+            {
+                var organizer = new Organizer()
+                {
+                    Email = appUser.Email,
+                    Phone1 = appUser.PhoneNumber,
+                    OrganizationName = appUser.OrganizationName,
+                    OrganizerUserId = Guid.Parse(appUser.Id),
+                    CreatedDate = DateTime.UtcNow,
+                    LogoImageName = "default.jpeg",
+                    ProfileImageName = "default.jpg"
+                };
+                _context.EventOrganizers.Add(organizer);
+                await _context.SaveChangesAsync();
+                appUser.OrganizerUniqueIdFk = organizer.UniqueId;
+                await _context.SaveChangesAsync();
+                // Common.Static.Active.SetOrganizerForUserId(organizer, organizer.OrganizerUserId);
+                var result2 = await _userManager.AddToRoleAsync(appUser, "EventOrganizer");
+            }
+            else
+            {
+                foreach (var error in result.Errors)
+                {
+                    ModelState.AddModelError(string.Empty, error.Description);
+                }
+            }
         }
 
     }

@@ -22,5 +22,7 @@ namespace EventQR.Models
         public string OfficeAddress { get; set; } = string.Empty;
         public DateTime CreatedDate { get; set; }
         public DateTime LastUpdatedDate { get; set; }
+        public string LogoImageName { get; internal set; }
+        public string ProfileImageName { get; internal set; }
     }
 }

@@ -33,6 +33,10 @@ namespace EventQR.Models
         [DisplayName("Event End Date Time")]
         public DateTime? EndDate { get; set; }
 
+        /// <summary>
+        /// IsSubEvents is a flag include more some events in main events like  Meals , cake cutting, any dance representation or some thing else .  and individual guest can be configured for each sub event.
+        /// </summary>
+        public bool IsSubEvents { get; set; }
 
         [NotMapped]
         public List<EventGuest>? Guests { get; set; }
