@@ -22,4 +22,14 @@
     <PackageReference Include="ZXing.Net.Bindings.Windows.Compatibility" Version="0.16.12" />
   </ItemGroup>
 
+
+  <ItemGroup>
+    <Folder Include="Areas\EventOrganizer\Data\" />
+    <Folder Include="Areas\EventOrganizer\Models\" />
+    <Folder Include="Areas\Scanner\Data\" />
+    <Folder Include="Areas\Scanner\Models\" />
+    <Folder Include="Areas\SuperAdmin\Data\" />
+    <Folder Include="Areas\SuperAdmin\Models\" />
+  </ItemGroup>
+
 </Project>
