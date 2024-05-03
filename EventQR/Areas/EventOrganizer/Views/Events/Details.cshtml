@@ -1,67 +1,81 @@
-﻿@model EventQR.Models.Event
-
+﻿@using Microsoft.AspNetCore.Http
+@model EventQR.Models.Event
 @{
+    var currentEvent = (Event)Context.Items["thisEvent"];
+    string currentEventStr = string.Empty;
+    if (currentEvent != null)
+    {
+        currentEventStr = currentEvent.Title + " | " + " | " + @currentEvent.Description + " | " + @currentEvent.Venue  + " | " + @currentEvent.StartDate.Value.ToString("dd/MMM/yyyy") + " | " + @currentEvent.EndDate.Value.ToString("dd/MMM/yyyy") + " | " + @currentEvent.Duration;
+
+    }
     ViewData["Title"] = "Details";
     Layout = "~/Views/Shared/_OrganizerLayout.cshtml";
 }
+<div class="alert alert-info" role="alert"> @currentEventStr</div>
 
-<h1>Details</h1>
+<div class="content">
+    <div class="card">
+        <div class="card-header">
+            <h1>Details</h1>
 
-<div>
-    <h4>Event</h4>
-    <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.EvenOrganizer)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.EvenOrganizer.OrganizationName)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Title)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Title)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Description)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Description)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Venue)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Venue)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.StartDate)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.StartDate)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.EndDate)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.EndDate)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.CreatedDate)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.CreatedDate)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.LastUpdatedDate)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.LastUpdatedDate)
-        </dd>
-    </dl>
-</div>
-<div>
-    <a asp-action="Edit" asp-route-id="@Model?.UniqueId">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+            <div>
+                <h4>Event</h4>
+                <hr />
+                <dl class="row">
+                    <dt class="col-sm-2">
+                        @Html.DisplayNameFor(model => model.EvenOrganizer)
+                    </dt>
+                    <dd class="col-sm-10">
+                        @Html.DisplayFor(model => model.EvenOrganizer.OrganizationName)
+                    </dd>
+                    <dt class="col-sm-2">
+                        @Html.DisplayNameFor(model => model.Title)
+                    </dt>
+                    <dd class="col-sm-10">
+                        @Html.DisplayFor(model => model.Title)
+                    </dd>
+                    <dt class="col-sm-2">
+                        @Html.DisplayNameFor(model => model.Description)
+                    </dt>
+                    <dd class="col-sm-10">
+                        @Html.DisplayFor(model => model.Description)
+                    </dd>
+                    <dt class="col-sm-2">
+                        @Html.DisplayNameFor(model => model.Venue)
+                    </dt>
+                    <dd class="col-sm-10">
+                        @Html.DisplayFor(model => model.Venue)
+                    </dd>
+                    <dt class="col-sm-2">
+                        @Html.DisplayNameFor(model => model.StartDate)
+                    </dt>
+                    <dd class="col-sm-10">
+                        @Html.DisplayFor(model => model.StartDate)
+                    </dd>
+                    <dt class="col-sm-2">
+                        @Html.DisplayNameFor(model => model.EndDate)
+                    </dt>
+                    <dd class="col-sm-10">
+                        @Html.DisplayFor(model => model.EndDate)
+                    </dd>
+                    <dt class="col-sm-2">
+                        @Html.DisplayNameFor(model => model.CreatedDate)
+                    </dt>
+                    <dd class="col-sm-10">
+                        @Html.DisplayFor(model => model.CreatedDate)
+                    </dd>
+                    <dt class="col-sm-2">
+                        @Html.DisplayNameFor(model => model.LastUpdatedDate)
+                    </dt>
+                    <dd class="col-sm-10">
+                        @Html.DisplayFor(model => model.LastUpdatedDate)
+                    </dd>
+                </dl>
+            </div>
+            <div>
+                <a asp-action="Edit" asp-route-id="@Model?.UniqueId">Edit</a> |
+                <a asp-action="Index">Back to List</a>
+            </div>
+        </div>
+    </div>
 </div>

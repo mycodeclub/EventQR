@@ -5,6 +5,7 @@ using EventQR.EF;
 using EventQR.Models;
 using Microsoft.AspNetCore.Authorization;
 using EventQR.Services;
+using Azure.Core;
 
 namespace EventQR.Areas.EventOrganizer.Controllers
 {
@@ -38,14 +39,13 @@ namespace EventQR.Areas.EventOrganizer.Controllers
                 return NotFound();
             }
 
-            var @event = await _context.Events
-                .FirstOrDefaultAsync(m => m.UniqueId == id);
-            if (@event == null)
+            var _event = await _context.Events.FirstOrDefaultAsync(m => m.UniqueId == id);
+            if (_event == null)
             {
                 return NotFound();
             }
-
-            return View(@event);
+            HttpContext.Items["thisEvent"] = _event; 
+            return View(_event);
         }
 
         // GET: EventOrganizer/Events/Create
@@ -109,14 +109,13 @@ namespace EventQR.Areas.EventOrganizer.Controllers
                 return NotFound();
             }
 
-            var @event = await _context.Events
+            var _event = await _context.Events
                 .FirstOrDefaultAsync(m => m.UniqueId == id);
-            if (@event == null)
+            if (_event == null)
             {
                 return NotFound();
             }
-
-            return View(@event);
+            return View(_event);
         }
 
         // POST: EventOrganizer/Events/Delete/5
@@ -144,7 +143,7 @@ namespace EventQR.Areas.EventOrganizer.Controllers
         {
             var _event = await _context.Events.FindAsync(id);
             _eventService.SetCurrentEvent(_event);
-            return View();
+            return RedirectToAction("Details", new { id = id });
         }
     }
 }
