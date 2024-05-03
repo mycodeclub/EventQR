@@ -1,4 +1,5 @@
-﻿@inject SignInManager<EventQR.Models.Acc.AppUser> signInManager;
+﻿@using Microsoft.AspNetCore.Http
+@inject SignInManager<EventQR.Models.Acc.AppUser> signInManager;
 @{
     string activeTab = string.Empty;
     string activeTabName = "something...";
@@ -79,37 +80,36 @@
                     <li class="@activeTab"><a href="/EventOrganizer/Home/Dashboard"> Dashboard </a></li>
 
                     @if (activeTabName.Equals("Events")) { activeTab = "active"; } else { activeTab = string.Empty; }
-                    <li class="@activeTab"><a href="/EventOrganizer/Events/Index"> Events </a></li>
-
-                    @if (activeTabName.Equals("EventDetail")) { activeTab = "active"; } else { activeTab = string.Empty; }
+                    <li class="@activeTab"><a href="/EventOrganizer/Events/Index"> All Events </a></li>
 
 
                     @{
-                        var currentEvent = (Event)Context.Items["thisEvent"];
+                         string _thisEventJsonStr = Context.Session.GetString("thisEvent");
+                        if (!string.IsNullOrWhiteSpace(_thisEventJsonStr))
+                        { var currentEvent = Newtonsoft.Json.JsonConvert.DeserializeObject<Event>(_thisEventJsonStr.ToString());
                         if (currentEvent != null)
-                        {
-                            <li class="treeview active">
+                         {
+
+                                @if (activeTabName.Contains("thisEvent")) { activeTab = "active"; } else { activeTab = string.Empty; }
+                                <li class="treeview @activeTab">
                                 <a href="/EventOrganizer/Events/Index"> <i class="icon-note"></i> <span>This Event</span> </a>
 
                                 <ul class="treeview-menu">
                                     @if (currentEvent.IsSubEvents)
                                     {
-                                        @if (activeTabName.Equals("SubEvents")) { activeTab = "active"; } else { activeTab = string.Empty; }
+                                            @if (activeTabName.Equals("thisEventSubEvents")) { activeTab = "active"; } else { activeTab = string.Empty; }
                                         <li class="@activeTab"><a href="/EventOrganizer/SubEvents/Index"><i class="fa fa-angle-right"></i>   Sub-Event (Meals) </a></li>
                                     }
-                                    @if (activeTabName.Equals("EventGuests")) { activeTab = "active"; } else { activeTab = string.Empty; }
+                                        @if (activeTabName.Equals("thisEventGuests")) { activeTab = "active"; } else { activeTab = string.Empty; }
                                     <li class="@activeTab"><a href="/EventOrganizer/EventGuests/Index"> <i class="fa fa-angle-right"></i>Guests </a></li>
 
-                                    @if (activeTabName.Equals("HotelAccess")) { activeTab = "active"; } else { activeTab = string.Empty; }
+                                        @if (activeTabName.Equals("thisEventScanner")) { activeTab = "active"; } else { activeTab = string.Empty; }
                                     <li class="@activeTab"><a href="/EventOrganizer/HotelAccess/Details"> <i class="fa fa-angle-right"></i>Hotel Access </a></li>
 
                                 </ul>
                             </li>
 
-
-
-
-
+                        }
                         }
                         <hr />
                     }

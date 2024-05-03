@@ -6,6 +6,8 @@ using EventQR.Models;
 using Microsoft.AspNetCore.Authorization;
 using EventQR.Services;
 using Azure.Core;
+using Microsoft.AspNetCore.Http;
+using Newtonsoft.Json;
 
 namespace EventQR.Areas.EventOrganizer.Controllers
 {
@@ -27,7 +29,7 @@ namespace EventQR.Areas.EventOrganizer.Controllers
         // GET: EventOrganizer/Events
         public async Task<IActionResult> Index()
         {
-            var appDbContext = _context.Events;
+            var appDbContext = _context.Events.Where(e => e.EventOrganizerId == _org.UniqueId);
             return View(await appDbContext.ToListAsync());
         }
 
@@ -44,7 +46,9 @@ namespace EventQR.Areas.EventOrganizer.Controllers
             {
                 return NotFound();
             }
-            HttpContext.Items["thisEvent"] = _event; 
+            //            HttpContext.Items["thisEvent"] = _event;
+            HttpContext.Session.SetString("thisEvent", JsonConvert.SerializeObject(_event));
+
             return View(_event);
         }
 
@@ -137,7 +141,7 @@ namespace EventQR.Areas.EventOrganizer.Controllers
         {
             return _context.Events.Any(e => e.UniqueId == id);
         }
-            
+
 
         public async Task<IActionResult> SetCurrentEvent(Guid id)
         {
