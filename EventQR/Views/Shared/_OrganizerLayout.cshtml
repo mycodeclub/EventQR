@@ -75,10 +75,10 @@
                     </div>
                 </div>
                 <ul class="sidebar-menu" data-widget="tree">
-                    @if (activeTabName.Equals("Dashboard")) { activeTab = "active"; } else { activeTab = string.Empty; }
+                    @if (activeTabName.Equals("EventOrganizerDashboard")) { activeTab = "active"; } else { activeTab = string.Empty; }
                     <li class="@activeTab"><a href="/EventOrganizer/Home/Dashboard"> Dashboard </a></li>
 
-                    @if (activeTabName.Equals("Dashboard")) { activeTab = "active"; } else { activeTab = string.Empty; }
+                    @if (activeTabName.Equals("Events")) { activeTab = "active"; } else { activeTab = string.Empty; }
                     <li class="@activeTab"><a href="/EventOrganizer/Events/Index"> Events </a></li>
 
                     @if (activeTabName.Equals("EventDetail")) { activeTab = "active"; } else { activeTab = string.Empty; }
@@ -94,11 +94,11 @@
                                 <ul class="treeview-menu">
                                     @if (currentEvent.IsSubEvents)
                                     {
-                                        @if (activeTabName.Equals("EventMeals")) { activeTab = "active"; } else { activeTab = string.Empty; }
-                                        <li class="@activeTab"><a href="/EventOrganizer/EventMeals/Index"><i class="fa fa-angle-right"></i>   Sub-Event (Meals) </a></li>
+                                        @if (activeTabName.Equals("SubEvents")) { activeTab = "active"; } else { activeTab = string.Empty; }
+                                        <li class="@activeTab"><a href="/EventOrganizer/SubEvents/Index"><i class="fa fa-angle-right"></i>   Sub-Event (Meals) </a></li>
                                     }
-                                    @if (activeTabName.Equals("Guests")) { activeTab = "active"; } else { activeTab = string.Empty; }
-                                    <li class="@activeTab"><a href="/EventOrganizer/Guests/Index"> <i class="fa fa-angle-right"></i>Guests </a></li>
+                                    @if (activeTabName.Equals("EventGuests")) { activeTab = "active"; } else { activeTab = string.Empty; }
+                                    <li class="@activeTab"><a href="/EventOrganizer/EventGuests/Index"> <i class="fa fa-angle-right"></i>Guests </a></li>
 
                                     @if (activeTabName.Equals("HotelAccess")) { activeTab = "active"; } else { activeTab = string.Empty; }
                                     <li class="@activeTab"><a href="/EventOrganizer/HotelAccess/Details"> <i class="fa fa-angle-right"></i>Hotel Access </a></li>

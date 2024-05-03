@@ -24,11 +24,11 @@ namespace EventQR.EF
         }
 
 
-        public DbSet<Event> Events { get; set; }
-        public DbSet<EventGuest> Guests { get; set; } 
-//        public DbSet<EventMeal> EventMeals { get; set; }
-  //      public DbSet<GuestMeals> GuestMeals { get; set; }
         public DbSet<Organizer> EventOrganizers { get; set; }
+        public DbSet<Event> Events { get; set; }
+        public DbSet<SubEvent> SubEvents { get; set; }
+        public DbSet<EventGuest> Guests { get; set; }
+        public DbSet<QrScannAccount> QrScannAccount { get; set; }
 
         public DbSet<Inquery> Inqueries { get; set; }
     }

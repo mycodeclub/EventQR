@@ -1,6 +1,8 @@
 ﻿ @model EventQR.Models.Event
 @{
     Layout = "~/Views/Shared/_OrganizerLayout.cshtml";
+    ViewBag.activeTabName = "Events";
+
 } 
 @await Html.PartialAsync("_eventPartial")
 <div class="content">

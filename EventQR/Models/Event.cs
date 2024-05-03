@@ -97,7 +97,7 @@ namespace EventQR.Models
             }
         }
 
-        public List<Event>? SubEvents { get; set; }
+        public List<SubEvent>? SubEvents { get; set; }
 
         public DateTime CreatedDate { get; set; }
         public DateTime LastUpdatedDate { get; set; }
@@ -111,4 +111,5 @@ namespace EventQR.Models
         public int hours { get; set; }
         public int minutes { get; set; }
     }
+
 }
