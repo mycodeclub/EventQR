@@ -1,18 +1,8 @@
-﻿@using Microsoft.AspNetCore.Http
-@model EventQR.Models.Event
+﻿ @model EventQR.Models.Event
 @{
-    var currentEvent = (Event)Context.Items["thisEvent"];
-    string currentEventStr = string.Empty;
-    if (currentEvent != null)
-    {
-        currentEventStr = currentEvent.Title + " | " + " | " + @currentEvent.Description + " | " + @currentEvent.Venue  + " | " + @currentEvent.StartDate.Value.ToString("dd/MMM/yyyy") + " | " + @currentEvent.EndDate.Value.ToString("dd/MMM/yyyy") + " | " + @currentEvent.Duration;
-
-    }
-    ViewData["Title"] = "Details";
     Layout = "~/Views/Shared/_OrganizerLayout.cshtml";
-}
-<div class="alert alert-info" role="alert"> @currentEventStr</div>
-
+} 
+@await Html.PartialAsync("_eventPartial")
 <div class="content">
     <div class="card">
         <div class="card-header">

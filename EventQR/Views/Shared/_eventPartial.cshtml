@@ -1,0 +1,11 @@
+﻿@using Microsoft.AspNetCore.Http
+@{
+    Layout = null;
+    var currentEvent = (Event)Context.Items["thisEvent"];
+    string currentEventStr = string.Empty;
+    if (currentEvent != null)
+    {
+        currentEventStr = currentEvent.Title + " || " + " || " + @currentEvent.Description + " || " + @currentEvent.Venue + " || " + @currentEvent.StartDate.Value.ToString("dd/MMM/yyyy") + " || " + @currentEvent.EndDate.Value.ToString("dd/MMM/yyyy") + " || " + @currentEvent.Duration;
+    }
+}
+<div class="alert alert-info" role="alert"> @currentEventStr</div>

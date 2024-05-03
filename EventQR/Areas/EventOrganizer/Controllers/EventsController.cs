@@ -137,7 +137,7 @@ namespace EventQR.Areas.EventOrganizer.Controllers
         {
             return _context.Events.Any(e => e.UniqueId == id);
         }
-
+            
 
         public async Task<IActionResult> SetCurrentEvent(Guid id)
         {
