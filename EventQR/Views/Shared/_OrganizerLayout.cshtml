@@ -76,20 +76,20 @@
                 </div>
                 <ul class="sidebar-menu" data-widget="tree">
                     @if (activeTabName.Equals("Dashboard")) { activeTab = "active"; } else { activeTab = string.Empty; }
-                    <li class="@activeTab"><a href="/Organizer/Home/Dashboard"> Dashboard </a></li>
+                    <li class="@activeTab"><a href="/EventOrganizer/Home/Dashboard"> Dashboard </a></li>
 
                     @if (activeTabName.Equals("EventDetail")) { activeTab = "active"; } else { activeTab = string.Empty; }
-                    <li class="@activeTab"><a href="/Organizer/Event/Details"> Event </a></li>
+                    <li class="@activeTab"><a href="/EventOrganizer/Event/Details"> Event </a></li>
 
 
                     @if (activeTabName.Equals("EventMeals")) { activeTab = "active"; } else { activeTab = string.Empty; }
-                    <li class="@activeTab"><a href="/Organizer/EventMeals/Index">   Meals </a></li>
+                    <li class="@activeTab"><a href="/EventOrganizer/EventMeals/Index">   Meals </a></li>
 
                     @if (activeTabName.Equals("Guests")) { activeTab = "active"; } else { activeTab = string.Empty; }
-                    <li class="@activeTab"><a href="/Organizer/Guests/Index"> Guests </a></li>
+                    <li class="@activeTab"><a href="/EventOrganizer/Guests/Index"> Guests </a></li>
 
                     @if (activeTabName.Equals("HotelAccess")) { activeTab = "active"; } else { activeTab = string.Empty; }
-                    <li class="@activeTab"><a href="/Organizer/HotelAccess/Details"> Hotel Access </a></li>
+                    <li class="@activeTab"><a href="/EventOrganizer/HotelAccess/Details"> Hotel Access </a></li>
 
                     @* @if (activeTabName.Equals("MyProfile")) { activeTab = "active"; } else { activeTab = string.Empty; }
                     <li class="@activeTab"><a href="/Organizer/Profile/Details"> My Profile </a></li> *@
