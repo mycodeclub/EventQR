@@ -14,8 +14,8 @@ table.dataTable {
 table.dataTable td, table.dataTable th{
 	-webkit-box-sizing: content-box;
 	box-sizing: content-box;
-	padding-top:15px;
-	padding-bottom:15px;
+/*	padding-top:15px;
+	padding-bottom:15px;*/
 }
 table.dataTable td.dataTables_empty, table.dataTable th.dataTables_empty {
 	text-align: center
@@ -82,7 +82,7 @@ table.dataTable thead .sorting, table.dataTable thead .sorting_asc, table.dataTa
 }
 table.dataTable thead .sorting:after, table.dataTable thead .sorting_asc:after, table.dataTable thead .sorting_desc:after, table.dataTable thead .sorting_asc_disabled:after, table.dataTable thead .sorting_desc_disabled:after {
 	position: absolute;
-	bottom: 20px;
+	bottom: 1px;
 	right: 8px;
 	display: block;
 	font-family: 'Glyphicons Halflings';

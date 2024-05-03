@@ -15,7 +15,7 @@ table.dataTable td, table.dataTable th{
 	-webkit-box-sizing: content-box;
 	box-sizing: content-box;
 	padding-top:15px;
-	padding-bottom:15px;
+	padding-bottom:1px;
 }
 table.dataTable td.dataTables_empty, table.dataTable th.dataTables_empty {
 	text-align: center
