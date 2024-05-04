@@ -63,6 +63,12 @@ namespace EventQR.Areas.EventOrganizer.Controllers
                 && s.EventId == currentEvent.UniqueId).FirstOrDefaultAsync();
                 _guest ??= new EventGuest() { EventId = currentEvent.UniqueId };
                 _guest.SubEvents = currentEvent.SubEvents;
+                _guest.SubEvents.ForEach(e =>
+                {
+                    if (!string.IsNullOrWhiteSpace(_guest.AllowedSubEventsIdsCommaList))
+                        if (_guest.AllowedSubEventsIdsCommaList.Contains(e.UniqueId.ToString()))
+                            e.IsIncludedForThisGuest = true;
+                });
             }
             ViewBag.currentEvent = currentEvent;
             return View(_guest);
@@ -79,6 +85,7 @@ namespace EventQR.Areas.EventOrganizer.Controllers
             {
 
                 var currentEvent = _eventService.GetCurrentEvent();
+                var selectedIds = eventGuest.SubEvents.Where(e => e.IsIncludedForThisGuest).Select(e => e.UniqueId.ToString()).ToArray();
                 if (currentEvent != null)
                 {
                     if (eventGuest.UniqueId.Equals(Guid.Empty))
@@ -86,8 +93,6 @@ namespace EventQR.Areas.EventOrganizer.Controllers
                         eventGuest.UniqueId = Guid.NewGuid();
                         eventGuest.EventId = currentEvent.UniqueId;
                         eventGuest.CreatedDate = DateTime.Now;
-                        //      eventGuest.AllowedSubEventsIdsCommaList
-                        var selectedIds = eventGuest.SubEvents.Where(e => e.IsIncludedForThisGuest).Select(e => e.UniqueId.ToString()).ToArray();
                         eventGuest.AllowedSubEventsIdsCommaList = string.Join(",", selectedIds);
                         _context.Add(eventGuest);
                         await _context.SaveChangesAsync();
@@ -97,12 +102,15 @@ namespace EventQR.Areas.EventOrganizer.Controllers
                         var dbGuest = await _context.Guests.FindAsync(eventGuest.UniqueId);
                         if (dbGuest != null)
                         {
+                            dbGuest.Name = eventGuest.Name;
+                            dbGuest.MobileNo1 = eventGuest.MobileNo1;
+                            dbGuest.MobileNo2 = eventGuest.MobileNo2;
+                            dbGuest.Email = eventGuest.Email;
+                            dbGuest.AllowedSubEventsIdsCommaList = string.Join(",", selectedIds);
                             dbGuest.LastUpdatedDate = DateTime.Now;
-                            //dbGuest.SubEventName = subEvent.SubEventName;
-                            //dbGuest.StartDateTime = subEvent.StartDateTime;
-                            //dbGuest.EndDateTime = subEvent.EndDateTime;
                         }
                     }
+
                     await _context.SaveChangesAsync();
                 }
                 return RedirectToAction(nameof(Index));
