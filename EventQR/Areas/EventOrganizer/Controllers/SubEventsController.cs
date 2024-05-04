@@ -24,9 +24,6 @@ namespace EventQR.Areas.EventOrganizer.Controllers
             _context = context;
             _eventService = eventService;
             _org = eventService.GetLoggedInEventOrg();
-            //    string _thisEventJsonStr = HttpContext.Session.GetString("thisEvent");
-            //  _thisEvent = JsonConvert.DeserializeObject<Event>(_thisEventJsonStr);
-
         }
 
 
@@ -109,7 +106,7 @@ namespace EventQR.Areas.EventOrganizer.Controllers
 
                 return RedirectToAction(nameof(Index));
             }
-             return View(subEvent);
+            return View(subEvent);
         }
 
         public async Task<IActionResult> Delete(Guid? id)

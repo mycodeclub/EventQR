@@ -20,5 +20,12 @@ namespace EventQR.Models
 
         public DateTime CreatedDate { get; set; }
         public DateTime? LastUpdatedDate { get; set; }
+        
+        
+        /// <summary>
+        /// This prop is to indicate that an individual guest is allowd for this sub event or not., its not for use for this module directoly.
+        /// </summary>
+        [NotMapped]
+        public bool IsIncludedForThisGuest { get; set; }
     }
 }

@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using EventQR.EF;
 using EventQR.Models;
+using EventQR.Services;
 
 namespace EventQR.Areas.EventOrganizer.Controllers
 {
@@ -14,10 +15,14 @@ namespace EventQR.Areas.EventOrganizer.Controllers
     public class EventGuestsController : Controller
     {
         private readonly AppDbContext _context;
-
-        public EventGuestsController(AppDbContext context)
+        private readonly IEventOrganizer _eventService;
+        private readonly Organizer _org;
+        private readonly Event _thisEvent;
+        public EventGuestsController(AppDbContext context, IEventOrganizer eventService)
         {
             _context = context;
+            _eventService = eventService;
+            _org = eventService.GetLoggedInEventOrg();
         }
 
         // GET: EventOrganizer/EventGuests
@@ -47,10 +52,20 @@ namespace EventQR.Areas.EventOrganizer.Controllers
         }
 
         // GET: EventOrganizer/EventGuests/Create
-        public IActionResult Create()
+        public async Task<IActionResult> Create(Guid id)
         {
-            ViewData["EventId"] = new SelectList(_context.Events, "UniqueId", "UniqueId");
-            return View();
+            EventGuest _guest = null;
+            var currentEvent = _eventService.GetCurrentEvent();
+            if (currentEvent != null)
+            {
+                currentEvent.SubEvents = await _context.SubEvents.Where(e => e.EventId == currentEvent.UniqueId).ToListAsync();
+                _guest = await _context.Guests.Where(s => s.UniqueId.Equals(id)
+                && s.EventId == currentEvent.UniqueId).FirstOrDefaultAsync();
+                _guest ??= new EventGuest() { EventId = currentEvent.UniqueId };
+                _guest.SubEvents = currentEvent.SubEvents;
+            }
+            ViewBag.currentEvent = currentEvent;
+            return View(_guest);
         }
 
         // POST: EventOrganizer/EventGuests/Create
@@ -58,69 +73,40 @@ namespace EventQR.Areas.EventOrganizer.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("UniqueId,EventId,Name,Address,MobileNo1,MobileNo2,Email,GuestCount,IsInviteAccepted,InviteAcceptedOn,IsInviteSent,InviteSentOn,QrCodeImageUri,CreatedDate,LastUpdatedDate")] EventGuest eventGuest)
+        public async Task<IActionResult> Create(EventGuest eventGuest)
         {
             if (ModelState.IsValid)
             {
-                eventGuest.UniqueId = Guid.NewGuid();
-                _context.Add(eventGuest);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
-            }
-            ViewData["EventId"] = new SelectList(_context.Events, "UniqueId", "UniqueId", eventGuest.EventId);
-            return View(eventGuest);
-        }
 
-        // GET: EventOrganizer/EventGuests/Edit/5
-        public async Task<IActionResult> Edit(Guid? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var eventGuest = await _context.Guests.FindAsync(id);
-            if (eventGuest == null)
-            {
-                return NotFound();
-            }
-            ViewData["EventId"] = new SelectList(_context.Events, "UniqueId", "UniqueId", eventGuest.EventId);
-            return View(eventGuest);
-        }
-
-        // POST: EventOrganizer/EventGuests/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(Guid id, [Bind("UniqueId,EventId,Name,Address,MobileNo1,MobileNo2,Email,GuestCount,IsInviteAccepted,InviteAcceptedOn,IsInviteSent,InviteSentOn,QrCodeImageUri,CreatedDate,LastUpdatedDate")] EventGuest eventGuest)
-        {
-            if (id != eventGuest.UniqueId)
-            {
-                return NotFound();
-            }
-
-            if (ModelState.IsValid)
-            {
-                try
+                var currentEvent = _eventService.GetCurrentEvent();
+                if (currentEvent != null)
                 {
-                    _context.Update(eventGuest);
+                    if (eventGuest.UniqueId.Equals(Guid.Empty))
+                    {
+                        eventGuest.UniqueId = Guid.NewGuid();
+                        eventGuest.EventId = currentEvent.UniqueId;
+                        eventGuest.CreatedDate = DateTime.Now;
+                        //      eventGuest.AllowedSubEventsIdsCommaList
+                        var selectedIds = eventGuest.SubEvents.Where(e => e.IsIncludedForThisGuest).Select(e => e.UniqueId.ToString()).ToArray();
+                        eventGuest.AllowedSubEventsIdsCommaList = string.Join(",", selectedIds);
+                        _context.Add(eventGuest);
+                        await _context.SaveChangesAsync();
+                    }
+                    else if (eventGuest.EventId == currentEvent.UniqueId)
+                    {
+                        var dbGuest = await _context.Guests.FindAsync(eventGuest.UniqueId);
+                        if (dbGuest != null)
+                        {
+                            dbGuest.LastUpdatedDate = DateTime.Now;
+                            //dbGuest.SubEventName = subEvent.SubEventName;
+                            //dbGuest.StartDateTime = subEvent.StartDateTime;
+                            //dbGuest.EndDateTime = subEvent.EndDateTime;
+                        }
+                    }
                     await _context.SaveChangesAsync();
                 }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!EventGuestExists(eventGuest.UniqueId))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["EventId"] = new SelectList(_context.Events, "UniqueId", "UniqueId", eventGuest.EventId);
             return View(eventGuest);
         }
 

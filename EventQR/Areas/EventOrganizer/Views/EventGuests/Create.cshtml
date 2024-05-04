@@ -2,97 +2,94 @@
 
 @{
     ViewData["Title"] = "Create";
-    Layout = "~/Views/Shared/_OrganizerLayout.cshtml"; 
-    ViewBag.activeTabName = "thisEventGuests";
-
+    Layout = "~/Views/Shared/_OrganizerLayout.cshtml";
+    ViewBag.activeTabName = "thisEventGuests"; 
+    var str = string.Concat("style = \"display: none;\"");
 }
 @await Html.PartialAsync("_eventPartial")
 
-<h1>Create</h1>
 
-<h4>EventGuest</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Create">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="EventId" class="control-label"></label>
-                <select asp-for="EventId" class ="form-control" asp-items="ViewBag.EventId"></select>
+<div class="content">
+
+    <div class="card">
+        <div class="card-body">
+            <form asp-action="Create">
+                <div class="col-md-12">
+                    <div asp-validation-summary=All class="text-danger"></div>
+                    <input type="hidden" asp-for="UniqueId" />
+                    <input type="hidden" asp-for="EventId" />
+                </div>
+
+                <div class="row">
+                    <div class="col-sm-6 col-xl-3 form-group">
+                        <label asp-for="Name" class="control-label"></label>
+                        <input placeholder="Guest Name" asp-for="Name" class="form-control" />
+                        <span asp-validation-for="Name" class="text-danger"></span>
+                    </div>
+                    <div class=" col-sm-6  col-xl-3 form-group">
+                        <label asp-for="Email" class="control-label"></label>
+                        <input placeholder="Email Id" asp-for="Email" class="form-control" />
+                        <span asp-validation-for="Email" class="text-danger"></span>
+                    </div>
+                    <div class=" col-sm-6  col-xl-3 form-group">
+                        <label asp-for="MobileNo1" class="control-label"></label>
+                        <input placeholder="Primary Mob. No. " asp-for="MobileNo1" class="form-control" />
+                        <span asp-validation-for="MobileNo1" class="text-danger"></span>
+                    </div>
+                    <div class=" col-sm-6  col-xl-3 form-group">
+                        <label asp-for="MobileNo2" class="control-label"></label>
+                        <input placeholder="Secondry Mob. No. " asp-for="MobileNo2" class="form-control" />
+                        <span asp-validation-for="MobileNo2" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="row text-center" id="AllowedMealsDiv">
+                    @if (Model.SubEvents!= null)
+                        for (int i = 0; i < Model.SubEvents.Count(); i++)
+                        {
+                            <div class="col-sm-12">
+                                <div class="form-check">
+                                    <input class="form-check-input" asp-for="@Model.SubEvents[i].SubEventName" type="hidden">
+                                    <input class="form-check-input" asp-for="@Model.SubEvents[i].UniqueId" type="hidden">
+                                    <input class="form-check-input" asp-for="@Model.SubEvents[i].StartDateTime" type="hidden">
+                                    <input class="form-check-input" asp-for="@Model.SubEvents[i].EndDateTime" type="hidden">
+                                    <input class="form-check-input" asp-for="@Model.SubEvents[i].IsIncludedForThisGuest" type="checkbox">
+                                    <label class="form-check-label">
+                                        @Model.SubEvents[i].SubEventName | @Model.SubEvents[i].StartDateTime | @Model.SubEvents[i].EndDateTime
+                                    </label>
+                                </div>
+                            </div> 
+                        }
+                </div>
+
+                <div class="col-sm-12 text-center form-group">
+                    <input type="submit" value="Save" class="btn btn-primary" />
+                </div>
+            </form>
+
+            <div class="float-right">
+                <a asp-action="Index">Back to List</a>
             </div>
-            <div class="form-group">
-                <label asp-for="Name" class="control-label"></label>
-                <input asp-for="Name" class="form-control" />
-                <span asp-validation-for="Name" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Address" class="control-label"></label>
-                <input asp-for="Address" class="form-control" />
-                <span asp-validation-for="Address" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="MobileNo1" class="control-label"></label>
-                <input asp-for="MobileNo1" class="form-control" />
-                <span asp-validation-for="MobileNo1" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="MobileNo2" class="control-label"></label>
-                <input asp-for="MobileNo2" class="form-control" />
-                <span asp-validation-for="MobileNo2" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Email" class="control-label"></label>
-                <input asp-for="Email" class="form-control" />
-                <span asp-validation-for="Email" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="GuestCount" class="control-label"></label>
-                <input asp-for="GuestCount" class="form-control" />
-                <span asp-validation-for="GuestCount" class="text-danger"></span>
-            </div>
-            <div class="form-group form-check">
-                <label class="form-check-label">
-                    <input class="form-check-input" asp-for="IsInviteAccepted" /> @Html.DisplayNameFor(model => model.IsInviteAccepted)
-                </label>
-            </div>
-            <div class="form-group">
-                <label asp-for="InviteAcceptedOn" class="control-label"></label>
-                <input asp-for="InviteAcceptedOn" class="form-control" />
-                <span asp-validation-for="InviteAcceptedOn" class="text-danger"></span>
-            </div>
-            <div class="form-group form-check">
-                <label class="form-check-label">
-                    <input class="form-check-input" asp-for="IsInviteSent" /> @Html.DisplayNameFor(model => model.IsInviteSent)
-                </label>
-            </div>
-            <div class="form-group">
-                <label asp-for="InviteSentOn" class="control-label"></label>
-                <input asp-for="InviteSentOn" class="form-control" />
-                <span asp-validation-for="InviteSentOn" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="QrCodeImageUri" class="control-label"></label>
-                <input asp-for="QrCodeImageUri" class="form-control" />
-                <span asp-validation-for="QrCodeImageUri" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="CreatedDate" class="control-label"></label>
-                <input asp-for="CreatedDate" class="form-control" />
-                <span asp-validation-for="CreatedDate" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="LastUpdatedDate" class="control-label"></label>
-                <input asp-for="LastUpdatedDate" class="form-control" />
-                <span asp-validation-for="LastUpdatedDate" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
-            </div>
-        </form>
+        </div>
     </div>
 </div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
+@section Scripts {
+
+    <script type="text/javascript">
+        $(document).getReady(function () {
+            alert();
+        });
+        function CheckIfMealAllowed(thisCheck) {
+            if (thisCheck.checked)
+                $('#AllowedMealsDiv').show();
+            else $('#AllowedMealsDiv').hide(); //style="display: none;"
+
+        }
+    </script>
+
+    @{
+
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
 

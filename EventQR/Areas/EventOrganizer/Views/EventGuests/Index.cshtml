@@ -4,114 +4,63 @@
     ViewData["Title"] = "Index";
     Layout = "~/Views/Shared/_OrganizerLayout.cshtml";
     ViewBag.activeTabName = "thisEventGuests";
-
+    string ticketLink;
 }@await Html.PartialAsync("_eventPartial")
 
 
-<h1>Index</h1>
+<link href="~/uitemplate/admintemp/dist/plugins/datatables/css/datatables.bootstrap.min.css" rel="stylesheet" />
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.MyEvent)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Name)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Address)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.MobileNo1)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.MobileNo2)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Email)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.GuestCount)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.IsInviteAccepted)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.InviteAcceptedOn)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.IsInviteSent)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.InviteSentOn)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.QrCodeImageUri)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.CreatedDate)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.LastUpdatedDate)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.MyEvent.UniqueId)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Address)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.MobileNo1)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.MobileNo2)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Email)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.GuestCount)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.IsInviteAccepted)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.InviteAcceptedOn)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.IsInviteSent)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.InviteSentOn)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.QrCodeImageUri)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.CreatedDate)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.LastUpdatedDate)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.UniqueId">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.UniqueId">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.UniqueId">Delete</a>
-            </td>
-        </tr>
+<div class="content">
+
+    <div class="card">
+        <div class="card-header">
+            <div class="row">
+                <div class="col-6"><h4>Guest List</h4></div>
+                <div class="col-6"> <a href="/EventOrganizer/EventGuests/Create" class="float-right">Add New</a> </div>
+            </div>
+
+            <table class="table" id="tblGuestList">
+                <thead>
+                    <tr>
+                        <th>  @Html.DisplayNameFor(model => model.Name) </th>
+                        <th> @Html.DisplayNameFor(model => model.MobileNo1) </th>
+                        <th>  @Html.DisplayNameFor(model => model.MobileNo2) </th>
+                        <th>   @Html.DisplayNameFor(model => model.Email) </th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                         <tr>
+                            <td> @Html.DisplayFor(modelItem => item.Name) </td>
+                            <td> @Html.DisplayFor(modelItem => item.MobileNo1)  </td>
+                            <td> @Html.DisplayFor(modelItem => item.MobileNo2) </td>
+                            <td> @Html.DisplayFor(modelItem => item.Email) </td>
+                            <td>
+                                <a asp-action="Create" asp-route-id="@item.UniqueId">Edit</a> |
+                                <a asp-action="Details" asp-route-id="@item.UniqueId">Details</a> |
+                                <a href="#" target="_blank">View Ticket </a> |
+                                <a asp-action="Delete" asp-route-id="@item.UniqueId">Delete</a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+
+        </div>
+    </div>
+</div>
+
+
+@section Scripts {
+    <!-- DataTable -->
+    <script src="~/uitemplate/admintemp/dist/plugins/datatables/jquery.dataTables.min.js"></script>
+    <script src="~/uitemplate/admintemp/dist/plugins/datatables/dataTables.bootstrap.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('#tblGuestList').DataTable()
+
+        });
+    </script>
 }
-    </tbody>
-</table>

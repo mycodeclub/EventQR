@@ -101,7 +101,8 @@ namespace EventQR.Models
 
         public DateTime CreatedDate { get; set; }
         public DateTime LastUpdatedDate { get; set; }
-    }
+
+     }
 
     public enum EventStatus { Scheduled, InProgress, Done }
 
@@ -111,5 +112,7 @@ namespace EventQR.Models
         public int hours { get; set; }
         public int minutes { get; set; }
     }
+
+
 
 }

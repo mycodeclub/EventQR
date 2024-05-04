@@ -1,6 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel;
+using Microsoft.AspNetCore.SignalR;
+using NuGet.Packaging.Signing;
 
 namespace EventQR.Models
 {
@@ -11,14 +13,14 @@ namespace EventQR.Models
         public Guid EventId { get; set; }
         [ForeignKey("EventId")]
         public Event? MyEvent { get; set; }
-
+        [Required]
         public string Name { get; set; } = string.Empty;
         public string? Address { get; set; } = string.Empty;
 
         [DataType(DataType.PhoneNumber)]
         [RegularExpression(@"^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$", ErrorMessage = "Not a valid phone number")]
-        [Required(ErrorMessage = "Please Input a valid Mobile No.")]
-        public string MobileNo1 { get; set; } = string.Empty;
+       // [Required(ErrorMessage = "Please Input a valid Mobile No.")]
+        public string? MobileNo1 { get; set; } = string.Empty;
 
         [DataType(DataType.PhoneNumber)]
         [RegularExpression(@"^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$", ErrorMessage = "Not a valid phone number")]
@@ -43,7 +45,10 @@ namespace EventQR.Models
 
         public DateTime CreatedDate { get; set; }
         public DateTime LastUpdatedDate { get; set; }
+        public string? AllowedSubEventsIdsCommaList { get; set; }
 
+        [NotMapped]
+        public List<SubEvent>? SubEvents { get; set; }
     }
 
 }
