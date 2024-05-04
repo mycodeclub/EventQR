@@ -3,7 +3,7 @@
     public interface IQrCodeGenerator
     {
 
-        public string GetQRCodeSystemPath(Guid guestId);
+        // public string GetQRCodeSystemPath(Guid guestId);
         public string GenerateQRCode(Guid guestId, Guid eventId);
     }
 }

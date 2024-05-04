@@ -1,8 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel;
-using Microsoft.AspNetCore.SignalR;
-using NuGet.Packaging.Signing;
 
 namespace EventQR.Models
 {
@@ -19,7 +17,7 @@ namespace EventQR.Models
 
         [DataType(DataType.PhoneNumber)]
         [RegularExpression(@"^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$", ErrorMessage = "Not a valid phone number")]
-       // [Required(ErrorMessage = "Please Input a valid Mobile No.")]
+        // [Required(ErrorMessage = "Please Input a valid Mobile No.")]
         public string? MobileNo1 { get; set; } = string.Empty;
 
         [DataType(DataType.PhoneNumber)]
@@ -41,7 +39,7 @@ namespace EventQR.Models
 
         public string? QrCodeImageUri { get; set; } = string.Empty;
         [NotMapped]
-        public string BarCodeUrl { get { return "/GeneratedQRCode/" + UniqueId.ToString() + ".png"; } }
+        public string BarCodeUrl { get { return "/EventQrImages/" + EventId + "/" + UniqueId.ToString() + ".png"; } }
 
         public DateTime CreatedDate { get; set; }
         public DateTime LastUpdatedDate { get; set; }

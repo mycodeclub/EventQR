@@ -14,7 +14,7 @@
 
         public static string GetQrCodeUriStr(Guid guestId, Guid eventId)
         {
-            return HostUrl + $"/ServiceProvider/Scanner/Scan?guestId={guestId}&eventId={eventId}";
+            return HostUrl + $"/Scanner/QrScanner/Scan?guestId={guestId}&eventId={eventId}";
         }
 
         public static string GenerateTicketKey(string guestId, string eventId) => guestId + "|" + eventId;

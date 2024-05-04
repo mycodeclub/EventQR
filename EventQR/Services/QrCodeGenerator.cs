@@ -12,14 +12,15 @@ namespace EventQR.Services
             _environment = environment;
         }
 
-        public string GetQRCodeSystemPath(Guid guestId)
+        private string GetQRCodeSystemPath(Guid eventId, Guid guestId)
         {
             string fileName = Path.GetFileName(guestId.ToString());
-            string path = Path.Combine(_environment.WebRootPath, "GeneratedQRCode");
+            string path = Path.Combine(_environment.WebRootPath, "EventQrImages\\" + eventId.ToString());
             if (!Directory.Exists(path))
                 Directory.CreateDirectory(path);
             return path + "\\" + fileName + ".png";
         }
+
         public string GenerateQRCode(Guid guestId, Guid eventId)
         {
             var qrCodeUri = Common.Static.Variables.GetQrCodeUriStr(guestId, eventId);
@@ -28,7 +29,7 @@ namespace EventQR.Services
             QRCodeData qrCodeData = qrGenerator.CreateQrCode(qrCodeUri, QRCodeGenerator.ECCLevel.Q);
             QRCode qrCode = new QRCode(qrCodeData);
             Bitmap qrCodeImage = qrCode.GetGraphic(20);
-            string filePath = GetQRCodeSystemPath(guestId);
+            string filePath = GetQRCodeSystemPath(eventId, guestId);
             qrCodeImage.Save(filePath, ImageFormat.Png);
             return filePath;
         }
