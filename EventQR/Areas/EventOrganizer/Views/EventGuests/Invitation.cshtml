@@ -1,0 +1,58 @@
+﻿@model EventQR.Models.EventGuest
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Invitation Card</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f3f3f3;
+            text-align: center;
+        }
+
+        .card {
+            width: 300px;
+            margin: 50px auto;
+            background-color: #fff;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+        }
+
+        h1 {
+            color: #333;
+        }
+
+        p {
+            color: #666;
+        }
+
+        .date-time {
+            color: #555;
+        }
+
+        .location {
+            color: #777;
+        }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <h1>You're Invited!</h1>
+        <p>Join us for a special event</p>
+        <br /> <u class="text-bold">@Model.MyEvent.Title</u>
+        <br />   <i class="text-bold">@Model.MyEvent.Description</i>
+        <p class="date-time">Start At  : [ @Model.MyEvent.StartDate.ToString() ]</p>
+        <p class="date-time">Till  : [ @Model.MyEvent.EndDate.ToString() ]</p>
+        <p class="location">Location: [ @Model.MyEvent.Venue ]</p>
+        <hr /><b>Guest Details </b>
+        <p class="location">Guest Name:   @Model.Name  </p>
+        <p class="location">Phone :   @Model.MobileNo1  </p>
+        <a asp-action="ShowMyTicket" asp-route-guestId="@Model.UniqueId" asp-route-eventId="@Model.EventId" target="_blank"><i class="fa-solid fa-ticket center"></i>View Ticket  </a>
+    </div>
+</body>
+</html>

@@ -8,6 +8,8 @@ using Microsoft.EntityFrameworkCore;
 using EventQR.EF;
 using EventQR.Models;
 using EventQR.Services;
+using Microsoft.AspNetCore.Authorization;
+using QRCoder;
 
 namespace EventQR.Areas.EventOrganizer.Controllers
 {
@@ -16,13 +18,15 @@ namespace EventQR.Areas.EventOrganizer.Controllers
     {
         private readonly AppDbContext _context;
         private readonly IEventOrganizer _eventService;
+        private readonly IQrCodeGenerator _qrService;
         private readonly Organizer _org;
         private readonly Event _thisEvent;
-        public EventGuestsController(AppDbContext context, IEventOrganizer eventService)
+        public EventGuestsController(AppDbContext context, IEventOrganizer eventService, IQrCodeGenerator qrService)
         {
             _context = context;
             _eventService = eventService;
             _org = eventService.GetLoggedInEventOrg();
+            _qrService = qrService;
         }
 
         // GET: EventOrganizer/EventGuests
@@ -155,6 +159,49 @@ namespace EventQR.Areas.EventOrganizer.Controllers
         private bool EventGuestExists(Guid id)
         {
             return _context.Guests.Any(e => e.UniqueId == id);
+        }
+
+
+        [AllowAnonymous]
+        public async Task<IActionResult> ShowMyTicket(Guid guestId, Guid eventId)
+        {
+            // _myQrCode.GenerateQRCode(guest.UniqueId);
+            var _guest = await _context.Guests.FindAsync(guestId);
+            if (_guest.EventId == eventId)
+            {
+                _guest.QrCodeImageUri = _qrService.GenerateQRCode(guestId, eventId);
+                _guest.MyEvent = await _context.Events.Where(e => e.UniqueId.Equals(_guest.EventId)).FirstOrDefaultAsync();
+            }
+            return View(_guest);
+        }
+
+        [AllowAnonymous]
+        public async Task<IActionResult> Invitation(Guid guestId, Guid eventId)
+        {
+            var _guest = await _context.Guests.FindAsync(guestId);
+            if (_guest != null)
+                if (_guest.EventId == eventId)
+                    _guest.MyEvent = await _context.Events.Where(e => e.UniqueId.Equals(_guest.EventId)).FirstOrDefaultAsync();
+            return View(_guest);
+        }
+        [AllowAnonymous]
+        [HttpPost]
+        public async Task<IActionResult> Invitation(EventGuest _guest)
+        {
+            var guestDb = await _context.Guests.FindAsync(_guest.UniqueId);
+            if (guestDb != null)
+            {
+                if (guestDb.EventId == _guest.EventId && guestDb.UniqueId == _guest.UniqueId)
+                {
+                    guestDb.GuestCount = _guest.GuestCount;
+                    guestDb.IsInviteAccepted = _guest.IsInviteAccepted;
+                    guestDb.InviteAcceptedOn = System.DateTime.Now;
+                }
+                _context.Guests.Update(guestDb);
+                await _context.SaveChangesAsync();
+            }
+
+            return View(_guest);
         }
     }
 }

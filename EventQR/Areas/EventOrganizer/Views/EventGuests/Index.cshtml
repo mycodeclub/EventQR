@@ -32,7 +32,7 @@
                 <tbody>
                     @foreach (var item in Model)
                     {
-                         <tr>
+                        <tr>
                             <td> @Html.DisplayFor(modelItem => item.Name) </td>
                             <td> @Html.DisplayFor(modelItem => item.MobileNo1)  </td>
                             <td> @Html.DisplayFor(modelItem => item.MobileNo2) </td>
@@ -40,8 +40,9 @@
                             <td>
                                 <a asp-action="Create" asp-route-id="@item.UniqueId">Edit</a> |
                                 <a asp-action="Details" asp-route-id="@item.UniqueId">Details</a> |
-                                <a href="#" target="_blank">View Ticket </a> |
                                 <a asp-action="Delete" asp-route-id="@item.UniqueId">Delete</a>
+                                <a asp-action="ShowMyTicket" asp-route-guestId="@item.UniqueId" asp-route-eventId="@item.EventId" target="_blank"><i class="fa-solid fa-ticket text-center"></i>Ticket </a> |
+                                <a asp-action="Invitation" asp-route-guestId="@item.UniqueId" asp-route-eventId="@item.EventId" target="_blank"><i class="fa-solid fa-ticket center"></i>Invitation </a> |
                             </td>
                         </tr>
                     }

@@ -1,0 +1,85 @@
+﻿@model EventQR.Models.EventGuest 
+@{
+    Layout = "~/Views/Shared/_blankAdminKitLayout.cshtml";
+}
+
+
+
+
+
+
+<div class="row justify-content-center w-75 m-auto mt-5 main  ">
+
+    <div class="col-4 align-self-center">
+        <div class="">
+            <!-- Add the bg color to the header using any of the bg-* classes -->
+            <div class="bg-blue-active text-center border border-1 rounded">
+                <h5 class="widget-user-username  mt-2  "><lable>Name : </lable> @Model.Name</h5>
+                <h6 class="widget-user-desc mt-3 "><label class="">Contact no : </label> @Model.MobileNo1</h6>
+                <h6 class="widget-user-desc"><label>Email ID :</label> @Model.Email</h6>
+                <h6 class="widget-user-desc "><label>Total Guest :</label> @Model.GuestCount</h6>
+            </div>
+            <div class="align-content-center bg-gray bg-opacity-25 rounded">
+                <img style="width:12em" class="rounded mx-auto d-block" src="@Model.BarCodeUrl" />
+                @*                <img class="img-circle" src="dist/img/img3.jpg" alt="User Avatar">*@
+            </div>
+            <div class="text-center bg-blue-active border border-1 rounded ">
+                <h5 class="mt-2"><label>Event : </label> @Model.MyEvent.Title</h5>
+                <h5 class=""><label>Venu : </label> @Model.MyEvent.Venue</h5>
+                <h6 class=""><label>About Event : </label> @Model.MyEvent.Description</h6>
+                <h6 class="mb-1"><label>Timing : </label> @Model.MyEvent.StartDate.ToString()</h6>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+
+
+@*
+        <!DOCTYPE html>
+        <html>
+        <head>
+        <title>BookMyShow - Confirmed Ticket</title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <!-- Bootstrap CSS -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+        <!-- QR Code CSS -->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/qrious/4.0.2/qrious.min.css" />
+        </head>
+        <body>
+        <nav class="navbar navbar-expand-md bg-dark navbar-dark">
+        <a class="navbar-brand" href="#">BookMyShow</a>
+        </nav>
+
+        <div class="container my-5">
+        <div class="row">
+        <div class="col-md-6">
+        <h3>Ticket Details</h3>
+        <p><strong>Movie/Event/Play:</strong> Avengers: Endgame</p>
+        <p><strong>Date and Time:</strong> 20th April 2023, 9:00 PM</p>
+        <p><strong>Seats:</strong> B1, B2, B3, B4</p>
+        <p><strong>Booking ID:</strong> 1234567890</p>
+        </div>
+        <div class="col-md-6">
+        <img style="height:10em"  src="@Model.BarCodeUrl" />
+        <canvas id="qr-code"></canvas>
+        </div>
+        </div>
+        <div class="row my-5">
+        <div class="col-md-12 text-center">
+        <button class="btn btn-primary btn-lg" type="submit">Print Tickets</button>
+        </div>
+        </div>
+        </div>
+
+        <!-- Bootstrap JS -->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/qrious/4.0.2/qrious.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+        </body>
+        </html>*@
+
+
