@@ -9,10 +9,12 @@ using EventQR.EF;
 using EventQR.Models;
 using EventQR.Services;
 using Newtonsoft.Json;
+using Microsoft.AspNetCore.Authorization;
 
 namespace EventQR.Areas.EventOrganizer.Controllers
 {
     [Area("EventOrganizer")]
+    [Authorize(Roles = "EventOrganizer")]
     public class SubEventsController : Controller
     {
         private readonly AppDbContext _context;

@@ -4,6 +4,7 @@ using EventQR.EF;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace EventQR.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240505101907_TicketScannerMig")]
+    partial class TicketScannerMig
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -370,10 +373,6 @@ namespace EventQR.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("UniqueId"));
 
-                    b.Property<string>("Address")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("ConfirmPassword")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -385,29 +384,17 @@ namespace EventQR.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<Guid?>("EventId")
+                    b.Property<Guid>("EventId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("LastUpdatedData")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("Mobile1")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Mobile2")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("Password")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<Guid?>("UserLoginId")
+                    b.Property<Guid>("UserLoginId")
                         .HasColumnType("uniqueidentifier");
 
                     b.HasKey("UniqueId");
@@ -630,7 +617,9 @@ namespace EventQR.Migrations
                 {
                     b.HasOne("EventQR.Models.Event", "Event")
                         .WithMany()
-                        .HasForeignKey("EventId");
+                        .HasForeignKey("EventId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Event");
                 });

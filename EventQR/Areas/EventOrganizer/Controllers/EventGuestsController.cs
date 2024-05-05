@@ -14,6 +14,7 @@ using QRCoder;
 namespace EventQR.Areas.EventOrganizer.Controllers
 {
     [Area("EventOrganizer")]
+    [Authorize(Roles = "EventOrganizer")]
     public class EventGuestsController : Controller
     {
         private readonly AppDbContext _context;
