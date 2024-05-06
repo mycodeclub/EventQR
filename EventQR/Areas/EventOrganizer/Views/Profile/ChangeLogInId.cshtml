@@ -1,0 +1,49 @@
+﻿@model EventQR.Models.Organizer
+
+@{
+    ViewData["Title"] = "ChangeLogInId";
+
+    Layout = "~/Views/Shared/_OrganizerLayout.cshtml";
+    ViewBag.activeTabName = "ChangeLogInId";
+    EventQR.Models.Organizer thisEvent = ViewBag.ActiveEvent;
+    
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Change Login Id</title>
+</head>
+<body>
+
+    <h2>Change Login Id</h2>
+    <div class="content">
+
+        <div class="card">
+            <div class="card-body">
+
+    <form id="ExistingLoginId" method="post">
+
+        <div class="row">
+            <div class="col-sm-4">
+                            <label for="ExistingLoginId">Existing Login Id:</label><br>
+                            <input type="text" id="ExistingLoginId" name="ExistingLoginId"  class="form-control" required><br><br>
+
+            </div>
+            <div class="col-sm-4">
+
+                            <label for="NewLoginId">New Login Id:</label><br>
+                            <input type="text" id="NewLoginId" name="NewLoginId" class="form-control" required><br><br>
+
+            </div>
+        </div>
+       
+        <input type="submit" value="Update">
+    </form>
+    </div>
+    </div>
+    </div>
+</body>
+</html>

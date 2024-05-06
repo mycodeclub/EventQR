@@ -8,6 +8,8 @@
 }
 @await Html.PartialAsync("_eventPartial")
 
+<link href="~/uitemplate/admintemp/dist/plugins/datatables/css/datatables.bootstrap.min.css" rel="stylesheet" />
+
 <div class="content">
     <div class="card">
         <div class="card-body">
@@ -16,6 +18,7 @@
                 <a class="float-right" asp-action="Create">Create New</a>
             </p>
             <table class="table">
+
                 <thead>
                     <tr>
                         <th>
@@ -38,7 +41,7 @@
                             <td> @String.Format("{0:g}", item.StartDateTime.Value)   </td>
                             <td> @String.Format("{0:g}", item.EndDateTime.Value)   </td>
                              <td>
-                                <a asp-action="Edit" asp-route-id="@item.UniqueId">Edit</a> |
+                                
                                 <a asp-action="Details" asp-route-id="@item.UniqueId">Details</a> |
                                 <a asp-action="Delete" asp-route-id="@item.UniqueId">Delete</a>
                             </td>
@@ -49,3 +52,17 @@
         </div>
     </div>
 </div>
+
+
+
+@section Scripts {
+    <!-- DataTable -->
+    <script src="~/uitemplate/admintemp/dist/plugins/datatables/jquery.dataTables.min.js"></script>
+    <script src="~/uitemplate/admintemp/dist/plugins/datatables/dataTables.bootstrap.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('#tblGuestList').DataTable()
+
+        });
+    </script>
+}

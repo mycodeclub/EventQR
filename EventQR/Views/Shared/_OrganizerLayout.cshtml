@@ -1,4 +1,5 @@
 ﻿@using Microsoft.AspNetCore.Http
+@model EventQR.Models.Organizer
 @inject SignInManager<EventQR.Models.Acc.AppUser> signInManager;
 @{
     string activeTab = string.Empty;
@@ -8,6 +9,17 @@
         activeTabName = ViewBag.activeTabName;
     }
 }
+@{
+    
+
+    var profilePicUrl = $"{EventQR.Common.Static.Variables.OrgProfilePicsPath}/{Model.ProfileImageName}";
+    var logoUrl = $"{EventQR.Common.Static.Variables.OrgLogoPath}/{Model.LogoImageName}";
+
+
+    ViewBag.ProfileImageName = Model.ProfileImageName;
+    ViewBag.LogoImageName = Model.LogoImageName;
+}
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -51,7 +63,7 @@
                         @if (signInManager.IsSignedIn(User))
                         {
                             <li class="dropdown user user-menu p-ph-res">
-                                <a href="#" class="dropdown-toggle" data-toggle="dropdown"> <img src="~/UiTemplate/AdminTemp/dist/img/img1.jpg" class="user-image" alt="User Image"> <span class="hidden-xs">@User.Identity.Name</span> </a>
+                                                              <a href="#" class="dropdown-toggle" data-toggle="dropdown"> <img src="@profilePicUrl" class="user-image" alt="User Image"> <span class="hidden-xs">@User.Identity.Name</span> </a>
                                 <ul class="dropdown-menu">
                                     <li class="user-header">
                                         <div class="pull-left user-img"><img src="~/UiTemplate/AdminTemp/dist/img/img1.jpg" class="img-responsive img-circle" alt="User"></div>
@@ -117,10 +129,10 @@
                     <li class="@activeTab"><a href="/EventOrganizer/Profile/MyProfile"> My Profile </a></li>
 
                     @if (activeTabName.Equals("ChangeLoginId")) { activeTab = "active"; } else { activeTab = string.Empty; }
-                    <li class="@activeTab"><a href="/EventOrganizer/Profile/MyProfile"> Change Login Id </a></li>
+                    <li class="@activeTab"><a href="/EventOrganizer/Profile/ChangeLogInId"> Change Login Id </a></li>
 
                     @if (activeTabName.Equals("ChangePassword")) { activeTab = "active"; } else { activeTab = string.Empty; }
-                    <li class="@activeTab"><a href="/EventOrganizer/Profile/MyProfile"> Change Password </a></li>
+                    <li class="@activeTab"><a href="/EventOrganizer/Profile/ChangePassword"> Change Password </a></li>
 
 
                     <li><a href="/Account/LogOut"><i class="fa fa-power-off"></i> LogOut</a></li>

@@ -8,10 +8,18 @@
 
 <h1>Index</h1>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
+
+<link href="~/uitemplate/admintemp/dist/plugins/datatables/css/datatables.bootstrap.min.css" rel="stylesheet" />
+
+<div class="content">
+
+    <div class="card">
+        <div class="card-header">
+            <div class="row">
+                <div class="col-6"><h4>Hotel Access</h4></div>
+                <div class="col-6"> <a asp-action="Create">Create New</a> </div>
+            </div>
+<table class="table" id="tblGuestList">
     <thead>
         <tr>
             <th>
@@ -71,3 +79,19 @@
 }
     </tbody>
 </table>
+
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <!-- DataTable -->
+    <script src="~/uitemplate/admintemp/dist/plugins/datatables/jquery.dataTables.min.js"></script>
+    <script src="~/uitemplate/admintemp/dist/plugins/datatables/dataTables.bootstrap.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('#tblGuestList').DataTable()
+
+        });
+    </script>
+}

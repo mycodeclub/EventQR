@@ -11,11 +11,13 @@
     <div class="card">
         <div class="card-body">
             <h4>TicketScanner</h4>
-            <hr />
+           
             <form asp-action="Create">
+                <div class="col-md-12">
                 <div asp-validation-summary="All" class="text-danger"></div>
                 <input asp-for="UserLoginId" class="form-control" type="hidden"  />
                 <input asp-for="EventId" class="form-control" type="hidden" />
+                </div>
                 <div class="row">
                     <div class="form-group col-md-4">
                         <label asp-for="Name" class="control-label"></label>
