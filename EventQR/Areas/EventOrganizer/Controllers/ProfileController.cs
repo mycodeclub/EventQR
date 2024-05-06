@@ -34,6 +34,16 @@ namespace EventQR.Areas.EventOrganizer.Controllers
             ViewBag.LogoImageName = _org.LogoImageName;
             return View(_org);
         }
+        public IActionResult ChangePassword()
+        {
+            
+            return View(_org);
+        }
+        public IActionResult ChangeLogInId()
+        {
+            
+            return View(_org);
+        }
 
         // GET: Organizer/Merchants/Edit/5
         public async Task<IActionResult> Edit(Guid? id)
