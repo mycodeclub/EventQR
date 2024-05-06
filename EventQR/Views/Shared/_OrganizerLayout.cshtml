@@ -113,8 +113,14 @@
                         }
                         <hr />
                     }
-                    @* @if (activeTabName.Equals("MyProfile")) { activeTab = "active"; } else { activeTab = string.Empty; }
-                    <li class="@activeTab"><a href="/Organizer/Profile/Details"> My Profile </a></li> *@
+                    @if (activeTabName.Equals("MyProfile")) { activeTab = "active"; } else { activeTab = string.Empty; }
+                    <li class="@activeTab"><a href="/EventOrganizer/Profile/MyProfile"> My Profile </a></li>
+
+                    @if (activeTabName.Equals("ChangeLoginId")) { activeTab = "active"; } else { activeTab = string.Empty; }
+                    <li class="@activeTab"><a href="/EventOrganizer/Profile/MyProfile"> Change Login Id </a></li>
+
+                    @if (activeTabName.Equals("ChangePassword")) { activeTab = "active"; } else { activeTab = string.Empty; }
+                    <li class="@activeTab"><a href="/EventOrganizer/Profile/MyProfile"> Change Password </a></li>
 
 
                     <li><a href="/Account/LogOut"><i class="fa fa-power-off"></i> LogOut</a></li>

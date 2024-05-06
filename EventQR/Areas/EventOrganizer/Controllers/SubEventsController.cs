@@ -20,8 +20,7 @@ namespace EventQR.Areas.EventOrganizer.Controllers
         private readonly AppDbContext _context;
         private readonly IEventOrganizer _eventService;
         private readonly Organizer _org;
-        private readonly Event _thisEvent;
-        public SubEventsController(AppDbContext context, IEventOrganizer eventService)
+         public SubEventsController(AppDbContext context, IEventOrganizer eventService)
         {
             _context = context;
             _eventService = eventService;

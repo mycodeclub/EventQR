@@ -100,8 +100,7 @@ namespace EventQR.Areas.EventOrganizer.Controllers
                         eventGuest.CreatedDate = DateTime.Now;
                         eventGuest.AllowedSubEventsIdsCommaList = string.Join(",", selectedIds);
                         _context.Add(eventGuest);
-                        await _context.SaveChangesAsync();
-                    }
+                      }
                     else if (eventGuest.EventId == currentEvent.UniqueId)
                     {
                         var dbGuest = await _context.Guests.FindAsync(eventGuest.UniqueId);
@@ -116,7 +115,7 @@ namespace EventQR.Areas.EventOrganizer.Controllers
                         }
                     }
 
-                    await _context.SaveChangesAsync();
+      var result =              await _context.SaveChangesAsync();
                 }
                 return RedirectToAction(nameof(Index));
             }

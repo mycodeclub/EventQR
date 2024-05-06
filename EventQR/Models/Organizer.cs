@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace EventQR.Models
 {
@@ -22,7 +23,14 @@ namespace EventQR.Models
         public string OfficeAddress { get; set; } = string.Empty;
         public DateTime CreatedDate { get; set; }
         public DateTime LastUpdatedDate { get; set; }
-        public string LogoImageName { get; internal set; }
-        public string ProfileImageName { get; internal set; }
+
+        [NotMapped]
+        public IFormFile? ProfileImage { get; set; }
+        public string ProfileImageName { get; set; } = string.Empty;
+
+        [NotMapped]
+        public IFormFile? LogoImage { get; set; }
+        public string LogoImageName { get; set; } = string.Empty;
+
     }
 }

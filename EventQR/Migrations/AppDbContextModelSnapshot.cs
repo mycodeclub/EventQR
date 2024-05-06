@@ -134,7 +134,7 @@ namespace EventQR.Migrations
 
                     b.HasIndex("EventOrganizerId");
 
-                    b.ToTable("Events");
+                    b.ToTable("Events", (string)null);
                 });
 
             modelBuilder.Entity("EventQR.Models.EventGuest", b =>
@@ -193,7 +193,7 @@ namespace EventQR.Migrations
 
                     b.HasIndex("EventId");
 
-                    b.ToTable("Guests");
+                    b.ToTable("Guests", (string)null);
                 });
 
             modelBuilder.Entity("EventQR.Models.Inquery", b =>
@@ -228,7 +228,7 @@ namespace EventQR.Migrations
 
                     b.HasKey("id");
 
-                    b.ToTable("Inqueries");
+                    b.ToTable("Inqueries", (string)null);
                 });
 
             modelBuilder.Entity("EventQR.Models.Organizer", b =>
@@ -284,7 +284,7 @@ namespace EventQR.Migrations
 
                     b.HasKey("UniqueId");
 
-                    b.ToTable("EventOrganizers");
+                    b.ToTable("EventOrganizers", (string)null);
                 });
 
             modelBuilder.Entity("EventQR.Models.QrScannAccount", b =>
@@ -327,7 +327,7 @@ namespace EventQR.Migrations
 
                     b.HasIndex("EventId");
 
-                    b.ToTable("QrScannAccount");
+                    b.ToTable("QrScannAccount", (string)null);
                 });
 
             modelBuilder.Entity("EventQR.Models.SubEvent", b =>
@@ -359,7 +359,7 @@ namespace EventQR.Migrations
 
                     b.HasIndex("EventId");
 
-                    b.ToTable("SubEvents");
+                    b.ToTable("SubEvents", (string)null);
                 });
 
             modelBuilder.Entity("EventQR.Models.TicketScanner", b =>
@@ -414,7 +414,7 @@ namespace EventQR.Migrations
 
                     b.HasIndex("EventId");
 
-                    b.ToTable("TicketScanners");
+                    b.ToTable("TicketScanners", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -549,7 +549,7 @@ namespace EventQR.Migrations
 
                     b.HasKey("UserId", "RoleId");
 
-                    b.ToTable("IdentityUserRole<Guid>");
+                    b.ToTable("IdentityUserRole<Guid>", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<string>", b =>
