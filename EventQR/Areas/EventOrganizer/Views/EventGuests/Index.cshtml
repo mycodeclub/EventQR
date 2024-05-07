@@ -16,9 +16,12 @@
         <div class="card-header">
             <div class="row">
                 <div class="col-6"><h4>Guest List</h4></div>
-                <div class="col-6"> <a href="/EventOrganizer/EventGuests/Create" class="float-right">Add New</a> </div>
+                <div class="col-6">
+                    <a href="/EventOrganizer/EventGuests/Create" class="float-right">
+                        <button type="button" class="btn btn-primary">Add New</button></a>
+                </div>
             </div>
-
+            <br>
             <table class="table" id="tblGuestList">
                 <thead>
                     <tr>
@@ -40,9 +43,9 @@
                             <td>
                                 <a asp-action="Create" asp-route-id="@item.UniqueId">Edit</a> |
                                 <a asp-action="Details" asp-route-id="@item.UniqueId">Details</a> |
-                                <a asp-action="Delete" asp-route-id="@item.UniqueId">Delete</a>
-                                <a asp-action="ShowMyTicket" asp-route-guestId="@item.UniqueId" asp-route-eventId="@item.EventId" target="_blank"><i class="fa-solid fa-ticket text-center"></i>Ticket </a> |
-                                <a asp-action="Invitation" asp-route-guestId="@item.UniqueId" asp-route-eventId="@item.EventId" target="_blank"><i class="fa-solid fa-ticket center"></i>Invitation </a> |
+                                <a asp-action="Delete" asp-route-id="@item.UniqueId">Delete</a> |
+                                <a asp-action="ShowMyTicket" asp-route-guestId="@item.UniqueId" asp-route-eventId="@item.EventId" target="_blank">Ticket </a> |
+                                <a asp-action="Invitation" asp-route-guestId="@item.UniqueId" asp-route-eventId="@item.EventId" target="_blank">Invitation </a> |
                             </td>
                         </tr>
                     }
