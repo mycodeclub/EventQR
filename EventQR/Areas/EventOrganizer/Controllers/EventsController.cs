@@ -29,8 +29,8 @@ namespace EventQR.Areas.EventOrganizer.Controllers
         // GET: EventOrganizer/Events
         public async Task<IActionResult> Index()
         {
-            var appDbContext = _context.Events.Where(e => e.EventOrganizerId == _org.UniqueId);
-            return View(await appDbContext.ToListAsync());
+            var events = await _context.Events.Where(e => e.EventOrganizerId == _org.UniqueId).ToListAsync();
+            return View(events);
         }
 
         // GET: EventOrganizer/Events/Details/5
