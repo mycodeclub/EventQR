@@ -1,5 +1,4 @@
 ﻿@using Microsoft.AspNetCore.Http
-@model EventQR.Models.Organizer
 @inject SignInManager<EventQR.Models.Acc.AppUser> signInManager;
 @{
     string activeTab = string.Empty;
@@ -8,18 +7,7 @@
     {
         activeTabName = ViewBag.activeTabName;
     }
-}
-@{
-    
-
-    var profilePicUrl = $"{EventQR.Common.Static.Variables.OrgProfilePicsPath}/{Model.ProfileImageName}";
-    var logoUrl = $"{EventQR.Common.Static.Variables.OrgLogoPath}/{Model.LogoImageName}";
-
-
-    ViewBag.ProfileImageName = Model.ProfileImageName;
-    ViewBag.LogoImageName = Model.LogoImageName;
-}
-
+} 
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -63,7 +51,7 @@
                         @if (signInManager.IsSignedIn(User))
                         {
                             <li class="dropdown user user-menu p-ph-res">
-                                                              <a href="#" class="dropdown-toggle" data-toggle="dropdown"> <img src="@profilePicUrl" class="user-image" alt="User Image"> <span class="hidden-xs">@User.Identity.Name</span> </a>
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown"> <img src="~/UiTemplate/AdminTemp/dist/img/img1.jpg" class="user-image" alt="User Image"> <span class="hidden-xs">@User.Identity.Name</span> </a>
                                 <ul class="dropdown-menu">
                                     <li class="user-header">
                                         <div class="pull-left user-img"><img src="~/UiTemplate/AdminTemp/dist/img/img1.jpg" class="img-responsive img-circle" alt="User"></div>

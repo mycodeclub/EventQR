@@ -28,7 +28,6 @@ namespace EventQR.EF
         public DbSet<Event> Events { get; set; }
         public DbSet<SubEvent> SubEvents { get; set; }
         public DbSet<EventGuest> Guests { get; set; }
-        public DbSet<QrScannAccount> QrScannAccount { get; set; }
 
         public DbSet<Inquery> Inqueries { get; set; }
         public DbSet<TicketScanner> TicketScanners { get; set; }
