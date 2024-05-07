@@ -46,7 +46,7 @@ namespace EventQR.Areas.EventOrganizer.Controllers
             {
                 return NotFound();
             }
-             HttpContext.Session.SetString("thisEvent", JsonConvert.SerializeObject(_event));
+            _eventService.SetCurrentEvent(_event);
 
             return View(_event);
         }
@@ -139,14 +139,6 @@ namespace EventQR.Areas.EventOrganizer.Controllers
         private bool EventExists(Guid id)
         {
             return _context.Events.Any(e => e.UniqueId == id);
-        }
-
-
-        public async Task<IActionResult> SetCurrentEvent(Guid id)
-        {
-            var _event = await _context.Events.FindAsync(id);
-            _eventService.SetCurrentEvent(_event);
-            return RedirectToAction("Details", new { id = id });
         }
     }
 }

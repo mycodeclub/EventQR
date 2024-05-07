@@ -1,9 +1,11 @@
 ﻿using EventQR.EF;
 using EventQR.Models;
 using EventQR.Models.Acc;
+using EventQR.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.BlazorIdentity.Pages;
 using System.Security.Claims;
 
@@ -15,13 +17,15 @@ namespace EventQR.Controllers
         private readonly SignInManager<AppUser> _signInManager;
         private readonly UserManager<AppUser> _userManager;
         private readonly AppDbContext _context;
+        private readonly IEventOrganizer _eventService;
         //var userEmail = User.Identity.Name;
         //var dbUser = _context.Users.SingleOrDefault(u => u.Email == userEmail);
-        public AccountController(UserManager<AppUser> userManager, SignInManager<AppUser> signInManager, AppDbContext context)
+        public AccountController(UserManager<AppUser> userManager, SignInManager<AppUser> signInManager, AppDbContext context, IEventOrganizer eventOrganizerService)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _context = context;
+            _eventService = eventOrganizerService;
         }
 
 
@@ -79,6 +83,9 @@ namespace EventQR.Controllers
                     var user = await _userManager.FindByNameAsync(model.LoginName);
                     var role = await _userManager.GetRolesAsync(user);
 
+                    var org = _context.EventOrganizers.Where(o => o.OrganizerUserId.ToString().Equals(user.Id)).FirstOrDefaultAsync();
+                    if (org != null)
+                         _eventService.SetLoggedInEventOrgSession(await org);
                     if (role.Contains("SuperAdmin"))
                         return RedirectToAction("Dashboard", "Home", new { Area = "SuperAdmin" });
 

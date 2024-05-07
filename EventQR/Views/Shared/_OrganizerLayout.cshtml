@@ -3,11 +3,23 @@
 @{
     string activeTab = string.Empty;
     string activeTabName = "something...";
+    string profilePicUrl = string.Empty;
+    string logoUrl = string.Empty;
     if (!string.IsNullOrEmpty(ViewBag.activeTabName))
     {
         activeTabName = ViewBag.activeTabName;
     }
-} 
+    //---------------------------------------------------------------------------------------------------------------------------------------
+    string _thisLoggedInEventOrganizer = Context.Session.GetString("loggedInEventOrganizer");  
+    if (!string.IsNullOrWhiteSpace(_thisLoggedInEventOrganizer))
+    {
+        var org = Newtonsoft.Json.JsonConvert.DeserializeObject<Organizer>(_thisLoggedInEventOrganizer.ToString());
+        if (org != null)
+        {
+            profilePicUrl = (!string.IsNullOrEmpty(org?.ProfileImageName)) ? $"{EventQR.Common.Static.Variables.OrgProfilePicsPath}/{org.ProfileImageName}" : "~/UiTemplate/AdminTemp/dist/img/body-bg1.jpg";
+            logoUrl = (!string.IsNullOrEmpty(org?.LogoImageName)) ? $"{EventQR.Common.Static.Variables.OrgLogoPath}/{org.LogoImageName}" : "~/UiTemplate/AdminTemp/dist/img/body-bg1.jpg";
+        }
+    }
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -30,7 +42,7 @@
     <div class="wrapper boxed-wrapper">
         <header class="main-header">
             <a href="/AssessmentBody/Home/Index" class="logo blue-bg">
-                <span class="logo-mini"><img src="~/UiTemplate/AdminTemp/dist/img/logo-n.png" alt=""></span>
+                <span class="logo-mini"><img src=@profilePicUrl alt="hello"></span>
             </a>
             <nav class="navbar blue-bg navbar-static-top">
                 <ul class="nav navbar-nav pull-left">
@@ -51,10 +63,13 @@
                         @if (signInManager.IsSignedIn(User))
                         {
                             <li class="dropdown user user-menu p-ph-res">
-                                <a href="#" class="dropdown-toggle" data-toggle="dropdown"> <img src="~/UiTemplate/AdminTemp/dist/img/img1.jpg" class="user-image" alt="User Image"> <span class="hidden-xs">@User.Identity.Name</span> </a>
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                    <img src="@profilePicUrl" class="user-image" alt="User Image">
+                                    <span class="hidden-xs">@User.Identity.Name</span>
+                                </a>
                                 <ul class="dropdown-menu">
                                     <li class="user-header">
-                                        <div class="pull-left user-img"><img src="~/UiTemplate/AdminTemp/dist/img/img1.jpg" class="img-responsive img-circle" alt="User"></div>
+                                        <div class="pull-left user-img"><img src=@logoUrl class="img-responsive img-circle" alt="User"></div>
                                         <p class="text-left">  <small> @User.Identity.Name</small> </p>
                                     </li>
                                     <li><a href="/Account/LogOut"><i class="fa fa-power-off"></i> LogOut</a></li>
@@ -69,7 +84,7 @@
 
             <div class="sidebar">
                 <div class="user-panel">
-                    <div class="image text-center"><img src="~/UiTemplate/AdminTemp/dist/img/img1.jpg" class="img-circle" alt="User Image"> </div>
+                    <div class="image text-center"><img src=@logoUrl class="img-circle" alt="User Image"> </div>
                     <div class="info">
                         <p>@User.Identity.Name</p>
                         <a href="#"><i class="fa fa-circle text-success"></i> Online</a>
@@ -84,32 +99,33 @@
 
 
                     @{
-                         string _thisEventJsonStr = Context.Session.GetString("thisEvent");
-                        if (!string.IsNullOrWhiteSpace(_thisEventJsonStr))
-                        { var currentEvent = Newtonsoft.Json.JsonConvert.DeserializeObject<Event>(_thisEventJsonStr.ToString());
-                        if (currentEvent != null)
-                         {
+                        string loggedInEventOrganizer = Context.Session.GetString("thisEvent");
+                        if (!string.IsNullOrWhiteSpace(loggedInEventOrganizer))
+                        {
+                            var currentEvent = Newtonsoft.Json.JsonConvert.DeserializeObject<Event>(loggedInEventOrganizer.ToString());
+                            if (currentEvent != null)
+                            {
 
                                 @if (activeTabName.Contains("thisEvent")) { activeTab = "active"; } else { activeTab = string.Empty; }
                                 <li class="treeview @activeTab">
-                                <a href="/EventOrganizer/Events/Index"> <i class="icon-note"></i> <span>This Event</span> </a>
+                                    <a href="/EventOrganizer/Events/Index"> <i class="icon-note"></i> <span>This Event</span> </a>
 
-                                <ul class="treeview-menu">
-                                    @if (currentEvent.IsSubEvents)
-                                    {
-                                        @if (activeTabName.Equals("thisEventSubEvents")) { activeTab = "active"; } else { activeTab = string.Empty; }
-                                        <li class="@activeTab"><a href="/EventOrganizer/SubEvents/Index"><i class="fa fa-angle-right"></i>   Sub-Event (Meals) </a></li>
-                                    }
+                                    <ul class="treeview-menu">
+                                        @if (currentEvent.IsSubEvents)
+                                        {
+                                            @if (activeTabName.Equals("thisEventSubEvents")) { activeTab = "active"; } else { activeTab = string.Empty; }
+                                            <li class="@activeTab"><a href="/EventOrganizer/SubEvents/Index"><i class="fa fa-angle-right"></i>   Sub-Event (Meals) </a></li>
+                                        }
                                         @if (activeTabName.Equals("thisEventGuests")) { activeTab = "active"; } else { activeTab = string.Empty; }
-                                    <li class="@activeTab"><a href="/EventOrganizer/EventGuests/Index"> <i class="fa fa-angle-right"></i>Guests </a></li>
+                                        <li class="@activeTab"><a href="/EventOrganizer/EventGuests/Index"> <i class="fa fa-angle-right"></i>Guests </a></li>
 
                                         @if (activeTabName.Equals("thisEventScanner")) { activeTab = "active"; } else { activeTab = string.Empty; }
-                                    <li class="@activeTab"><a href="/EventOrganizer/TicketScanners/Index"> <i class="fa fa-angle-right"></i>Hotel Access </a></li>
+                                        <li class="@activeTab"><a href="/EventOrganizer/TicketScanners/Index"> <i class="fa fa-angle-right"></i>Hotel Access </a></li>
 
-                                </ul>
-                            </li>
+                                    </ul>
+                                </li>
 
-                        }
+                            }
                         }
                         <hr />
                     }
