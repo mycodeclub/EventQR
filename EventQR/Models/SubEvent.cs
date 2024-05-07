@@ -15,7 +15,7 @@ namespace EventQR.Models
         public string SubEventName { get; set; }
         [DisplayName("Start Date Time")]
         public DateTime? StartDateTime { get; set; }
-        [DisplayName("Start Date Time")]
+        [DisplayName("End Date Time")]
         public DateTime? EndDateTime { get; set; }
 
         public DateTime CreatedDate { get; set; }

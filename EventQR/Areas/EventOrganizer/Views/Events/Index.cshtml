@@ -29,7 +29,7 @@
                 <tbody>
                     @foreach (var item in Model)
                     {
-                        <tr onclick="window.open('/EventOrganizer/Events/Details/@item.UniqueId','_blank')">
+                        <tr onclick="window.open('/EventOrganizer/Events/Details/@item.UniqueId')">
                             <td>
                                 @Html.DisplayFor(modelItem => item.Title)
                                 @*                                <p class="text-sm">@item.Description</p>

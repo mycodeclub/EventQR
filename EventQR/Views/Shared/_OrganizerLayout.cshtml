@@ -1,5 +1,4 @@
 ﻿@using Microsoft.AspNetCore.Http
-
 @inject SignInManager<EventQR.Models.Acc.AppUser> signInManager;
 @{
     string activeTab = string.Empty;
@@ -8,13 +7,13 @@
     {
         activeTabName = ViewBag.activeTabName;
     }
-}
+} 
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>EventQR</title>
+    <title>BPST Software Solution</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="~/UiTemplate/AdminTemp/dist/bootstrap/css/bootstrap.min.css">
     <link rel="icon" type="image/png" sizes="16x16" href="~/UiTemplate/AdminTemp/dist/img/favicon-16x16.png">
@@ -105,7 +104,7 @@
                                     <li class="@activeTab"><a href="/EventOrganizer/EventGuests/Index"> <i class="fa fa-angle-right"></i>Guests </a></li>
 
                                         @if (activeTabName.Equals("thisEventScanner")) { activeTab = "active"; } else { activeTab = string.Empty; }
-                                        <li class="@activeTab"><a href="/EventOrganizer/TicketScanners/Index"> <i class="fa fa-angle-right"></i>Ticket Scanner Account </a></li>
+                                    <li class="@activeTab"><a href="/EventOrganizer/TicketScanners/Index"> <i class="fa fa-angle-right"></i>Hotel Access </a></li>
 
                                 </ul>
                             </li>
