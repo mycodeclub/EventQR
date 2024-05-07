@@ -130,8 +130,9 @@ namespace EventQR.Controllers
                     PhoneNumber = "9999999999",
                 };
 
-                var result = await _userManager.CreateAsync(appUser, appUser.Password);
-                if (result.Succeeded)
+               var result =  await RegisterOrg(appUser);
+
+                 if (result.Succeeded)
                 {
                     var userRoles = _context.Roles.ToList();
                     foreach (var role in userRoles)
@@ -169,12 +170,12 @@ namespace EventQR.Controllers
 
         private async Task<bool> AutoAdminLogin()
         {
-            var result = await _signInManager.PasswordSignInAsync("ankit2@bpst.com", "ankit2@bpst.com", true, lockoutOnFailure: false);
+             var result = await _signInManager.PasswordSignInAsync("admin@bpst.com", "Admin@20", true, lockoutOnFailure: false);
             return result.Succeeded;
         }
 
 
-        private async Task RegisterOrg(AppUser appUser)
+        private async Task<IdentityResult> RegisterOrg(AppUser appUser)
         {
             appUser.UserName = appUser.Email;
             var result = await _userManager.CreateAsync(appUser, appUser.Password);
@@ -204,6 +205,7 @@ namespace EventQR.Controllers
                     ModelState.AddModelError(string.Empty, error.Description);
                 }
             }
+            return result;
         }
 
     }
