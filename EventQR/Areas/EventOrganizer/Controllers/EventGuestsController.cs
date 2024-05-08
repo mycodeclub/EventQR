@@ -33,8 +33,20 @@ namespace EventQR.Areas.EventOrganizer.Controllers
         // GET: EventOrganizer/EventGuests
         public async Task<IActionResult> Index()
         {
-            var appDbContext = _context.Guests.Include(e => e.MyEvent);
-            return View(await appDbContext.ToListAsync());
+
+            var thisEvent = _eventService.GetCurrentEvent();
+            if (thisEvent != null)
+            {
+                var Event = await _context.Guests.Where(ts => ts.EventId == thisEvent.UniqueId).ToListAsync();
+                return View(Event);
+                
+
+            }
+            else
+            {
+
+                return RedirectToAction("Index", "EventGuests");
+            }
         }
 
         // GET: EventOrganizer/EventGuests/Details/5

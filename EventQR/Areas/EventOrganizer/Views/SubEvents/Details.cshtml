@@ -7,60 +7,63 @@
     ViewBag.activeTabName = "thisEventSubEvents";
 
 }@await Html.PartialAsync("_eventPartial")
-
-<h4>SubEvent</h4>
-
-
-   
-    <div class="content">
-        <div class="card">
-            <div class="card-body">
-                <div class="modal-body">
-    <dl class="row">
-        <dt class = "col-sm-4">
-            @Html.DisplayNameFor(model => model.Event)
-        </dt>
-        <dd class = "col-sm-8">
-            @Html.DisplayFor(model => model.Event.UniqueId)
-        </dd>
-        <dt class = "col-sm-4">
-            @Html.DisplayNameFor(model => model.SubEventName)
-        </dt>
-        <dd class = "col-sm-8">
-            @Html.DisplayFor(model => model.SubEventName)
-        </dd>
-        <dt class = "col-sm-4">
-            @Html.DisplayNameFor(model => model.StartDateTime)
-        </dt>
-        <dd class = "col-sm-8">
-            @Html.DisplayFor(model => model.StartDateTime)
-        </dd>
-        <dt class = "col-sm-4">
-            @Html.DisplayNameFor(model => model.EndDateTime)
-        </dt>
-        <dd class = "col-sm-8">
-            @Html.DisplayFor(model => model.EndDateTime)
-        </dd>
-        <dt class = "col-sm-4">
-            @Html.DisplayNameFor(model => model.CreatedDate)
-        </dt>
-        <dd class = "col-sm-8">
-            @Html.DisplayFor(model => model.CreatedDate)
-        </dd>
-        <dt class = "col-sm-4">
-            @Html.DisplayNameFor(model => model.LastUpdatedDate)
-        </dt>
-        <dd class = "col-sm-8">
-            @Html.DisplayFor(model => model.LastUpdatedDate)
-        </dd>
-    </dl>
-
-                <div>
-                    <a asp-action="Edit" asp-route-id="@Model?.UniqueId">Edit</a> |
-                    <a asp-action="Index">Back to List</a>
+<div class="row">
+    <div class="col-sm-2"></div>
+    <div class="col-sm-8">
+        <div class="content">
+            <div class="card">
+                <div class="card-header">
+                    <h4 style="text-align:center"><b>Sub Event Details</b></h4>
+                    <hr />
+                        <dl class="row">
+                            <dt class="col-sm-4">
+                                @Html.DisplayNameFor(model => model.Event)
+                            </dt>
+                            <dd class="col-sm-8">
+                                @Html.DisplayFor(model => model.Event.UniqueId)
+                            </dd>
+                            <dt class="col-sm-4">
+                                @Html.DisplayNameFor(model => model.SubEventName)
+                            </dt>
+                            <dd class="col-sm-8">
+                                @Html.DisplayFor(model => model.SubEventName)
+                            </dd>
+                            <dt class="col-sm-4">
+                                @Html.DisplayNameFor(model => model.StartDateTime)
+                            </dt>
+                            <dd class="col-sm-8">
+                                @Html.DisplayFor(model => model.StartDateTime)
+                            </dd>
+                            <dt class="col-sm-4">
+                                @Html.DisplayNameFor(model => model.EndDateTime)
+                            </dt>
+                            <dd class="col-sm-8">
+                                @Html.DisplayFor(model => model.EndDateTime)
+                            </dd>
+                            <dt class="col-sm-4">
+                                @Html.DisplayNameFor(model => model.CreatedDate)
+                            </dt>
+                            <dd class="col-sm-8">
+                                @Html.DisplayFor(model => model.CreatedDate)
+                            </dd>
+                            <dt class="col-sm-4">
+                                @Html.DisplayNameFor(model => model.LastUpdatedDate)
+                            </dt>
+                            <dd class="col-sm-8">
+                                @Html.DisplayFor(model => model.LastUpdatedDate)
+                            </dd>
+                        </dl>
+                        <div>
+                            <a asp-action="Details" asp-route-id="@Model?.UniqueId">Edit</a> |
+                            <a asp-action="Index">Back to List</a>
+                        </div>
+                    </div>
                 </div>
+            </div>
+        </div>
 
+
+    </div>
+    <div class="col-sm-2"></div>
 </div>
-</div>
-</div>
-</div>
+   
