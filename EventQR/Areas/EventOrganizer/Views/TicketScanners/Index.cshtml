@@ -6,7 +6,6 @@
     ViewBag.activeTabName = "thisEventScanner"; 
 }
 
-<h1>Index</h1>
 
 
 <link href="~/uitemplate/admintemp/dist/plugins/datatables/css/datatables.bootstrap.min.css" rel="stylesheet" />
@@ -26,12 +25,7 @@
 <table class="table" id="tblGuestList">
     <thead>
         <tr>
-          @*   <th>
-                @Html.DisplayNameFor(model => model.UserLoginId)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Event)
-            </th> *@
+           
             <th>
                 @Html.DisplayNameFor(model => model.EmailId)
             </th>
@@ -43,6 +37,7 @@
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.CreatedData)
+
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.LastUpdatedData)
@@ -53,12 +48,7 @@
     <tbody>
 @foreach (var item in Model) {
         <tr>
-          @*   <td>
-                @Html.DisplayFor(modelItem => item.UserLoginId)
-            </td> *@
-           @*  <td>
-                @Html.DisplayFor(modelItem => item.Event.UniqueId)
-            </td> *@
+           
             <td>
                 @Html.DisplayFor(modelItem => item.EmailId)
             </td>
@@ -70,12 +60,13 @@
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.CreatedData)
+
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.LastUpdatedData)
             </td>
             <td>
-                <a asp-action="Create" asp-route-id="@item.UniqueId">Create</a> |
+                <a asp-action="Create" asp-route-id="@item.UniqueId">Edit</a> |
                 <a asp-action="Details" asp-route-id="@item.UniqueId">Details</a> |
                 <a asp-action="Delete" asp-route-id="@item.UniqueId">Delete</a>
             </td>

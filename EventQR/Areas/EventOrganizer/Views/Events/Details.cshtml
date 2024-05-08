@@ -5,69 +5,95 @@
 
 } 
 @await Html.PartialAsync("_eventPartial")
-<div class="content">
-    <div class="card">
-        <div class="card-header">
-            <h1>Details</h1>
+<div class="row">
+    <div class="col-sm-2"></div>
+    <div class="col-sm-8">
+        <div class="content">
+            <div class="card">
+                <div class="card-header">
+                    <h4 style="text-align:center"><b>Event Details</b></h4>
+                    <div>
+                       <hr />
+                        <div class="row">
+                            <div class="col-sm-1"></div>
+                            <div class="col-sm-10">
+                                <div class="row">
+                                    <dt class="col-sm-4">
+                                        @Html.DisplayNameFor(model => model.EvenOrganizer)
+                                    </dt>
 
-            <div>
-                <h4>Event</h4>
-                <hr />
-                <dl class="row">
-                    <dt class="col-sm-2">
-                        @Html.DisplayNameFor(model => model.EvenOrganizer)
-                    </dt>
-                    <dd class="col-sm-10">
-                        @Html.DisplayFor(model => model.EvenOrganizer.OrganizationName)
-                    </dd>
-                    <dt class="col-sm-2">
-                        @Html.DisplayNameFor(model => model.Title)
-                    </dt>
-                    <dd class="col-sm-10">
-                        @Html.DisplayFor(model => model.Title)
-                    </dd>
-                    <dt class="col-sm-2">
-                        @Html.DisplayNameFor(model => model.Description)
-                    </dt>
-                    <dd class="col-sm-10">
-                        @Html.DisplayFor(model => model.Description)
-                    </dd>
-                    <dt class="col-sm-2">
-                        @Html.DisplayNameFor(model => model.Venue)
-                    </dt>
-                    <dd class="col-sm-10">
-                        @Html.DisplayFor(model => model.Venue)
-                    </dd>
-                    <dt class="col-sm-2">
-                        @Html.DisplayNameFor(model => model.StartDate)
-                    </dt>
-                    <dd class="col-sm-10">
-                        @Html.DisplayFor(model => model.StartDate)
-                    </dd>
-                    <dt class="col-sm-2">
-                        @Html.DisplayNameFor(model => model.EndDate)
-                    </dt>
-                    <dd class="col-sm-10">
-                        @Html.DisplayFor(model => model.EndDate)
-                    </dd>
-                    <dt class="col-sm-2">
-                        @Html.DisplayNameFor(model => model.CreatedDate)
-                    </dt>
-                    <dd class="col-sm-10">
-                        @Html.DisplayFor(model => model.CreatedDate)
-                    </dd>
-                    <dt class="col-sm-2">
-                        @Html.DisplayNameFor(model => model.LastUpdatedDate)
-                    </dt>
-                    <dd class="col-sm-10">
-                        @Html.DisplayFor(model => model.LastUpdatedDate)
-                    </dd>
-                </dl>
-            </div>
-            <div>
-                <a asp-action="Edit" asp-route-id="@Model?.UniqueId">Edit</a> |
-                <a asp-action="Index">Back to List</a>
+                                    <dd class="col-sm-8">
+                                        @Html.DisplayFor(model => model.EvenOrganizer.OrganizationName)
+                                    </dd>
+                                </div>
+
+                                <div class="row">
+                                    <dt class="col-sm-4">
+                                        @Html.DisplayNameFor(model => model.Title)
+                                    </dt>
+                                    <dd class="col-sm-8">
+                                        @Html.DisplayFor(model => model.Title)
+                                    </dd>
+                                </div>
+                                <div class="row">
+                                    <dt class="col-sm-4">
+                                        @Html.DisplayNameFor(model => model.Description)
+                                    </dt>
+                                    <dd class="col-sm-8">
+                                        @Html.DisplayFor(model => model.Description)
+                                    </dd>
+                                </div>
+                                <div class="row">
+
+                                    <dt class="col-sm-4">
+                                        @Html.DisplayNameFor(model => model.Venue)
+                                    </dt>
+                                    <dd class="col-sm-8">
+                                        @Html.DisplayFor(model => model.Venue)
+                                    </dd>
+                                </div>
+                               <div class="row">
+                                    <dt class="col-sm-4">
+                                        @Html.DisplayNameFor(model => model.StartDate)
+                                    </dt>
+                                    <dd class="col-sm-8">
+                                        @Html.DisplayFor(model => model.StartDate)
+                                    </dd>
+                                </div>
+                              <div class="row">
+                                    <dt class="col-sm-4">
+                                        @Html.DisplayNameFor(model => model.EndDate)
+                                    </dt>
+                                    <dd class="col-sm-8">
+                                        @Html.DisplayFor(model => model.EndDate)
+                                    </dd>
+                                </div>
+                                <div class="row">
+                                    <dt class="col-sm-4">
+                                        @Html.DisplayNameFor(model => model.CreatedDate)
+                                    </dt>
+                                    <dd class="col-sm-8">
+                                        @Html.DisplayFor(model => model.CreatedDate)
+                                    </dd>
+                                </div>
+                           <div class="row">
+                                    <dt class="col-sm-4">
+                                        @Html.DisplayNameFor(model => model.LastUpdatedDate)
+                                    </dt>
+                                    <dd class="col-sm-8">
+                                        @Html.DisplayFor(model => model.LastUpdatedDate)
+                                    </dd>
+                                </div>
+                                    <a asp-action="Details" asp-route-id="@Model?.UniqueId">Edit</a> |
+                                    <a asp-action="Index">Back to List</a>                              
+                            </div>
+                            <div class="col-sm-1"></div>
+                        </div>
+                    </div>
+                   
+                </div>
             </div>
         </div>
     </div>
+    <div class="col-sm-2"></div>
 </div>
