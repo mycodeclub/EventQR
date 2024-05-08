@@ -1,4 +1,6 @@
-﻿namespace EventQR.Common.Static
+﻿using System.Text;
+
+namespace EventQR.Common.Static
 {
     public static class Variables
     {
@@ -14,7 +16,12 @@
 
         public static string GetQrCodeUriStr(Guid guestId, Guid eventId)
         {
-            return HostUrl + $"/Scanner/QrScanner/Scan?guestId={guestId}&eventId={eventId}";
+            StringBuilder sb = new StringBuilder();
+            sb.Append(HostUrl);
+            sb.Append("/Scanner/CheckIn/AllowGuest?");
+            var parameters= $"guestId={guestId}&eventId={eventId}";
+            sb.Append(parameters);
+            return sb.ToString();
         }
 
         public static string GenerateTicketKey(string guestId, string eventId) => guestId + "|" + eventId;

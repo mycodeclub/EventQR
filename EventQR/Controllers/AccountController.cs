@@ -176,7 +176,7 @@ namespace EventQR.Controllers
 
         private async Task<bool> AutoAdminLogin()
         {
-            var result = await _signInManager.PasswordSignInAsync("ankit2@bpst.com", "ankit2@bpst.com", true, lockoutOnFailure: false);
+            var result = await _signInManager.PasswordSignInAsync("hjbssjb@gmail.com", "hjbssjb@gmail.com", true, lockoutOnFailure: false);
             return result.Succeeded;
         }
 
