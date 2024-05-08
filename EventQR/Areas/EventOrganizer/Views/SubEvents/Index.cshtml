@@ -40,8 +40,8 @@
                     {
                         <tr>
                             <td> @Html.DisplayFor(modelItem => item.SubEventName) </td>
-                            <td> @String.Format("{0:g}", item.StartDateTime.Value)   </td>
-                            <td> @String.Format("{0:g}", item.EndDateTime.Value)   </td>
+                            <td> @Html.DisplayFor(modelItem => item.StartDateTime) </td>
+                            <td> @Html.DisplayFor(modelItem => item.EndDateTime) </td>
                              <td>
                                 
                                 <a asp-action="Create" asp-route-id="@item.UniqueId">Edit</a> |
