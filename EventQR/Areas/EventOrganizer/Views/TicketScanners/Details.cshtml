@@ -41,13 +41,13 @@
                                 @Html.DisplayNameFor(model => model.CreatedData)
                             </dt>
                             <dd class="col-sm-8">
-                                @Html.DisplayFor(model => model.CreatedData)
+                                @Model.CreatedData.ToString("dd/MMM/yyyy h:mm tt")
                             </dd>
                             <dt class="col-sm-4">
                                 @Html.DisplayNameFor(model => model.LastUpdatedData)
                             </dt>
                             <dd class="col-sm-8">
-                                @Html.DisplayFor(model => model.LastUpdatedData)
+                                @Model.LastUpdatedData.ToString("dd/MMM/yyyy h:mm tt")
                             </dd>
                         </dl>
                     </div>

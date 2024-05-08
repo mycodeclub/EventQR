@@ -29,24 +29,21 @@ namespace EventQR.Areas.EventOrganizer.Controllers
 
 
         // GET: EventOrganizer/SubEvents
+       
         public async Task<IActionResult> Index()
         {
 
             var thisEvent = _eventService.GetCurrentEvent();
             if (thisEvent != null)
             {
-                var subEvent = await _context.SubEvents.Where(ts => ts.EventId == thisEvent.UniqueId).ToListAsync();
-                return View(subEvent);
-
-
+                var sEvent = await _context.SubEvents.Where(ts => ts.EventId == thisEvent.UniqueId).ToListAsync();
+                return View(sEvent);
             }
             else
             {
 
-
                 return RedirectToAction("Index", "SubEvents");
             }
-            
         }
 
         // GET: EventOrganizer/SubEvents/Details/5
