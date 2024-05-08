@@ -46,6 +46,7 @@
                                 <a asp-action="Delete" asp-route-id="@item.UniqueId">Delete</a> |
                                 <a asp-action="ShowMyTicket" asp-route-guestId="@item.UniqueId" asp-route-eventId="@item.EventId" target="_blank">Ticket </a> |
                                 <a asp-action="Invitation" asp-route-guestId="@item.UniqueId" asp-route-eventId="@item.EventId" target="_blank">Invitation </a> |
+                                <a  asp-area="Scanner" asp-controller="CheckIn" asp-action="AllowGuest" asp-route-guestId="@item.UniqueId" asp-route-eventId="@item.EventId" target="_blank">Scan QR </a> |
                             </td>
                         </tr>
                     }
