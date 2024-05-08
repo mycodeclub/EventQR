@@ -13,6 +13,7 @@ namespace EventQR.Models
         public Guid EventOrganizerId { get; set; }
 
         [ForeignKey("EventOrganizerId")]
+        [DisplayName("Even Organizer")]
         public Organizer? EvenOrganizer { get; set; }
 
 
@@ -26,11 +27,11 @@ namespace EventQR.Models
         public string Venue { get; set; } = string.Empty;
 
         //@ToDo  Rename StartDate to EventStartDate
-        [DisplayName("Event Start Date Time")]
+        [DisplayName("Event Start Date")]
         public DateTime? StartDate { get; set; }
 
         //@ToDo  Rename EndDate to EventEndDate
-        [DisplayName("Event End Date Time")]
+        [DisplayName("Event End Date")]
         public DateTime? EndDate { get; set; }
 
         /// <summary>
@@ -99,7 +100,9 @@ namespace EventQR.Models
 
         public List<SubEvent>? SubEvents { get; set; }
 
+        [DisplayName("Created Date")]
         public DateTime CreatedDate { get; set; }
+        [DisplayName("Last Updated Date")]
         public DateTime LastUpdatedDate { get; set; }
 
      }

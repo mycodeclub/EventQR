@@ -4,9 +4,10 @@
     ViewData["Title"] = "Index";
     Layout = "~/Views/Shared/_OrganizerLayout.cshtml";
     ViewBag.activeTabName = "thisEventSubEvents";
-
+    string ticketLink;
 }
 @await Html.PartialAsync("_eventPartial")
+
 
 <link href="~/uitemplate/admintemp/dist/plugins/datatables/css/datatables.bootstrap.min.css" rel="stylesheet" />
 
@@ -31,7 +32,7 @@
                         <th>
                             @Html.DisplayNameFor(model => model.EndDateTime)
                         </th>
-                        <th></th>
+                        <th>Action</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -43,6 +44,7 @@
                             <td> @String.Format("{0:g}", item.EndDateTime.Value)   </td>
                              <td>
                                 
+                                <a asp-action="Create" asp-route-id="@item.UniqueId">Edit</a> |
                                 <a asp-action="Details" asp-route-id="@item.UniqueId">Details</a> |
                                 <a asp-action="Delete" asp-route-id="@item.UniqueId">Delete</a>
                             </td>

@@ -46,8 +46,19 @@ namespace EventQR.Areas.EventOrganizer.Controllers
         // GET: EventOrganizer/TicketScanners
         public async Task<IActionResult> Index()
         {
-            var appDbContext = _context.TicketScanners.Where(s => s.EventId.Equals(_eventService.GetCurrentEvent().UniqueId));
-            return View(await appDbContext.ToListAsync());
+            var thisEvent = _eventService.GetCurrentEvent();
+            if (thisEvent == null)
+            {
+                return RedirectToAction("Index", "Events");
+
+            }
+            else
+            {
+                var ticketScanners = await _context.TicketScanners.Where(ts=> ts.EventId == thisEvent.UniqueId).ToListAsync();
+                return View(ticketScanners);
+
+            }
+          
         }
 
         // GET: EventOrganizer/TicketScanners/Details/5
