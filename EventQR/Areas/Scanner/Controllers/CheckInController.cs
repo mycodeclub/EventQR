@@ -37,7 +37,7 @@ namespace EventQR.Areas.Scanner.Controllers
         }
 
 
-        public async Task<IActionResult> AllowGuest(string id)
+        public async Task<IActionResult> AllowGuest7(string id)
         {
             // decript id
 

@@ -26,12 +26,12 @@
 <table class="table" id="tblGuestList">
     <thead>
         <tr>
-            <th>
+          @*   <th>
                 @Html.DisplayNameFor(model => model.UserLoginId)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Event)
-            </th>
+            </th> *@
             <th>
                 @Html.DisplayNameFor(model => model.EmailId)
             </th>
@@ -47,18 +47,18 @@
             <th>
                 @Html.DisplayNameFor(model => model.LastUpdatedData)
             </th>
-            <th></th>
+            <th> Action</th>
         </tr>
     </thead>
     <tbody>
 @foreach (var item in Model) {
         <tr>
-            <td>
+          @*   <td>
                 @Html.DisplayFor(modelItem => item.UserLoginId)
-            </td>
-            <td>
+            </td> *@
+           @*  <td>
                 @Html.DisplayFor(modelItem => item.Event.UniqueId)
-            </td>
+            </td> *@
             <td>
                 @Html.DisplayFor(modelItem => item.EmailId)
             </td>
@@ -75,7 +75,7 @@
                 @Html.DisplayFor(modelItem => item.LastUpdatedData)
             </td>
             <td>
-                <a asp-action="Edit" asp-route-id="@item.UniqueId">Edit</a> |
+                <a asp-action="Create" asp-route-id="@item.UniqueId">Create</a> |
                 <a asp-action="Details" asp-route-id="@item.UniqueId">Details</a> |
                 <a asp-action="Delete" asp-route-id="@item.UniqueId">Delete</a>
             </td>

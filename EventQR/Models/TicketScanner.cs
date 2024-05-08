@@ -15,12 +15,18 @@ namespace EventQR.Models
         public Event? Event { get; set; }
 
         public string Name { get; set; } = string.Empty;
+
+        [RegularExpression(@"^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$", ErrorMessage = "Not a valid phone number")]
+
         public string Mobile1 { get; set; } = string.Empty;
+        [RegularExpression(@"^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$", ErrorMessage = "Not a valid phone number")]
+
         public string Mobile2 { get; set; } = string.Empty;
 
         public string Address { get; set; } = string.Empty;
 
-        public string EmailId { get; set; } = string.Empty;
+        [RegularExpression(@"^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$", ErrorMessage = "Email is not in proper format")]
+      public string EmailId { get; set; } = string.Empty;
 
         public string Password { get; set; }
         public string ConfirmPassword { get; set; }
