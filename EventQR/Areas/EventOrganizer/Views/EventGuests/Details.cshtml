@@ -78,7 +78,7 @@
                                 @Html.DisplayNameFor(model => model.InviteSentOn)
                             </dt>
                             <dd class="col-sm-8">
-                                @Html.DisplayFor(model => model.InviteSentOn)
+                                @Model.InviteSentOn.ToString("dd/MMM/yyyy h:mm tt")
                             </dd>
                             
                             <dt class="col-sm-4">
