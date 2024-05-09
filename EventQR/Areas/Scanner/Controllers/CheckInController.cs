@@ -10,7 +10,7 @@ using System.Security.Claims;
 namespace EventQR.Areas.Scanner.Controllers
 {
     [Area("Scanner")]
-    [Authorize(Roles = "Scanner")]
+    [Authorize(Roles = "Scanner,EventOrganizer")]
     public class CheckInController : Controller
     {
         private readonly AppDbContext _context;
@@ -35,7 +35,7 @@ namespace EventQR.Areas.Scanner.Controllers
                 Guest = guest,
                 EventId = eventId,
                 Event = guest.MyEvent,
-                CheckIn = DateTime.Now
+             //   CheckIn = DateTime.Now
             };
             await _context.CheckIns.AddAsync(_checkin);
             await _context.SaveChangesAsync();

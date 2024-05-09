@@ -79,6 +79,7 @@
     <None Include="wwwroot\UiTemplate\AdminTemp\dist\plugins\table-expo\xls.core.min.js" />
     <None Include="wwwroot\UiTemplate\AdminTemp\dist\plugins\tooltip\script.js" />
     <None Include="wwwroot\UiTemplate\AdminTemp\dist\plugins\tooltip\tooltip.js" />
+    <None Include="wwwroot\UiTemplate\ScannerUI\font\.DS_Store" />
   </ItemGroup>
 
 </Project>
