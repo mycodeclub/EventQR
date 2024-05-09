@@ -48,7 +48,7 @@
                                 <a asp-action="ShowMyTicket" asp-route-guestId="@item.UniqueId" asp-route-eventId="@item.EventId" target="_blank">Ticket </a> |
                                 <a asp-action="Invitation" asp-route-guestId="@item.UniqueId" asp-route-eventId="@item.EventId" target="_blank">Invitation </a> |
                                 @* <a  asp-area="Scanner" asp-controller="CheckIn" asp-action="AllowGuest" asp-route-guestId="@item.UniqueId" asp-route-eventId="@item.EventId" target="_blank">Scan QR </a> |
-                            *@   <a href="/Scanner/CheckIn/AllowGuestNew/@EventQR.Common.Static.Variables.Encrypt( @item.UniqueId +","+ @item.EventId)" target="_blank">Scan QR </a> |
+                            *@   <a href="/Scanner/CheckIn/AllowGuest/@EventQR.Common.Static.Variables.Encrypt( @item.UniqueId +","+ @item.EventId)" target="_blank">Scan QR </a> |
                             </td>
                         </tr>
                     }
