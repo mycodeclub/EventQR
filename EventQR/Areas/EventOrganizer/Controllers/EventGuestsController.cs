@@ -127,7 +127,7 @@ namespace EventQR.Areas.EventOrganizer.Controllers
                         }
                     }
 
-      var result =              await _context.SaveChangesAsync();
+      var result =await _context.SaveChangesAsync();
                 }
                 return RedirectToAction(nameof(Index));
             }
