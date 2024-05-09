@@ -104,8 +104,7 @@ namespace EventQR.Controllers
 
         public async Task<IActionResult> LogOut()
         {
-            await _signInManager.SignOutAsync();
-            ViewBag.ActiveTabId = 1;
+            await _signInManager.SignOutAsync(); 
             return RedirectToAction("Index", "Home");
         }
 
@@ -177,7 +176,7 @@ namespace EventQR.Controllers
 
         private async Task<bool> AutoAdminLogin()
         {
-             var result = await _signInManager.PasswordSignInAsync("ankit2@bpst.com", "ankit2@bpst.com", true, lockoutOnFailure: false);
+             var result = await _signInManager.PasswordSignInAsync("lala@gmail.com", "lala@gmail.com", true, lockoutOnFailure: false);
             return result.Succeeded;
         }
 
