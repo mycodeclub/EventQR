@@ -3,22 +3,27 @@
 @{
     ViewData["Title"] = "Delete";
     Layout = "~/Views/Shared/_TicketScannerLayout.cshtml";
-   // ViewBag.activeTabName = "_TokenScannerLayout";
+    // ViewBag.activeTabName = "_TokenScannerLayout";
 
 }
 
 
 
-<h2>@Model.Event.Title</h2>
 
+@await Html.PartialAsync("_eventPartial")
 
-<h2>@Model.Event.SubEvents</h2>
+<ul>
+    @foreach (var subEvent in Model.Guest.SubEvents)
+    {
+        <li>
+            @subEvent.SubEventName | @subEvent.StartDateTime  - To - @subEvent.EndDateTime
+            <input name="@subEvent.UniqueId" type="checkbox" /> Allow CheckIn
+        </li>
 
+    }
+</ul>
 
-
-
-
-@* 
+@*
 <!-- ABOUT -->
 <section class="about full-screen d-lg-flex justify-content-center align-items-center" id="about">
     <div class="container">

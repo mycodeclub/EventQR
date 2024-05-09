@@ -35,10 +35,10 @@ namespace EventQR.Areas.Scanner.Controllers
                 Guid.TryParse(ids[1], out eventId);
             }
             var guest = await _context.Guests.Include(g => g.MyEvent).Where(g => g.UniqueId == guestId && g.EventId == eventId).FirstOrDefaultAsync();
-            if (string.IsNullOrWhiteSpace(guest.AllowedSubEventsIdsCommaList))
+            if (!string.IsNullOrWhiteSpace(guest.AllowedSubEventsIdsCommaList))
             {
                 var allowedSubEvents = guest.AllowedSubEventsIdsCommaList.Split(',').Select(Guid.Parse);
-                guest.SubEvents = _context.SubEvents.Where(e => allowedSubEvents.Contains(e.UniqueId)).ToList();
+                guest.SubEvents =  await _context.SubEvents.Where(e => allowedSubEvents.Contains(e.UniqueId)).ToListAsync();
             }
             GuestCheckIn _checkin = new GuestCheckIn()
             {
