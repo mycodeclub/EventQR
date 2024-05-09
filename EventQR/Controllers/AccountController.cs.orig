@@ -177,7 +177,11 @@ namespace EventQR.Controllers
 
         private async Task<bool> AutoAdminLogin()
         {
+<<<<<<< Updated upstream
+             var result = await _signInManager.PasswordSignInAsync("admin@bpst.com", "Admin@20", true, lockoutOnFailure: false);
+=======
              var result = await _signInManager.PasswordSignInAsync("ankit2@bpst.com", "ankit2@bpst.com", true, lockoutOnFailure: false);
+>>>>>>> Stashed changes
             return result.Succeeded;
         }
 

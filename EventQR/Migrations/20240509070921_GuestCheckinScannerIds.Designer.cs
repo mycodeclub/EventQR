@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace EventQR.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20240503091348_updatedUser")]
-    partial class updatedUser
+    [Migration("20240509070921_GuestCheckinScannerIds")]
+    partial class GuestCheckinScannerIds
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -116,9 +116,6 @@ namespace EventQR.Migrations
                     b.Property<Guid>("EventOrganizerId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid?>("EventUniqueId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<bool>("IsSubEvents")
                         .HasColumnType("bit");
 
@@ -140,8 +137,6 @@ namespace EventQR.Migrations
 
                     b.HasIndex("EventOrganizerId");
 
-                    b.HasIndex("EventUniqueId");
-
                     b.ToTable("Events");
                 });
 
@@ -152,6 +147,9 @@ namespace EventQR.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Address")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("AllowedSubEventsIdsCommaList")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("CreatedDate")
@@ -182,7 +180,6 @@ namespace EventQR.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("MobileNo1")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("MobileNo2")
@@ -200,6 +197,77 @@ namespace EventQR.Migrations
                     b.HasIndex("EventId");
 
                     b.ToTable("Guests");
+                });
+
+            modelBuilder.Entity("EventQR.Models.GuestCheckIn", b =>
+                {
+                    b.Property<int>("UniqueId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("UniqueId"));
+
+                    b.Property<DateTime>("CheckIn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid?>("EventId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("GuestId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("SubEventId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("UserLoginId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("UniqueId");
+
+                    b.HasIndex("EventId");
+
+                    b.HasIndex("GuestId");
+
+                    b.HasIndex("SubEventId");
+
+                    b.HasIndex("UserLoginId");
+
+                    b.ToTable("CheckIns");
+                });
+
+            modelBuilder.Entity("EventQR.Models.Inquery", b =>
+                {
+                    b.Property<int>("id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("id"));
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("LastUpdatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Message")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("OrganizationName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("id");
+
+                    b.ToTable("Inqueries");
                 });
 
             modelBuilder.Entity("EventQR.Models.Organizer", b =>
@@ -256,6 +324,93 @@ namespace EventQR.Migrations
                     b.HasKey("UniqueId");
 
                     b.ToTable("EventOrganizers");
+                });
+
+            modelBuilder.Entity("EventQR.Models.SubEvent", b =>
+                {
+                    b.Property<Guid>("UniqueId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("EndDateTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid?>("EventId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime?>("LastUpdatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("StartDateTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("SubEventName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("UniqueId");
+
+                    b.HasIndex("EventId");
+
+                    b.ToTable("SubEvents");
+                });
+
+            modelBuilder.Entity("EventQR.Models.TicketScanner", b =>
+                {
+                    b.Property<int>("UniqueId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("UniqueId"));
+
+                    b.Property<string>("Address")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ConfirmPassword")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CreatedData")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("EmailId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid?>("EventId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("LastUpdatedData")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Mobile1")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Mobile2")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Password")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid?>("UserLoginId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("UniqueId");
+
+                    b.HasIndex("EventId");
+
+                    b.ToTable("TicketScanners");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -435,10 +590,6 @@ namespace EventQR.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("EventQR.Models.Event", null)
-                        .WithMany("SubEvents")
-                        .HasForeignKey("EventUniqueId");
-
                     b.Navigation("EvenOrganizer");
                 });
 
@@ -451,6 +602,51 @@ namespace EventQR.Migrations
                         .IsRequired();
 
                     b.Navigation("MyEvent");
+                });
+
+            modelBuilder.Entity("EventQR.Models.GuestCheckIn", b =>
+                {
+                    b.HasOne("EventQR.Models.Event", "Event")
+                        .WithMany()
+                        .HasForeignKey("EventId");
+
+                    b.HasOne("EventQR.Models.EventGuest", "Guest")
+                        .WithMany()
+                        .HasForeignKey("GuestId");
+
+                    b.HasOne("EventQR.Models.SubEvent", "SubEvent")
+                        .WithMany()
+                        .HasForeignKey("SubEventId");
+
+                    b.HasOne("EventQR.Models.Acc.AppUser", "ScannerUser")
+                        .WithMany()
+                        .HasForeignKey("UserLoginId");
+
+                    b.Navigation("Event");
+
+                    b.Navigation("Guest");
+
+                    b.Navigation("ScannerUser");
+
+                    b.Navigation("SubEvent");
+                });
+
+            modelBuilder.Entity("EventQR.Models.SubEvent", b =>
+                {
+                    b.HasOne("EventQR.Models.Event", "Event")
+                        .WithMany("SubEvents")
+                        .HasForeignKey("EventId");
+
+                    b.Navigation("Event");
+                });
+
+            modelBuilder.Entity("EventQR.Models.TicketScanner", b =>
+                {
+                    b.HasOne("EventQR.Models.Event", "Event")
+                        .WithMany()
+                        .HasForeignKey("EventId");
+
+                    b.Navigation("Event");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

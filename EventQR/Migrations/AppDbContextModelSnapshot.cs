@@ -196,6 +196,42 @@ namespace EventQR.Migrations
                     b.ToTable("Guests");
                 });
 
+            modelBuilder.Entity("EventQR.Models.GuestCheckIn", b =>
+                {
+                    b.Property<int>("UniqueId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("UniqueId"));
+
+                    b.Property<DateTime>("CheckIn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid?>("EventId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("GuestId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("SubEventId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("UserLoginId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("UniqueId");
+
+                    b.HasIndex("EventId");
+
+                    b.HasIndex("GuestId");
+
+                    b.HasIndex("SubEventId");
+
+                    b.HasIndex("UserLoginId");
+
+                    b.ToTable("CheckIns");
+                });
+
             modelBuilder.Entity("EventQR.Models.Inquery", b =>
                 {
                     b.Property<int>("id")
@@ -563,6 +599,33 @@ namespace EventQR.Migrations
                         .IsRequired();
 
                     b.Navigation("MyEvent");
+                });
+
+            modelBuilder.Entity("EventQR.Models.GuestCheckIn", b =>
+                {
+                    b.HasOne("EventQR.Models.Event", "Event")
+                        .WithMany()
+                        .HasForeignKey("EventId");
+
+                    b.HasOne("EventQR.Models.EventGuest", "Guest")
+                        .WithMany()
+                        .HasForeignKey("GuestId");
+
+                    b.HasOne("EventQR.Models.SubEvent", "SubEvent")
+                        .WithMany()
+                        .HasForeignKey("SubEventId");
+
+                    b.HasOne("EventQR.Models.Acc.AppUser", "ScannerUser")
+                        .WithMany()
+                        .HasForeignKey("UserLoginId");
+
+                    b.Navigation("Event");
+
+                    b.Navigation("Guest");
+
+                    b.Navigation("ScannerUser");
+
+                    b.Navigation("SubEvent");
                 });
 
             modelBuilder.Entity("EventQR.Models.SubEvent", b =>

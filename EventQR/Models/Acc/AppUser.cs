@@ -7,6 +7,7 @@ namespace EventQR.Models.Acc
     public class AppUser : IdentityUser
 
     {
+
         [NotMapped]
         public string OrganizationName { get; set; } = string.Empty;
 
