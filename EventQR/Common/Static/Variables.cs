@@ -58,14 +58,14 @@ namespace EventQR.Common.Static
                      clearText = Convert.ToBase64String(ms.ToArray());
                  }
              }
-             
-             return clearText;
+            clearText = clearText.Replace("/", "_");
+            return clearText;
 
          }
 
         public static string Decrypt(string cipherText)
         {
-            
+            cipherText = cipherText.Replace("_", "/");
             byte[] cipherBytes = Convert.FromBase64String(cipherText); // Convert from Base64 to byte array
             using (Aes encryptor = Aes.Create())
             {
