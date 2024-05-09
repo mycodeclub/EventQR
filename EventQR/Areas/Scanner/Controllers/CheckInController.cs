@@ -15,9 +15,12 @@ namespace EventQR.Areas.Scanner.Controllers
     public class CheckInController : Controller
     {
         private readonly AppDbContext _context;
-        public CheckInController(AppDbContext context)
+        private readonly IEventOrganizer _eventService;
+
+        public CheckInController(AppDbContext context, IEventOrganizer eventService)
         {
             _context = context;
+            _eventService = eventService;
         }
 
         public async Task<IActionResult> AllowGuestNew(string id)
@@ -53,7 +56,7 @@ namespace EventQR.Areas.Scanner.Controllers
         public async Task<IActionResult> AllowGuestOld(Guid guestId, Guid eventId)
         {
             var guest = await _context.Guests.Include(g => g.MyEvent).Where(g => g.UniqueId == guestId && g.EventId == eventId).FirstOrDefaultAsync();
-            if (string.IsNullOrWhiteSpace(guest.AllowedSubEventsIdsCommaList))
+            if (!string.IsNullOrWhiteSpace(guest.AllowedSubEventsIdsCommaList))
             {
                 var allowedSubEvents = guest.AllowedSubEventsIdsCommaList.Split(',').Select(Guid.Parse);
                 guest.SubEvents = _context.SubEvents.Where(e => allowedSubEvents.Contains(e.UniqueId)).ToList();
@@ -65,7 +68,7 @@ namespace EventQR.Areas.Scanner.Controllers
                 Guest = guest,
                 EventId = eventId,
                 Event = guest.MyEvent,
-             //   CheckIn = DateTime.Now
+                //   CheckIn = DateTime.Now
             };
             await _context.CheckIns.AddAsync(_checkin);
             await _context.SaveChangesAsync();
@@ -123,5 +126,22 @@ namespace EventQR.Areas.Scanner.Controllers
             //var check= await _context.CheckIns.FindAsync(GuestId, EventId);
             return View();
         }*/
+        public async Task<IActionResult> GuestList()
+        {
+            var thisEvent = _eventService.GetCurrentEvent();
+            if (thisEvent != null)
+            {
+                var list = await _context.Guests.Where(g => g.EventId == thisEvent.UniqueId).ToListAsync();
+                return View(list);
+            }
+            return View();
+           // return View("guest");
+        } 
+        public IActionResult EventDetails()
+        {
+             var thisEvent = _eventService.GetCurrentEvent();
+            return View(thisEvent);
+        }
+
     }
 }
