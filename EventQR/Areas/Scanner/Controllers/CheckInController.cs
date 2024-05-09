@@ -23,7 +23,7 @@ namespace EventQR.Areas.Scanner.Controllers
             _eventService = eventService;
         }
 
-        public async Task<IActionResult> AllowGuestNew(string id)
+        public async Task<IActionResult> AllowGuest(string id)
         {
             var DecryptString = EventQR.Common.Static.Variables.Decrypt(id);
             Guid guestId = Guid.Empty;
