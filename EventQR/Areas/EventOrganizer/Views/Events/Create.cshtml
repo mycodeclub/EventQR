@@ -24,13 +24,13 @@
                     </div>
                     <div class="col-md-4 form-group">
                         <label asp-for="StartDate" class="control-label">Start Date</label>
-                        <input asp-for="StartDate" class="form-control" placeholder="dd-MM-yyyy" />
+                        <input asp-for="StartDate" class="form-control" id="start-date" onchange="handleStartDateChange()" asp-format="{0:dd-MM-yyyy hh:mm}" />
                         <span asp-validation-for="StartDate" class="text-danger"></span>
                     </div>
 
                     <div class="col-md-4 form-group">
                         <label asp-for="EndDate" class="control-label">End Date </label>
-                        <input asp-for="EndDate" class="form-control" />
+                        <input asp-for="EndDate" id="end-date" class="form-control" asp-format="{0:dd-MM-yyyy hh:mm}" />
                         <span asp-validation-for="EndDate" class="text-danger"></span>
                     </div>
                 </div>
@@ -80,18 +80,17 @@
 
 @section Scripts
 {
-    <script type="text/javascript">
-        function CheckIfMealsIncluded(thisCheck) {
-            //if (thisCheck.checked)
-            //    $('#MaxAllowMealCountDiv').show();
-            //else {
-            //    $('#MaxAllowMealCountDiv').hide();
-            //    $('#MaxAllowedMealsCount').val(0);
-        }
-                }
-    </script>
-
+   
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
-} 
+}
+
+<script>
+    function handleStartDateChange() {
+        var startDateInput = document.getElementById("start-date");
+        var startDate = new Date(startDateInput.value);
+        var endDateInput = document.getElementById("end-date");
+        endDateInput.min = startDateInput.value;
+    }
+</script>

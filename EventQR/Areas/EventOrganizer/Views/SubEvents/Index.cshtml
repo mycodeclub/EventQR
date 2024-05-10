@@ -19,7 +19,7 @@
                 
                 <a class ="float-right" asp-action="Create"> <button type="button" class="btn btn-primary">Create New</button></a>
             </p>
-            <table class="table">
+            <table class="table " id="tblGuestList">
 
                 <thead>
                     <tr>
@@ -40,9 +40,9 @@
                     {
                         <tr>
                             <td> @Html.DisplayFor(modelItem => item.SubEventName) </td>
-                            <td> @Html.DisplayFor(modelItem => item.StartDateTime) </td>
-                            <td> @Html.DisplayFor(modelItem => item.EndDateTime) </td>
-                             <td>
+                            <td> @String.Format("{0:dd-MM-yyyy hh:mmtt}", item.StartDateTime.Value) </td>
+                            <td> @String.Format("{0:dd-MM-yyyy hh:mmtt}", item.EndDateTime.Value) </td>                            
+                     <td>
                                 
                                 <a asp-action="Create" asp-route-id="@item.UniqueId">Edit</a> |
                                 <a asp-action="Details" asp-route-id="@item.UniqueId">Details</a> |
