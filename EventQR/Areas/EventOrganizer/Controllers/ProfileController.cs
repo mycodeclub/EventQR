@@ -1,9 +1,14 @@
 ﻿using EventQR.EF;
 using EventQR.Models;
+using EventQR.Models.Acc;
 using EventQR.Services;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.BlazorIdentity.Pages;
+using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.BlazorIdentity.Pages.Manage;
+using System.Security.Claims;
 
 namespace EventQR.Areas.EventOrganizer.Controllers
 {
@@ -12,12 +17,15 @@ namespace EventQR.Areas.EventOrganizer.Controllers
     public class ProfileController : Controller
     {
         private readonly AppDbContext _context;
+        private readonly UserManager<AppUser> _userManager;
+
         private readonly IEventOrganizer _eventService;
         private readonly Organizer _org;
         private readonly IWebHostEnvironment _environment;
 
-        public ProfileController(AppDbContext context, IEventOrganizer eventService, IWebHostEnvironment environment)
+        public ProfileController(AppDbContext context, IEventOrganizer eventService, IWebHostEnvironment environment, UserManager<AppUser> userManager)
         {
+            _userManager = userManager;
             _context = context;
             _eventService = eventService;
             _org = eventService.GetLoggedInEventOrg();
@@ -36,12 +44,67 @@ namespace EventQR.Areas.EventOrganizer.Controllers
         }
         public IActionResult ChangePassword()
         {
-            
+
             return View(_org);
         }
+        [HttpPost]
+        public async Task<IActionResult> ChangePassword(string currentPassword, string newPassword, string confirmPassword)
+        {
+            var UserLoginId = HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            AppUser user = await _userManager.FindByIdAsync(UserLoginId);
+
+            if (user != null)
+            {
+                // Update login ID
+                //       user.UserName = UserLoginId; // Assuming UserName is used for login ID
+
+                // Update password
+                var passwordHasher = new PasswordHasher<AppUser>();
+                var newPasswordHash = passwordHasher.HashPassword(user, newPassword);
+                user.PasswordHash = newPasswordHash;
+
+                // Save changes to the database
+                await _context.SaveChangesAsync();
+                _context.UpdateRange();
+            }
+            return View();
+        }
+
+
+
+        /// <summary>
+        /// 
+        /// @ToDo , Need extra level of protection to resect password 
+        /// </summary>
+        /// <param name="email"></param>
+        /// <param name="newPassword"></param>
+        /// <returns></returns>
+        //        [HttpPost]
+        //  [AllowAnonymous]
+        public async Task<IActionResult> ResetPassword(string email, string newPassword)
+        {
+            AppUser user = await _userManager.FindByEmailAsync(email);
+
+            if (user != null)
+            {
+                // Update login ID
+                //  user.UserName = UserLoginId; // Assuming UserName is used for login ID
+
+                // Update password
+                var passwordHasher = new PasswordHasher<AppUser>();
+                var newPasswordHash = passwordHasher.HashPassword(user, newPassword);
+                user.PasswordHash = newPasswordHash;
+
+                // Save changes to the database
+                await _context.SaveChangesAsync();
+                _context.UpdateRange();
+            }
+            return View();
+        }
+
         public IActionResult ChangeLogInId()
         {
-            
+
             return View(_org);
         }
 
@@ -76,7 +139,7 @@ namespace EventQR.Areas.EventOrganizer.Controllers
                         orgDb.Phone2 = orgVm.Phone2;
                         orgDb.Website = orgVm.Website;
 
-                         var result = await _context.SaveChangesAsync();
+                        var result = await _context.SaveChangesAsync();
                     }
                 }
                 catch (DbUpdateConcurrencyException ex)
