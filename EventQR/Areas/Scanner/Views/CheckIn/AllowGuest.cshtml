@@ -3,11 +3,11 @@
 @{
     ViewData["Title"] = "Delete";
     Layout = "~/Views/Shared/_TicketScannerLayout.cshtml";
-    // ViewBag.activeTabName = "_TokenScannerLayout";
 
 }
 
-@await Html.PartialAsync("_eventPartial")
+@await Html.PartialAsync("_eventPartial");
+
 <div class="container">
     <div class="col-sm-12">
         <table class="table" border="1" id="tblGuestList">
@@ -20,17 +20,21 @@
                 </tr>
             </thead>
             <tbody>
-                
-                    @foreach (var subEvent in Model.Guest.SubEvents)
+
+                @if (Model.Guest.SubEvents == null || Model.Guest.SubEvents.Count == 0)
+                {
+                    <p> Invitation didn't found </p>
+                }
+                else foreach (var subEvent in Model.Guest.SubEvents)
                     {
                         <tr>
-                        <td>@subEvent.SubEventName</td>
-                        <td>@subEvent.StartDateTime </td>
-                        <td>@subEvent.EndDateTime</td>
-                        <td> <input name="@subEvent.UniqueId" type="checkbox" /></td>
+                            <td>@subEvent.SubEventName</td>
+                            <td>@subEvent.StartDateTime </td>
+                            <td>@subEvent.EndDateTime</td>
+                            <td> <input name="@subEvent.UniqueId" type="checkbox" /></td>
                         </tr>
                     }
-                
+
             </tbody>
         </table>
     </div>

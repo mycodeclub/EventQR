@@ -1,4 +1,4 @@
-﻿ 
+﻿
 <!doctype html>
 <html lang="en">
 <head>
@@ -12,12 +12,12 @@
     <link rel="stylesheet" href="/uitemplate/scannerui/css/bootstrap.min.css">
     <link rel="stylesheet" href="/uitemplate/scannerui/css/unicons.css">
     <link rel="stylesheet" href="/uitemplate/scannerui/css/owl.carousel.min.css">
-    <link rel="stylesheet" href="/uitemplate/scannerui/css/owl.theme.default.min.css"> 
+    <link rel="stylesheet" href="/uitemplate/scannerui/css/owl.theme.default.min.css">
     <!-- MAIN STYLE -->
     <link rel="stylesheet" href="\uitemplate\scannerui\css/tooplate-style.css">
-    <!-- 
-    Tooplate 2115 Marvel 
-    https://www.tooplate.com/view/2115-marvel 
+    <!--
+    Tooplate 2115 Marvel
+    https://www.tooplate.com/view/2115-marvel
     -->
 </head>
 <body>
@@ -43,34 +43,25 @@
                         <a asp-action="EventDetails" asp-controller="CheckIn" asp-area="Scanner" class="nav-link"><span data-hover="EventsDetails">Event Details</span></a>
                     </li>
                     <li class="nav-item">
-                        <a href="/Account/LogOut" class="nav-link"><span data-hover="Log Out">Log Out</span></>
+                        <a href="/Account/LogOut" class="nav-link"><span data-hover="Log Out">Log Out</span> </a>
                     </li>
-                 
+
                 </ul>
                 <ul class="navbar-nav ml-lg-auto">
-                    <div class="ml-lg-4">
-                                 
-                        <i class="fa fa-user "> </i>
-                        @User.Identity.Name
-                         
-                        
-                    </div>
-                </ul>
-
-            
-                            
-                        </div>
-                    </div>
+                    @User.Identity.Name
                 </ul>
             </div>
+        </div>
+        </ul>
+        </div>
         </div>
     </nav>
 
 
     <hr />
-    @RenderBody()
+    @RenderBody();
 
-    @await RenderSectionAsync("Scripts", required: false)
+    @await RenderSectionAsync("Scripts", required: false);
     <!-- FOOTER -->
     <footer class="footer py-5">
         <div class="container">

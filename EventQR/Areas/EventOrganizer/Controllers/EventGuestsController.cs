@@ -1,15 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
+﻿using Microsoft.AspNetCore.Mvc; 
 using Microsoft.EntityFrameworkCore;
 using EventQR.EF;
 using EventQR.Models;
 using EventQR.Services;
 using Microsoft.AspNetCore.Authorization;
-using QRCoder;
+
 
 namespace EventQR.Areas.EventOrganizer.Controllers
 {
