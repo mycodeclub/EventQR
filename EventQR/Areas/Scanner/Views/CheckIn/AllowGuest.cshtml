@@ -8,36 +8,26 @@
 
 @await Html.PartialAsync("_eventPartial");
 
-<div class="container">
-    <div class="col-sm-12">
-        <table class="table" border="1" id="tblGuestList">
-            <thead>
-                <tr>
-                    <th>SubEventName</th>
-                    <th>StartDateTime</th>
-                    <th>EndDateTime</th>
-                    <th> Allow CheckIn</th>
-                </tr>
-            </thead>
-            <tbody>
+<div class="container  text-center">
 
-                @if (Model.Guest.SubEvents == null || Model.Guest.SubEvents.Count == 0)
-                {
-                    <p> Invitation didn't found </p>
-                }
-                else foreach (var subEvent in Model.Guest.SubEvents)
-                    {
-                        <tr>
-                            <td>@subEvent.SubEventName</td>
-                            <td>@subEvent.StartDateTime </td>
-                            <td>@subEvent.EndDateTime</td>
-                            <td> <input name="@subEvent.UniqueId" type="checkbox" /></td>
-                        </tr>
-                    }
-
-            </tbody>
-        </table>
-    </div>
-</div>
+    <form>
+    @foreach (var subEvent in Model.Guest.SubEvents)
+    {
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Events</h5>
+                <ul>
+                    <li> @subEvent.SubEventName</li>
+                    <li> @subEvent.CreatedDate</li>
+                    <li> @subEvent.EndDateTime</li>
+                </ul>
+                <input class="btn" name="thisEvent" type="radio" /> checked
+            </div>
+        </div>
+        <br />
+    }
+        <input type="submit" class="btn btn-primary" value="submit">
 
 
+    </form>
+</div> 

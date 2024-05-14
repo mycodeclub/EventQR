@@ -4,6 +4,7 @@ using EventQR.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using System.Linq;
 using System.Security.Claims;
 using System.Security.Cryptography;
@@ -52,7 +53,13 @@ namespace EventQR.Areas.Scanner.Controllers
             await _context.CheckIns.AddAsync(_checkin);
             await _context.SaveChangesAsync();
             return View(_checkin);
-        }  
+        }
+        [HttpPost]
+        public async Task<IActionResult>AllowGuest( string eventId,string subeventId)
+        {
+            var allow = await _context.CheckIns.ToListAsync();
+            return View(allow);
+        }
         public async Task<IActionResult> GuestList()
         {
             var thisEvent = _eventService.GetCurrentEvent();

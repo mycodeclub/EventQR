@@ -1,7 +1,10 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 
 namespace EventQR.Areas.EventOrganizer.Controllers
 {
+    [Authorize(Roles = "EventOrganizer")]
+    [Area("EventOrganizer")]
     public class TicketTemplateController : Controller
     {
         public IActionResult Index()
