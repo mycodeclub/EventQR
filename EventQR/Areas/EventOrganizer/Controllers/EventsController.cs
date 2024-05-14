@@ -91,7 +91,11 @@ namespace EventQR.Areas.EventOrganizer.Controllers
                         _context.Update(_event);
                     }
                     await _context.SaveChangesAsync();
-                    return RedirectToAction(nameof(Index));
+                    _eventService.SetCurrentEvent(_event);
+                    if (_event.IsSubEvents)
+                        return RedirectToAction(nameof(Index), "SubEvents");
+                    else
+                        return RedirectToAction(nameof(Index), "EventGuests");
                 }
                 else
                 {
