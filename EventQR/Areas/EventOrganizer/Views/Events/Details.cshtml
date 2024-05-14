@@ -73,7 +73,7 @@
                                         @Html.DisplayNameFor(model => model.CreatedDate)
                                     </dt>
                                     <dd class="col-sm-8">
-                                        @Html.DisplayFor(model => model.CreatedDate)
+                                        @Model.CreatedDate.ToString("dd/MMM/yyyy h:mm tt")
                                     </dd>
                                 </div>
                            <div class="row">
@@ -81,7 +81,7 @@
                                         @Html.DisplayNameFor(model => model.LastUpdatedDate)
                                     </dt>
                                     <dd class="col-sm-8">
-                                        @Html.DisplayFor(model => model.LastUpdatedDate)
+                                        @Model.LastUpdatedDate.ToString("dd/MMM/yyyy h:mm tt")
                                     </dd>
                                 </div>
                                     <a asp-action="Create" asp-route-id="@Model?.UniqueId">Edit</a> |

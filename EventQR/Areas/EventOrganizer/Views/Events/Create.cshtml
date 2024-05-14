@@ -24,7 +24,7 @@
                     </div>
                     <div class="col-md-4 form-group">
                         <label asp-for="StartDate" class="control-label">Start Date</label>
-                        <input asp-for="StartDate" class="form-control" id="start-date" onchange="handleStartDateChange()" asp-format="{0:dd-MM-yyyy hh:mm}" />
+                        <input asp-for="StartDate" min="@DateTime.Now.ToString("yyyy-MM-ddThh:mm")" class="form-control" id="start-date" onchange="handleStartDateChange()" asp-format="{0:dd-MM-yyyy hh:mm}" />
                         <span asp-validation-for="StartDate" class="text-danger"></span>
                     </div>
 

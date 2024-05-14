@@ -26,6 +26,7 @@ namespace EventQR.Areas.EventOrganizer.Controllers
         }
 
         // GET: EventOrganizer/EventGuests
+
         public async Task<IActionResult> Index()
         {
 
@@ -97,7 +98,7 @@ namespace EventQR.Areas.EventOrganizer.Controllers
             {
 
                 var currentEvent = _eventService.GetCurrentEvent();
-                var selectedIds = eventGuest.SubEvents.Where(e => e.IsIncludedForThisGuest).Select(e => e.UniqueId.ToString()).ToArray();
+                var selectedIds = eventGuest.SubEvents.Where(e => e.IsIncludedForThisGuest && e.UniqueId != null).Select(e => e.UniqueId.ToString()).ToArray();
                 if (currentEvent != null)
                 {
                     if (eventGuest.UniqueId.Equals(Guid.Empty))
