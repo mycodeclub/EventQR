@@ -15,7 +15,7 @@ builder.Services.AddSession();
 
 
 builder.Services.AddDbContext<AppDbContext>(options =>
-             options.UseSqlServer(builder.Configuration.GetConnectionString("EventQrDBConStr")));
+             options.UseSqlServer(builder.Configuration.GetConnectionString("EventQrLiveDb")));
 
 builder.Services.AddIdentity<AppUser, IdentityRole>(options =>
 {
@@ -49,8 +49,8 @@ app.UseRouting();
 app.UseAuthorization();
 
 app.MapControllerRoute(name: "areas", pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}");
- //app.MapControllerRoute(name: "default",pattern: "{controller=Home}/{action=Index}/{id?}");
+ app.MapControllerRoute(name: "default",pattern: "{controller=Home}/{action=Index}/{id?}");
 // app.MapControllerRoute(name: "default",pattern: "{controller=Account}/{action=Login}/{id?}");
-app.MapControllerRoute(name: "autoLogin", pattern: "{controller=Account}/{action=AutoLogin}/{id?}");
+//app.MapControllerRoute(name: "autoLogin", pattern: "{controller=Account}/{action=AutoLogin}/{id?}");
 
 app.Run();

@@ -71,37 +71,6 @@ namespace EventQR.Areas.EventOrganizer.Controllers
         }
 
 
-
-        /// <summary>
-        /// 
-        /// @ToDo , Need extra level of protection to resect password 
-        /// </summary>
-        /// <param name="email"></param>
-        /// <param name="newPassword"></param>
-        /// <returns></returns>
-        //        [HttpPost]
-        //  [AllowAnonymous]
-        public async Task<IActionResult> ResetPassword(string email, string newPassword)
-        {
-            AppUser user = await _userManager.FindByEmailAsync(email);
-
-            if (user != null)
-            {
-                // Update login ID
-                //  user.UserName = UserLoginId; // Assuming UserName is used for login ID
-
-                // Update password
-                var passwordHasher = new PasswordHasher<AppUser>();
-                var newPasswordHash = passwordHasher.HashPassword(user, newPassword);
-                user.PasswordHash = newPasswordHash;
-
-                // Save changes to the database
-                await _context.SaveChangesAsync();
-                _context.UpdateRange();
-            }
-            return View();
-        }
-
         public IActionResult ChangeLogInId()
         {
 
@@ -209,6 +178,39 @@ namespace EventQR.Areas.EventOrganizer.Controllers
                 var msg = ex.Message;
             }
             return restult;
+        }
+
+
+
+
+        /// <summary>
+        /// 
+        /// @ToDo , Need extra level of protection to resect password 
+        /// </summary>
+        /// <param name="email"></param>
+        /// <param name="newPassword"></param>
+        /// <returns></returns>
+        //        [HttpPost]
+        //  [AllowAnonymous]
+        public async Task<IActionResult> ResetPassword(string email, string newPassword)
+        {
+            AppUser user = await _userManager.FindByEmailAsync(email);
+
+            if (user != null)
+            {
+                // Update login ID
+                //  user.UserName = UserLoginId; // Assuming UserName is used for login ID
+
+                // Update password
+                var passwordHasher = new PasswordHasher<AppUser>();
+                var newPasswordHash = passwordHasher.HashPassword(user, newPassword);
+                user.PasswordHash = newPasswordHash;
+
+                // Save changes to the database
+                await _context.SaveChangesAsync();
+                _context.UpdateRange();
+            }
+            return View();
         }
     }
 }
