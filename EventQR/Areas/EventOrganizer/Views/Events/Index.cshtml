@@ -27,7 +27,9 @@
                     <tbody>
                         @foreach (var item in Model)
                         {
-                            <tr onclick="window.open('/EventOrganizer/Events/Details/@item.UniqueId')">
+@*                             <tr onclick="window.open('/EventOrganizer/Events/Details/@item.UniqueId')">
+ *@                            <tr onclick="window.location.href = '/EventOrganizer/Events/Details/@item.UniqueId'">
+
                                 <td>
                                     @Html.DisplayFor(modelItem => item.Title)
                                     <p class="text-sm">@item.Venue</p>
