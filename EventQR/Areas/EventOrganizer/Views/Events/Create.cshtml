@@ -1,5 +1,4 @@
 ﻿@model EventQR.Models.Event
-
 @{
     ViewData["Title"] = "Create";
     Layout = "~/Views/Shared/_OrganizerLayout.cshtml";
@@ -22,15 +21,15 @@
                         <input asp-for="Title" class="form-control" />
                         <span asp-validation-for="Title" class="text-danger"></span>
                     </div>
-                    <div class="col-md-4 form-group">
-                        <label asp-for="StartDate" class="control-label">Start Date</label>
-                        <input asp-for="StartDate" min="@DateTime.Now.ToString("yyyy-MM-ddThh:mm")" class="form-control" id="start-date" onchange="handleStartDateChange()" asp-format="{0:dd-MM-yyyy hh:mm}" />
+                    
+                    <div class="form-group col-md-4">
+                        <label asp-for="StartDate" class="control-label">Start Date Time</label>
+                        <input asp-for="StartDate" asp-format="@DateTime.Now.ToString("yyyy-MM-ddThh:mm")" id="start-date" min="@DateTime.Now.ToString("yyyy-MM-ddThh:mm")" class="form-control" />
                         <span asp-validation-for="StartDate" class="text-danger"></span>
                     </div>
-
-                    <div class="col-md-4 form-group">
-                        <label asp-for="EndDate" class="control-label">End Date </label>
-                        <input asp-for="EndDate" id="end-date" class="form-control" asp-format="{0:dd-MM-yyyy hh:mm}" />
+                    <div class="form-group col-md-4">
+                        <label asp-for="EndDate" class="control-label">EndDateTime</label>
+                        <input asp-for="EndDate" asp-format="@DateTime.Now.ToString("yyyy-MM-ddThh:mm")" id="end-date" min="@DateTime.Now.ToString("yyyy-MM-ddThh:mm")" class="form-control" />
                         <span asp-validation-for="EndDate" class="text-danger"></span>
                     </div>
                 </div>
@@ -80,18 +79,8 @@
 </div>
 
 @section Scripts
-{
-   
+{  
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
 }
-
-<script>
-    function handleStartDateChange() {
-        var startDateInput = document.getElementById("start-date");
-        var startDate = new Date(startDateInput.value);
-        var endDateInput = document.getElementById("end-date");
-        endDateInput.min = startDateInput.value;
-    }
-</script>

@@ -36,7 +36,7 @@
                                 </td>
                                 <td> @Html.DisplayFor(modelItem => item.Duration) </td>
                                 <td> @Html.DisplayFor(modelItem => item.DaysToGo) </td>
-                                <td> @String.Format("{0:dd-MM-yyyy hh:mmtt}", item.StartDate.Value) </td>
+                                <td> @item.StartDate?.ToString("dd/MM/yyyy hh:mmtt") </td>
                                 <td> @Html.DisplayFor(modelItem => item.Status) </td>
                                 <td> @Html.DisplayFor(modelItem => item.IsSubEvents) </td>
                                 <td>
