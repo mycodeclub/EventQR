@@ -10,5 +10,7 @@ namespace EventQR.Services
         public Event GetCurrentEvent();
         public void SetLoggedInEventOrgSession(Organizer _org);
         public Organizer GetLoggedInEventOrgSession();
-           }
+        public Task<EventGuest> GetAllDetailsForGuest(Guid guestId);
+        public Task<GuestCheckIn> GetGuestCheckInDto(Guid guestId);
+    }
 }

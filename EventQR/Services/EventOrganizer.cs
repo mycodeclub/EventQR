@@ -1,7 +1,10 @@
 ﻿using EventQR.EF;
 using EventQR.Models;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
+using System.Security.Claims;
 
 namespace EventQR.Services
 {
@@ -36,7 +39,14 @@ namespace EventQR.Services
         //-------------------------------------------------------------------------------
         public void SetCurrentEvent(Event _event)
         {
-            _httpContextAccessor.HttpContext.Session.SetString("thisEvent", JsonConvert.SerializeObject(_event));
+            var settings = new JsonSerializerSettings
+            {
+                //  ContractResolver = new CustomContractResolver(),
+                ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+            };
+
+            var _json = JsonConvert.SerializeObject(_event, settings);
+            _httpContextAccessor.HttpContext.Session.SetString("thisEvent", _json);
         }
 
         public Event GetCurrentEvent()
@@ -69,6 +79,40 @@ namespace EventQR.Services
         public void SetLoggedInEventOrgSession(Organizer _org)
         {
             _httpContextAccessor.HttpContext.Session.SetString("loggedInEventOrganizer", JsonConvert.SerializeObject(_org));
+        }
+
+        public async Task<EventGuest> GetAllDetailsForGuest(Guid guestId)
+        {
+            var guest = await _dbContext.Guests.Include(g => g.MyEvent.SubEvents)
+                   .Where(g => g.UniqueId == guestId)
+                   .FirstOrDefaultAsync();
+
+            if (guest != null)
+            {
+                if (!string.IsNullOrWhiteSpace(guest.AllowedSubEventsIdsCommaList))
+                {
+                    var allowedSubEvents = guest.AllowedSubEventsIdsCommaList.Split(',').Select(Guid.Parse);
+                    guest.SubEvents = await _dbContext.SubEvents.Where(e => allowedSubEvents.Contains(e.UniqueId)).ToListAsync();
+                    guest.CheckInDetails = await _dbContext.CheckIns.Where(c => c.GuestId == guestId).ToListAsync();
+                }
+            }
+            return guest;
+        }
+
+        public async Task<GuestCheckIn> GetGuestCheckInDto(Guid guestId)
+        {
+            var guest = await GetAllDetailsForGuest(guestId);
+
+            GuestCheckIn _checkin = new GuestCheckIn()
+            {
+                UserLoginId = _httpContextAccessor.HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier),
+                GuestId = guestId,
+                Guest = guest,
+                EventId = guest.EventId,
+                Event = guest.MyEvent,
+                CheckIn = DateTime.Now,
+            };
+            return _checkin;
         }
     }
 }
