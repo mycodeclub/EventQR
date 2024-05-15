@@ -15,15 +15,18 @@ namespace EventQR.Models
 
         public Guid? SubEventId { get; set; }
         [ForeignKey("SubEventId")]
-        public SubEvent? SubEvent { get; set; } 
+        public SubEvent? SubEvent { get; set; }
+
+
+        public Guid? GuestId { get; set; }
+        [ForeignKey("GuestId")]
+        public EventGuest? Guest { get; set; }
+
 
         public string? UserLoginId { get; set; } 
         [ForeignKey("UserLoginId")]
         public AppUser? ScannerUser { get; set; }
 
-        public Guid? GuestId { get; set; }
-        [ForeignKey("GuestId")]
-        public EventGuest? Guest { get; set; }
         public DateTime CheckIn { get; set; }
 
     }

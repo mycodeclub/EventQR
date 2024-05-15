@@ -1,6 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel;
+using Microsoft.EntityFrameworkCore;
 
 namespace EventQR.Models
 {
@@ -47,6 +48,9 @@ namespace EventQR.Models
 
         [NotMapped]
         public List<SubEvent>? SubEvents { get; set; }
+
+        [NotMapped]
+        public List<GuestCheckIn>? CheckInDetails { get; set; }
     }
 
 }

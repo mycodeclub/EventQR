@@ -12,7 +12,7 @@ using System.Security.Cryptography;
 namespace EventQR.Areas.Scanner.Controllers
 {
     [Area("Scanner")]
- //   [Authorize(Roles = "Scanner")]
+    //   [Authorize(Roles = "Scanner")]
     public class CheckInController : Controller
     {
         private readonly AppDbContext _context;
@@ -35,12 +35,8 @@ namespace EventQR.Areas.Scanner.Controllers
                 Guid.TryParse(ids[0], out guestId);
                 Guid.TryParse(ids[1], out eventId);
             }
-            var guest = await _context.Guests.Include(g => g.MyEvent).Where(g => g.UniqueId == guestId && g.EventId == eventId).FirstOrDefaultAsync();
-            if (!string.IsNullOrWhiteSpace(guest.AllowedSubEventsIdsCommaList))
-            {
-                var allowedSubEvents = guest.AllowedSubEventsIdsCommaList.Split(',').Select(Guid.Parse);
-                guest.SubEvents =  await _context.SubEvents.Where(e => allowedSubEvents.Contains(e.UniqueId)).ToListAsync();
-            }
+            var guest = await _eventService.GetAllDetailsForGuest(guestId);
+
             GuestCheckIn _checkin = new GuestCheckIn()
             {
                 UserLoginId = HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier),
@@ -48,17 +44,37 @@ namespace EventQR.Areas.Scanner.Controllers
                 Guest = guest,
                 EventId = eventId,
                 Event = guest.MyEvent,
-                CheckIn = DateTime.Now
+                CheckIn = DateTime.Now,
             };
-            await _context.CheckIns.AddAsync(_checkin);
-            await _context.SaveChangesAsync();
+            _eventService.SetCurrentEvent(guest.MyEvent);
             return View(_checkin);
         }
         [HttpPost]
-        public async Task<IActionResult>AllowGuest( string eventId,string subeventId)
+        public async Task<IActionResult> AllowGuest(Guid subEventId, Guid eventId, Guid GuestId)
         {
-            var allow = await _context.CheckIns.ToListAsync();
-            return View(allow);
+            GuestCheckIn _checkin = new GuestCheckIn()
+            {
+                UserLoginId = HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier),
+                GuestId = GuestId,
+                EventId = eventId,
+                SubEventId = subEventId,
+                CheckIn = DateTime.Now
+            };
+            var guest = await _context.Guests
+                //.Include(g=>g.MyEvent)
+                .Include(g => g.MyEvent.SubEvents)
+                .Where(g => g.UniqueId == GuestId && g.EventId == eventId).FirstOrDefaultAsync();
+            if (guest != null)
+            {
+                _checkin.Guest = guest;
+                _checkin.Event = guest.MyEvent;
+                var r = guest.AllowedSubEventsIdsCommaList.Contains(subEventId.ToString());
+                await _context.CheckIns.AddAsync(_checkin);
+                await _context.SaveChangesAsync();
+            }
+
+            _checkin = await _eventService.GetGuestCheckInDto(GuestId);
+            return View(_checkin);
         }
         public async Task<IActionResult> GuestList()
         {
@@ -69,11 +85,11 @@ namespace EventQR.Areas.Scanner.Controllers
                 return View(list);
             }
             return View();
-           // return View("guest");
-        } 
+            // return View("guest");
+        }
         public IActionResult EventDetails()
         {
-             var thisEvent = _eventService.GetCurrentEvent();
+            var thisEvent = _eventService.GetCurrentEvent();
             return View(thisEvent);
         }
 
