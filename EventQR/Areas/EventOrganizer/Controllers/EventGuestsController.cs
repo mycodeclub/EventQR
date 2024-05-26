@@ -180,9 +180,17 @@ namespace EventQR.Areas.EventOrganizer.Controllers
                 _guest.QrCodeImageUri = _qrService.GenerateQRCode(guestId, eventId);
                 _guest.MyEvent = await _context.Events.Where(e => e.UniqueId.Equals(_guest.EventId)).FirstOrDefaultAsync();
             }
-            return View(_guest);
+            return View("Ticket1", _guest);
+            //return View("ShowMyTicket", _guest);
+            //return View("ShowMyTicket", _guest);
+            //return View("ShowMyTicket", _guest);
+            //return View("ShowMyTicket", _guest);
+            //return View("ShowMyTicket", _guest);
+            //return View("ShowMyTicket", _guest);
+            //return View("ShowMyTicket", _guest);
         }
 
+        
         [AllowAnonymous]
         public async Task<IActionResult> Invitation(Guid guestId, Guid eventId)
         {
