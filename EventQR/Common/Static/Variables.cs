@@ -9,7 +9,7 @@ namespace EventQR.Common.Static
 
         public static string OrgProfilePicsPath = $"/ApplicationDocs/Organizer/ProfilePics/";
         public static string OrgLogoPath = $"/ApplicationDocs/Organizer/Logos/";
-        
+
         private static IConfiguration Configuration { get; }
 
         static Variables()
@@ -38,30 +38,30 @@ namespace EventQR.Common.Static
             return sb.ToString();
         }
 
-     
-      public static string Encrypt(string clearText)
-         {
-           
-             byte[] clearBytes = Encoding.UTF8.GetBytes(clearText);
-             using (Aes encryptor = Aes.Create())
-             {
-                 Rfc2898DeriveBytes pdb = new Rfc2898DeriveBytes(EncryptionKey, new byte[] { 0x49, 0x76, 0x61, 0x6e, 0x20, 0x4d, 0x65, 0x64, 0x76, 0x65, 0x64, 0x65, 0x76 });
-                 encryptor.Key = pdb.GetBytes(32);
-                 encryptor.IV = pdb.GetBytes(16);
-                 using (MemoryStream ms = new MemoryStream())
-                 {
-                     using (CryptoStream cs = new CryptoStream(ms, encryptor.CreateEncryptor(), CryptoStreamMode.Write))
-                     {
-                         cs.Write(clearBytes, 0, clearBytes.Length);
-                         cs.Close();
-                     }
-                     clearText = Convert.ToBase64String(ms.ToArray());
-                 }
-             }
+
+        public static string Encrypt(string clearText)
+        {
+
+            byte[] clearBytes = Encoding.UTF8.GetBytes(clearText);
+            using (Aes encryptor = Aes.Create())
+            {
+                Rfc2898DeriveBytes pdb = new Rfc2898DeriveBytes(EncryptionKey, new byte[] { 0x49, 0x76, 0x61, 0x6e, 0x20, 0x4d, 0x65, 0x64, 0x76, 0x65, 0x64, 0x65, 0x76 });
+                encryptor.Key = pdb.GetBytes(32);
+                encryptor.IV = pdb.GetBytes(16);
+                using (MemoryStream ms = new MemoryStream())
+                {
+                    using (CryptoStream cs = new CryptoStream(ms, encryptor.CreateEncryptor(), CryptoStreamMode.Write))
+                    {
+                        cs.Write(clearBytes, 0, clearBytes.Length);
+                        cs.Close();
+                    }
+                    clearText = Convert.ToBase64String(ms.ToArray());
+                }
+            }
             clearText = clearText.Replace("/", "_");
             return clearText;
 
-         }
+        }
 
         public static string Decrypt(string cipherText)
         {
@@ -84,12 +84,26 @@ namespace EventQR.Common.Static
             }
             return cipherText;
         }
-     
+
 
         public static string GenerateTicketKey(string guestId, string eventId) => guestId + "|" + eventId;
         public static string GetMerchantLogoUrl(string OrganizerId) => $"{OrgLogoPath.Replace("/", "\\")}\\{OrganizerId}";
         public static string GetMerchantProfilePicUrl(string OrganizerId) => $"{OrgProfilePicsPath.Replace("/", "\\")}\\{OrganizerId}";
 
+        public static List<string> TicketViewNamesList
+        {
+            get
+            {
+                return new List<string>()
+                {
+                    "ShowMyTicket",
+                    "ShowMyTicket1",
+                    "ShowMyTicket2",
+                    "ShowMyTicket3",
+                    "ShowMyTicket4"
+                };
+            }
+        }
 
     }
 }

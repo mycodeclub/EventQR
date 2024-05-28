@@ -16,7 +16,6 @@ namespace EventQR.Models
         [DisplayName("Even Organizer")]
         public Organizer? EvenOrganizer { get; set; }
 
-
         [DisplayName("Event Title")]
         public string Title { get; set; } = string.Empty;
         [DisplayName("Event Description")]
@@ -104,8 +103,10 @@ namespace EventQR.Models
         public DateTime CreatedDate { get; set; }
         [DisplayName("Last Updated Date")]
         public DateTime LastUpdatedDate { get; set; }
+        public string? TicketViewName { get; set; }
 
-     }
+       
+    }
 
     public enum EventStatus { Scheduled, InProgress, Done }
 
@@ -115,6 +116,7 @@ namespace EventQR.Models
         public int hours { get; set; }
         public int minutes { get; set; }
     }
+
 
 
 

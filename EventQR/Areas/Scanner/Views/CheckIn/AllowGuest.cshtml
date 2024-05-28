@@ -11,17 +11,16 @@
     .disabled-clickable {
         position: relative;
         opacity: 0.5;
-        pointer-events: none; /* Disables interaction */
-        background-color: #e9ecef; /* Light gray background */
-        color: #6c757d; /* Gray text */
-        border: 1px solid #ced4da; /* Border to indicate a form-like element */
-        padding: 1rem;
-        cursor: not-allowed; /* Show not-allowed cursor */
-        border-radius: 0.25rem; /* Rounded corners */
+        pointer-events: none;             /* Disables interaction */
+        background-color: #e9ecef;      /* Light gray background */
+        color: #6c757d;                 /* Gray text */
+        border: 1px solid #ced4da;      /* Border to indicate a form-like element */
+        padding: 1rem;                    /* --------------------------------------------------- */                                                  
+        cursor: not-allowed;              /* Show not-allowed cursor */
+        border-radius: 0.25rem;           /* Rounded corners */
     }
 </style>
 <div class="container  text-center">
-
     <form asp-action="AllowGuest">
         <input type="hidden" asp-for="@Model.EventId" name="eventId" />
         <input type="hidden" asp-for="@Model.GuestId" name="GuestId" />
@@ -43,8 +42,7 @@
                         </ul>
                         @if (attendedThis == null)
                         {
-                            <input class="btn" value="@subEvent.UniqueId" name="subEventId" type="radio" />
-
+                            <input class="btn" value="@subEvent.UniqueId" name="subEventId" type="radio" /> 
                         }
                         else
                         {

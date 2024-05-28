@@ -174,20 +174,17 @@ namespace EventQR.Areas.EventOrganizer.Controllers
         public async Task<IActionResult> ShowMyTicket(Guid guestId, Guid eventId)
         {
             // _myQrCode.GenerateQRCode(guest.UniqueId);
+
             var _guest = await _context.Guests.FindAsync(guestId);
             if (_guest.EventId == eventId)
             {
                 _guest.QrCodeImageUri = _qrService.GenerateQRCode(guestId, eventId);
                 _guest.MyEvent = await _context.Events.Where(e => e.UniqueId.Equals(_guest.EventId)).FirstOrDefaultAsync();
-            }
-            return View("Ticket1", _guest);
-            //return View("ShowMyTicket", _guest);
-            //return View("ShowMyTicket", _guest);
-            //return View("ShowMyTicket", _guest);
-            //return View("ShowMyTicket", _guest);
-            //return View("ShowMyTicket", _guest);
-            //return View("ShowMyTicket", _guest);
-            //return View("ShowMyTicket", _guest);
+            } 
+            return View(_guest.MyEvent.TicketViewName, _guest);
+            return View("ShowMyTicket4", _guest);
+            return View("ShowMyTicket5", _guest);
+            return View("ShowMyTicket", _guest);
         }
 
         
