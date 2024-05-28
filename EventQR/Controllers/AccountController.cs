@@ -18,6 +18,7 @@ namespace EventQR.Controllers
         private readonly UserManager<AppUser> _userManager;
         private readonly AppDbContext _context;
         private readonly IEventOrganizer _eventService;
+
         //var userEmail = User.Identity.Name;
         //var dbUser = _context.Users.SingleOrDefault(u => u.Email == userEmail);
         public AccountController(UserManager<AppUser> userManager, SignInManager<AppUser> signInManager, AppDbContext context, IEventOrganizer eventOrganizerService)
@@ -85,7 +86,7 @@ namespace EventQR.Controllers
 
                     var org = _context.EventOrganizers.Where(o => o.OrganizerUserId.ToString().Equals(user.Id)).FirstOrDefaultAsync();
                     if (org != null)
-                         _eventService.SetLoggedInEventOrgSession(await org);
+                        _eventService.SetLoggedInEventOrgSession(await org);
                     if (role.Contains("SuperAdmin"))
                         return RedirectToAction("Dashboard", "Home", new { Area = "SuperAdmin" });
 
@@ -93,8 +94,12 @@ namespace EventQR.Controllers
                         return RedirectToAction("Dashboard", "Home", new { Area = "EventOrganizer" });
 
                     else if (role.Contains("Scanner"))
+                    {
+                        var ts = await _context.TicketScanners.Where(ts => ts.UserLoginId.ToString() == user.Id).FirstOrDefaultAsync();
+                        var thisEvent = await _context.Events.FindAsync(ts.EventId);
+                        _eventService.SetCurrentEvent(thisEvent);
                         return RedirectToAction("Dashboard", "Home", new { Area = "Scanner" });
-
+                    }
                 }
                 else { ModelState.AddModelError("", "Invalid Email Id or Password"); }
             }
@@ -137,9 +142,9 @@ namespace EventQR.Controllers
                     PhoneNumber = "9999999999",
                 };
 
-               var result =  await RegisterOrg(appUser);
+                var result = await RegisterOrg(appUser);
 
-                 if (result.Succeeded)
+                if (result.Succeeded)
                 {
                     var userRoles = _context.Roles.ToList();
                     foreach (var role in userRoles)
@@ -177,7 +182,7 @@ namespace EventQR.Controllers
 
         private async Task<bool> AutoAdminLogin()
         {
-             var result = await _signInManager.PasswordSignInAsync("ankit2@bpst.com", "ankit2@bpst.com", true, lockoutOnFailure: false);
+            var result = await _signInManager.PasswordSignInAsync("ankit2@bpst.com", "ankit2@bpst.com", true, lockoutOnFailure: false);
             return result.Succeeded;
         }
 

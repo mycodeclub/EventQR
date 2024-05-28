@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc; 
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using EventQR.EF;
 using EventQR.Models;
@@ -35,7 +35,7 @@ namespace EventQR.Areas.EventOrganizer.Controllers
             {
                 var Event = await _context.Guests.Where(ts => ts.EventId == thisEvent.UniqueId).ToListAsync();
                 return View(Event);
-                
+
 
             }
             else
@@ -108,7 +108,7 @@ namespace EventQR.Areas.EventOrganizer.Controllers
                         eventGuest.CreatedDate = DateTime.Now;
                         eventGuest.AllowedSubEventsIdsCommaList = string.Join(",", selectedIds);
                         _context.Add(eventGuest);
-                      }
+                    }
                     else if (eventGuest.EventId == currentEvent.UniqueId)
                     {
                         var dbGuest = await _context.Guests.FindAsync(eventGuest.UniqueId);
@@ -123,7 +123,7 @@ namespace EventQR.Areas.EventOrganizer.Controllers
                         }
                     }
 
-      var result =await _context.SaveChangesAsync();
+                    var result = await _context.SaveChangesAsync();
                 }
                 return RedirectToAction(nameof(Index));
             }
@@ -180,14 +180,11 @@ namespace EventQR.Areas.EventOrganizer.Controllers
             {
                 _guest.QrCodeImageUri = _qrService.GenerateQRCode(guestId, eventId);
                 _guest.MyEvent = await _context.Events.Where(e => e.UniqueId.Equals(_guest.EventId)).FirstOrDefaultAsync();
-            } 
+            }
             return View(_guest.MyEvent.TicketViewName, _guest);
-            return View("ShowMyTicket4", _guest);
-            return View("ShowMyTicket5", _guest);
-            return View("ShowMyTicket", _guest);
         }
 
-        
+
         [AllowAnonymous]
         public async Task<IActionResult> Invitation(Guid guestId, Guid eventId)
         {
