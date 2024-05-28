@@ -3,6 +3,7 @@ using EventQR.Models;
 using EventQR.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace EventQR.Areas.Scanner.Controllers
 {
@@ -30,10 +31,12 @@ namespace EventQR.Areas.Scanner.Controllers
         {
             return View();
         }
-        public IActionResult Dashboard()
+        public async Task<IActionResult> Dashboard()
         {
-
-            return View();
+            var _event = _eventService.GetCurrentEvent();
+            _event.SubEvents = await _context.SubEvents.Where(e => e.EventId == _event.UniqueId).ToListAsync();
+            _event.Guests = await _context.Guests.Where(e => e.EventId == _event.UniqueId).ToListAsync();
+            return View(_event);
         }
     }
 }
