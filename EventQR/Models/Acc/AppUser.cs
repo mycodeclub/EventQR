@@ -17,7 +17,8 @@ namespace EventQR.Models.Acc
         [NotMapped]
         public string ConfirmPassword { get; set; } = string.Empty;
 
-        [Required]
+        [Required(ErrorMessage = "Required")]
+        [RegularExpression(@"^(\d{10})$", ErrorMessage = "The phone number must be exactly 10 digits and contain only numbers.")]
         public override string PhoneNumber { get => base.PhoneNumber; set => base.PhoneNumber = value; }
 
         public Guid? OrganizerUniqueIdFk { get; set; }

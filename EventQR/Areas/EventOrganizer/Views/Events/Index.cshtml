@@ -10,7 +10,7 @@
 <div class="content">
     <div class="card">
         <div class="card-header">
-            <a class="float-right" href="~/EventOrganizer/Events/Create">Create New</a>
+            <a class="float-right" asp-action="Create"> <button type="button" class="btn btn-primary">Create New</button></a>
             <div class="table-responsive">
                 <table class="table table-bordered table-hover" id="example1">
                     <thead>
@@ -43,7 +43,7 @@
                                     <a asp-action="Create" asp-route-id="@item.UniqueId">Edit</a> |
                                     @if (item.IsSubEvents)
                                     {
-                                        <a href="/Admin/EventMeals/Index?eventId=@item.UniqueId">Sub Event</a>
+                                        <a href="/EventOrganizer/SubEvents/Index?eventId=@item.UniqueId">Sub Event</a>
                                     }
                                 </td>
                             </tr>
