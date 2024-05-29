@@ -1,0 +1,26 @@
+﻿@model List<EventQR.Models.EventGuest>
+
+@{
+    Layout = null;
+}
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Guest Name </th>
+            <th> Mobile Number </th>
+        </tr>
+    </thead>
+
+    <tbody>
+
+        @foreach (var g in Model)
+        {
+            <tr>
+                <td>@g.Name </td>
+                <td>@g.MobileNo1 </td>
+            </tr>
+        }
+    </tbody>
+</table>
+

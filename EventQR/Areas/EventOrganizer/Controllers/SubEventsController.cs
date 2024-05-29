@@ -20,7 +20,7 @@ namespace EventQR.Areas.EventOrganizer.Controllers
         private readonly AppDbContext _context;
         private readonly IEventOrganizer _eventService;
         private readonly Organizer _org;
-         public SubEventsController(AppDbContext context, IEventOrganizer eventService)
+        public SubEventsController(AppDbContext context, IEventOrganizer eventService)
         {
             _context = context;
             _eventService = eventService;
@@ -29,7 +29,7 @@ namespace EventQR.Areas.EventOrganizer.Controllers
 
 
         // GET: EventOrganizer/SubEvents
-       
+
         public async Task<IActionResult> Index()
         {
 
@@ -158,5 +158,22 @@ namespace EventQR.Areas.EventOrganizer.Controllers
         {
             return _context.SubEvents.Any(e => e.UniqueId == id);
         }
+
+
+
+        public async Task<IActionResult> GetSubEventGuests(Guid id)
+        {
+            var _subEvent = await _context.SubEvents.FindAsync(id);
+            var _guests = await _context.Guests.Where(g => g.EventId == _subEvent.EventId).ToListAsync();
+
+            var filteredGuests = _guests.Where(g => g.AllowedSubEventsIdsCommaList != null &&
+                    g.AllowedSubEventsIdsCommaList
+                     .Split(',')
+                     .Select(id => Guid.TryParse(id, out var parsedId) ? parsedId : (Guid?)null)
+                     .Contains(id)).ToList();
+
+            return View(filteredGuests);
+        }
+
     }
 }
