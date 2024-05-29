@@ -23,11 +23,10 @@ namespace EventQR.Models
         public EventGuest? Guest { get; set; }
 
 
-        public string? UserLoginId { get; set; } 
+        public string? UserLoginId { get; set; }
         [ForeignKey("UserLoginId")]
         public AppUser? ScannerUser { get; set; }
 
         public DateTime CheckIn { get; set; }
-
     }
 }

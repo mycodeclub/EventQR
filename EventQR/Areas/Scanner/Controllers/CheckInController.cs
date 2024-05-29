@@ -71,11 +71,11 @@ namespace EventQR.Areas.Scanner.Controllers
                 var r = guest.AllowedSubEventsIdsCommaList.Contains(subEventId.ToString());
                 await _context.CheckIns.AddAsync(_checkin);
                 await _context.SaveChangesAsync();
-            }
-
+            } 
             _checkin = await _eventService.GetGuestCheckInDto(GuestId);
             return View(_checkin);
         }
+
         public async Task<IActionResult> GuestList()
         {
             var thisEvent = _eventService.GetCurrentEvent();
@@ -87,6 +87,7 @@ namespace EventQR.Areas.Scanner.Controllers
             return View();
             // return View("guest");
         }
+
         public IActionResult EventDetails()
         {
             var thisEvent = _eventService.GetCurrentEvent();

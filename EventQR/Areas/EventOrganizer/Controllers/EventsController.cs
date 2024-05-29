@@ -36,20 +36,11 @@ namespace EventQR.Areas.EventOrganizer.Controllers
         // GET: EventOrganizer/Events/Details/5
         public async Task<IActionResult> Details(Guid? id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var _event = await _context.Events.FirstOrDefaultAsync(m => m.UniqueId == id);
-            if (_event == null)
-            {
-                return NotFound();
-            }
-            _eventService.SetCurrentEvent(_event);
-
+            var _event = await _eventService.GetEventDetails(id.Value);
+            _eventService.SetCurrentEvent(_event); 
             return View(_event);
         }
+
 
         // GET: EventOrganizer/Events/Create
         public async Task<IActionResult> Create(Guid id)

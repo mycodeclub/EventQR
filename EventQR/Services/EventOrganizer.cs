@@ -1,8 +1,8 @@
 ﻿using EventQR.EF;
 using EventQR.Models;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using System.Security.Claims;
 
@@ -113,6 +113,21 @@ namespace EventQR.Services
                 CheckIn = DateTime.Now,
             };
             return _checkin;
+        }
+
+        public async Task<Event> GetEventDetails(Guid eventId)
+        {
+            var _event = await _dbContext.Events.FindAsync(eventId);
+
+            _event.SubEvents = await _dbContext.SubEvents.Where(s => s.EventId == eventId).ToListAsync();
+            _event.Guests = await _dbContext.Guests.Where(g => g.EventId == eventId).ToListAsync();
+            foreach (var se in _event.SubEvents)
+            {
+                se.TotalGuests = _event.Guests
+                    .Where(g => g.AllowedSubEventsIdsCommaList.Contains(se.UniqueId.ToString())).Count();
+            }
+
+            return _event;
         }
     }
 }

@@ -36,6 +36,7 @@ namespace EventQR.Models
         /// <summary>
         /// IsSubEvents is a flag include more some events in main events like  Meals , cake cutting, any dance representation or some thing else .  and individual guest can be configured for each sub event.
         /// </summary>
+       
         public bool IsSubEvents { get; set; }
 
         [NotMapped]
@@ -82,7 +83,7 @@ namespace EventQR.Models
             }
         }
         public int GuestsCount { get { return Guests != null ? Guests.Count() : 0; } }
-        public int AttendedGuests { get { return Guests != null ? Guests.Count() : 0; } }
+
         [DisplayName("Days To Go")]
         public int DaysToGo
         {
@@ -105,7 +106,11 @@ namespace EventQR.Models
         public DateTime LastUpdatedDate { get; set; }
         public string? TicketViewName { get; set; }
 
-       
+
+        [NotMapped]
+        public int TotalGuests { get { return Guests != null ? Guests.Count() : 0; } }
+        [NotMapped]
+        public int AttendedGuests { get; set; }
     }
 
     public enum EventStatus { Scheduled, InProgress, Done }
@@ -116,8 +121,4 @@ namespace EventQR.Models
         public int hours { get; set; }
         public int minutes { get; set; }
     }
-
-
-
-
 }
