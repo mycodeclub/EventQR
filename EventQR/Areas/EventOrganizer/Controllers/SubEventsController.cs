@@ -10,6 +10,7 @@ using EventQR.Models;
 using EventQR.Services;
 using Newtonsoft.Json;
 using Microsoft.AspNetCore.Authorization;
+using EventQR.Models.VM.Reports;
 
 namespace EventQR.Areas.EventOrganizer.Controllers
 {
@@ -165,14 +166,35 @@ namespace EventQR.Areas.EventOrganizer.Controllers
         {
             var _subEvent = await _context.SubEvents.FindAsync(id);
             var _guests = await _context.Guests.Where(g => g.EventId == _subEvent.EventId).ToListAsync();
+            var _checkInGuests = await _context.CheckIns.Where(c => c.EventId == _subEvent.EventId && c.SubEventId == id).ToListAsync();
 
-            var filteredGuests = _guests.Where(g => g.AllowedSubEventsIdsCommaList != null &&
+
+
+
+            var thisSubEventGuests = _guests.Where(g => g.AllowedSubEventsIdsCommaList != null &&
                     g.AllowedSubEventsIdsCommaList
                      .Split(',')
                      .Select(id => Guid.TryParse(id, out var parsedId) ? parsedId : (Guid?)null)
                      .Contains(id)).ToList();
 
-            return View(filteredGuests);
+
+            var checkinLogs = new List<SubEventGuestCheckInLogs>();
+            foreach (var g in thisSubEventGuests)
+            {
+                checkinLogs.Add(new SubEventGuestCheckInLogs()
+                {
+                    GuestName = g.Name,
+                    GuestId = g.UniqueId,
+                    StartDateTime = _subEvent.StartDateTime.Value,
+                    EndDateTime = _subEvent.EndDateTime.Value
+                });
+            }
+            foreach (var c in _checkInGuests)
+            {
+                var g = checkinLogs.Where(g => g.GuestId == c.GuestId).FirstOrDefault();
+                g.CheckInTime = c.CheckIn;
+            }
+            return View(checkinLogs);
         }
 
     }

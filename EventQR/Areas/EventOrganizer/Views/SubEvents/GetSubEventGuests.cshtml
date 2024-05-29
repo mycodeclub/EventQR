@@ -1,4 +1,4 @@
-﻿@model List<EventQR.Models.EventGuest>
+﻿@model List<EventQR.Models.VM.Reports.SubEventGuestCheckInLogs>
 
 @{
     Layout = null;
@@ -7,8 +7,11 @@
 <table class="table">
     <thead>
         <tr>
-            <th>Guest Name </th>
+            <th> Guest Name </th>
             <th> Mobile Number </th>
+            <th> Start Date Time </th>
+            <th> End Date Time </th>
+            <th> Check In Time </th>
         </tr>
     </thead>
 
@@ -17,8 +20,11 @@
         @foreach (var g in Model)
         {
             <tr>
-                <td>@g.Name </td>
-                <td>@g.MobileNo1 </td>
+                <td>@g.GuestName </td>
+                <td>@g.MobileNumber </td>
+                <td>@g.StartDateTime </td>
+                <td>@g.EndDateTime </td>
+                <td>@g.CheckInTime </td>
             </tr>
         }
     </tbody>
