@@ -93,6 +93,9 @@ namespace EventQR.Areas.Scanner.Controllers
             var thisEvent = _eventService.GetCurrentEvent();
             return View(thisEvent);
         }
-
+        public IActionResult ScanQr()
+        {
+            return View();
+        }
     }
 }
