@@ -4,10 +4,29 @@
     ViewBag.activeTabName = "thisEvent";
 
 }
-
-
-
-
+<div class="container">
+    <div class="sidebar-left"></div>
+    <div class="main-content">
+        <div class="alert alert-danger" role="alert"> 
+            <div class="row">
+                <div class="col-sm-3">Event Name</div>
+                <div class="col-sm-9">@Model.EvenOrganizer</div>
+            </div>
+        </div>
+        <div class="alert alert-info" role="alert">
+            <div class="row">
+                <div class="col-sm-3">Description</div>
+                <div class="col-sm-9">@Model.Description</div>
+            </div>
+        </div>
+        <div class="alert alert-primary" role="alert">
+            <div class="row">
+                <div class="col-sm-3">Venue</div>
+                <div class="col-sm-9">@Model.Venue</div>
+            </div>
+        </div>
+    </div>
+    </div>
 
 <div class="content">
     <div class="row">
@@ -15,8 +34,8 @@
             <div class="card">
                 <div class="card-body">
                      <div class="info-widget-text row">
-                        <div class="col-sm-6 pull-left"><span>Facebook</span></div>
-                        <div class="col-sm-6 pull-right text-right text-blue f-25">3,500</div>
+                        <div class="col-sm-6 pull-left "><span>Start Date</span></div>
+                        <div class="col-sm-6 pull-right text-danger ">@Model.StartDate</div>
                     </div>
                 </div>
             </div>
@@ -24,10 +43,21 @@
         <div class="col-xl-3 col-lg-3 col-md-3 col-sm-6 m-b-3">
             <div class="card">
                 <div class="card-body">
-                    <div class="m-b-1"> <i class="icon-twitter f-30 text-blue"></i> <span class="pull-right text-muted">Tweets</span> </div>
-                    <div class="info-widget-text row">
-                        <div class="col-sm-6 pull-left"><span>Twwitter</span></div>
-                        <div class="col-sm-6 pull-right text-right text-blue f-25">2,950</div>
+                     <div class="info-widget-text row">
+                        <div class="col-sm-6 pull-left "><span>End Date</span></div>
+                        <div class="col-sm-6 pull-right text-right ">@Model.EndDate.ToString()</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-3 col-lg-3 col-md-3 col-sm-6 m-b-3">
+            <div class="card">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="info-widget-text row">
+                            <div class="col-sm-6 pull-left "><span>Duration</span></div>
+                            <div class="col-sm-6 pull-right text-right ">@Model.Duration</div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -35,85 +65,130 @@
         <div class="col-xl-3 col-lg-3 col-md-3 col-sm-6 m-b-3">
             <div class="card">
                 <div class="card-body">
-                    <div class="m-b-1"> <i class="icon-googleplus f-30 text-blue"></i> <span class="pull-right text-muted">Share</span> </div>
                     <div class="info-widget-text row">
-                        <div class="col-sm-6 pull-left"><span>Google+</span></div>
-                        <div class="col-sm-6 pull-right text-right text-blue f-25">1,750</div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="col-xl-3 col-lg-3 col-md-3 col-sm-6 m-b-3">
-            <div class="card">
-                <div class="card-body">
-                    <div class="m-b-1"> <i class="icon-rss f-30 text-blue"></i> <span class="pull-right text-muted">Posts</span> </div>
-                    <div class="info-widget-text row">
-                        <div class="col-sm-6 pull-left"><span>Blog</span></div>
-                        <div class="col-sm-6 pull-right text-right text-blue f-25">2,250</div>
+                        <div class="col-sm-6 pull-left "><span>Day to Go</span></div>
+                        <div class="col-sm-6 pull-right text-right ">@Model.DaysToGo</div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
 
-<div class="content">
+
     <div class="row">
-        <div class="col-lg-3">
-            <div class="tile-progress tile-pink">
-                <div class="tile-header">
-                    <h5>New Orders</h5>
-                    <h3>1250</h3>
+        <div class="col-lg-12">
+            <div class="info-box">
+                <div class="card-header">
+                    <h5 class="card-title">Sub Events</h5>
                 </div>
-                <div class="tile-progressbar"> <span data-fill="65.5%" style="width: 65.5%;"></span> </div>
-                <div class="tile-footer">
-                    <h4> <span class="pct-counter">65.5</span>% increase </h4>
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>Sub Events Name</th>
+                                <th>Start Date</th>
+                                <th>End Date</th>
+                                <th>Created date</th>
+                                
+                               
+                            </tr>
+                        </thead>
+                
+                        <tbody>
+                               @*   @foreach (var x in Model.SubEvents)
+                                   {
+                                    <tr id="clickableRow">
+                                        <td>@x.SubEventName</td>
+                                        <td>@x.StartDateTime</td>
+                                        <td>@x.EndDateTime</td>
+                                        <td>@x.CreatedDate</td>
+                                        
+                                    </tr>
+                                } *@
+                            
+
+
+                            <tr id="clickableRow">
+                                <td>Lunch</td>
+                                <td>12-12-2024</td>
+                                <td>13-12-2024</td>
+                                <td> 12 h </td>
+                                <td>5 Days</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                        
+                    
+                   
                 </div>
             </div>
         </div>
-        <div class="col-lg-3">
-            <div class="tile-progress tile-red">
-                <div class="tile-header">
-                    <h5>Monthly Sales</h5>
-                    <h3>850</h3>
-                </div>
-                <div class="tile-progressbar"> <span data-fill="70%" style="width: 70%;"></span> </div>
-                <div class="tile-footer">
-                    <h4> <span class="pct-counter">70</span>% increase </h4>
-                </div>
-            </div>
-        </div>
-        <div class="col-lg-3">
-            <div class="tile-progress tile-cyan">
-                <div class="tile-header">
-                    <h5>New Users</h5>
-                    <h3>2250</h3>
-                </div>
-                <div class="tile-progressbar"> <span data-fill="50%" style="width: 50%;"></span> </div>
-                <div class="tile-footer">
-                    <h4> <span class="pct-counter">50</span>% increase </h4>
-                </div>
-            </div>
-        </div>
-        <div class="col-lg-3">
-            <div class="tile-progress tile-aqua">
-                <div class="tile-header">
-                    <h5>Feedbacks</h5>
-                    <h3>530</h3>
-                </div>
-                <div class="tile-progressbar"> <span data-fill="75.5%" style="width: 75.5%;"></span> </div>
-                <div class="tile-footer">
-                    <h4> <span class="pct-counter">75.5</span>% increase </h4>
+      
+    </div>
+
+
+
+
+
+    <div class="modal" id="exampleModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-lg-12 m-b-3">
+                            <div class="box box-info">
+                                <div class="box-header with-border p-t-1">
+                                    <h3 class="box-title text-black">Guest List</h3>
+                                    </div>
+                                <!-- /.box-header -->
+                                <div class="box-body">
+                                    <div class="table-responsive">
+                                        <table class="table no-margin">
+                                            <thead>
+                                                <tr>
+                                                    <th>Name</th>                                                   
+                                                    <th>Mobile no</th>
+                                                    <th>Guest Count</th>
+                                                    <th>Created date</th>
+                                                    
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td><a href="#">Vinita</a></td>
+                                                    <td>85283125487</td>                                             
+                                                    <td>78</td>
+                                                    <td><span class="label label-success">12-12-2023</span></td>
+                                                    
+                                                </tr>
+                                              
+                                               
+                                               
+                                            </tbody>                                           
+                                        </table>
+                                    </div>                                 
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><a href='/EventOrganizer/Events/Details/@Model.UniqueId'>close</a></button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
 
-@* <div class="content">
-    <div class="card">
-        <div class="card-header">
-        </div>
-    </div>
-</div>
- *@
+
+
+ <script>
+    document.addEventListener('DOMContentLoaded', function () {     
+        var clickableRow = document.getElementById('clickableRow');      
+        clickableRow.addEventListener('click', function () {          
+            var modal = document.getElementById('exampleModal');    
+            modal.style.display = 'block';
+        });
+    });
+
+ </script>
