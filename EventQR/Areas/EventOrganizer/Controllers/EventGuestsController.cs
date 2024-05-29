@@ -96,17 +96,20 @@ namespace EventQR.Areas.EventOrganizer.Controllers
         {
             if (ModelState.IsValid)
             {
-
                 var currentEvent = _eventService.GetCurrentEvent();
-                var selectedIds = eventGuest.SubEvents.Where(e => e.IsIncludedForThisGuest && e.UniqueId != null).Select(e => e.UniqueId.ToString()).ToArray();
+
+
                 if (currentEvent != null)
                 {
+                    List<string> selectedIds = null;
+                    if (eventGuest.SubEvents != null)
+                        selectedIds = eventGuest?.SubEvents.Where(e => e.IsIncludedForThisGuest && e.UniqueId != null).Select(e => e.UniqueId.ToString()).ToList();
                     if (eventGuest.UniqueId.Equals(Guid.Empty))
                     {
                         eventGuest.UniqueId = Guid.NewGuid();
                         eventGuest.EventId = currentEvent.UniqueId;
                         eventGuest.CreatedDate = DateTime.Now;
-                        eventGuest.AllowedSubEventsIdsCommaList = string.Join(",", selectedIds);
+                        eventGuest.AllowedSubEventsIdsCommaList = selectedIds == null ? null : string.Join(",", selectedIds);
                         _context.Add(eventGuest);
                     }
                     else if (eventGuest.EventId == currentEvent.UniqueId)
@@ -118,7 +121,7 @@ namespace EventQR.Areas.EventOrganizer.Controllers
                             dbGuest.MobileNo1 = eventGuest.MobileNo1;
                             dbGuest.MobileNo2 = eventGuest.MobileNo2;
                             dbGuest.Email = eventGuest.Email;
-                            dbGuest.AllowedSubEventsIdsCommaList = string.Join(",", selectedIds);
+                            eventGuest.AllowedSubEventsIdsCommaList = selectedIds == null ? null : string.Join(",", selectedIds);
                             dbGuest.LastUpdatedDate = DateTime.Now;
                         }
                     }
