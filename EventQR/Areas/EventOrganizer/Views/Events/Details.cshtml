@@ -3,97 +3,117 @@
     Layout = "~/Views/Shared/_OrganizerLayout.cshtml";
     ViewBag.activeTabName = "thisEvent";
 
-} 
-@await Html.PartialAsync("_eventPartial")
-<div class="row">
-    
-    <div class="col-sm-12">
-        <div class="content">
+}
+
+
+
+
+
+<div class="content">
+    <div class="row">
+        <div class="col-xl-3 col-lg-3 col-md-3 col-sm-6 m-b-3">
             <div class="card">
-                <div class="card-header">
-                    <h4 style="text-align:center"><b>Event Details</b></h4>
-                    <div>
-                       <hr />
-                        <div class="row">
-                            <div class="col-sm-1"></div>
-                            <div class="col-sm-10">
-                                <div class="row">
-                                    <dt class="col-sm-4">
-                                        @Html.DisplayNameFor(model => model.EvenOrganizer)
-                                    </dt>
-
-                                    <dd class="col-sm-8">
-                                        @Html.DisplayFor(model => model.EvenOrganizer.OrganizationName)
-                                    </dd>
-                                </div>
-
-                                <div class="row">
-                                    <dt class="col-sm-4">
-                                        @Html.DisplayNameFor(model => model.Title)
-                                    </dt>
-                                    <dd class="col-sm-8">
-                                        @Html.DisplayFor(model => model.Title)
-                                    </dd>
-                                </div>
-                                <div class="row">
-                                    <dt class="col-sm-4">
-                                        @Html.DisplayNameFor(model => model.Description)
-                                    </dt>
-                                    <dd class="col-sm-8">
-                                        @Html.DisplayFor(model => model.Description)
-                                    </dd>
-                                </div>
-                                <div class="row">
-
-                                    <dt class="col-sm-4">
-                                        @Html.DisplayNameFor(model => model.Venue)
-                                    </dt>
-                                    <dd class="col-sm-8">
-                                        @Html.DisplayFor(model => model.Venue)
-                                    </dd>
-                                </div>
-                               <div class="row">
-                                    <dt class="col-sm-4">
-                                        @Html.DisplayNameFor(model => model.StartDate)
-                                    </dt>
-                                    <dd class="col-sm-8">
-                                        @Model.CreatedDate.ToString("dd/MMM/yyyy h:mm tt")
-                                    </dd>
-                                </div>
-                              <div class="row">
-                                    <dt class="col-sm-4">
-                                        @Html.DisplayNameFor(model => model.EndDate)
-                                    </dt>
-                                    <dd class="col-sm-8">
-                                        @Model.CreatedDate.ToString("dd/MMM/yyyy h:mm tt")
-                                    </dd>
-                                </div>
-                                <div class="row">
-                                    <dt class="col-sm-4">
-                                        @Html.DisplayNameFor(model => model.CreatedDate)
-                                    </dt>
-                                    <dd class="col-sm-8">
-                                        @Model.CreatedDate.ToString("dd/MMM/yyyy h:mm tt")
-                                    </dd>
-                                </div>
-                           <div class="row">
-                                    <dt class="col-sm-4">
-                                        @Html.DisplayNameFor(model => model.LastUpdatedDate)
-                                    </dt>
-                                    <dd class="col-sm-8">
-                                        @Model.LastUpdatedDate.ToString("dd/MMM/yyyy h:mm tt")
-                                    </dd>
-                                </div>
-                                    <a asp-action="Create" asp-route-id="@Model?.UniqueId">Edit</a> |
-                                    <a asp-action="Index">Back to List</a>                              
-                            </div>
-                            <div class="col-sm-1"></div>
-                        </div>
+                <div class="card-body">
+                     <div class="info-widget-text row">
+                        <div class="col-sm-6 pull-left"><span>Facebook</span></div>
+                        <div class="col-sm-6 pull-right text-right text-blue f-25">3,500</div>
                     </div>
-                   
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-3 col-lg-3 col-md-3 col-sm-6 m-b-3">
+            <div class="card">
+                <div class="card-body">
+                    <div class="m-b-1"> <i class="icon-twitter f-30 text-blue"></i> <span class="pull-right text-muted">Tweets</span> </div>
+                    <div class="info-widget-text row">
+                        <div class="col-sm-6 pull-left"><span>Twwitter</span></div>
+                        <div class="col-sm-6 pull-right text-right text-blue f-25">2,950</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-3 col-lg-3 col-md-3 col-sm-6 m-b-3">
+            <div class="card">
+                <div class="card-body">
+                    <div class="m-b-1"> <i class="icon-googleplus f-30 text-blue"></i> <span class="pull-right text-muted">Share</span> </div>
+                    <div class="info-widget-text row">
+                        <div class="col-sm-6 pull-left"><span>Google+</span></div>
+                        <div class="col-sm-6 pull-right text-right text-blue f-25">1,750</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-3 col-lg-3 col-md-3 col-sm-6 m-b-3">
+            <div class="card">
+                <div class="card-body">
+                    <div class="m-b-1"> <i class="icon-rss f-30 text-blue"></i> <span class="pull-right text-muted">Posts</span> </div>
+                    <div class="info-widget-text row">
+                        <div class="col-sm-6 pull-left"><span>Blog</span></div>
+                        <div class="col-sm-6 pull-right text-right text-blue f-25">2,250</div>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-
 </div>
+
+<div class="content">
+    <div class="row">
+        <div class="col-lg-3">
+            <div class="tile-progress tile-pink">
+                <div class="tile-header">
+                    <h5>New Orders</h5>
+                    <h3>1250</h3>
+                </div>
+                <div class="tile-progressbar"> <span data-fill="65.5%" style="width: 65.5%;"></span> </div>
+                <div class="tile-footer">
+                    <h4> <span class="pct-counter">65.5</span>% increase </h4>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3">
+            <div class="tile-progress tile-red">
+                <div class="tile-header">
+                    <h5>Monthly Sales</h5>
+                    <h3>850</h3>
+                </div>
+                <div class="tile-progressbar"> <span data-fill="70%" style="width: 70%;"></span> </div>
+                <div class="tile-footer">
+                    <h4> <span class="pct-counter">70</span>% increase </h4>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3">
+            <div class="tile-progress tile-cyan">
+                <div class="tile-header">
+                    <h5>New Users</h5>
+                    <h3>2250</h3>
+                </div>
+                <div class="tile-progressbar"> <span data-fill="50%" style="width: 50%;"></span> </div>
+                <div class="tile-footer">
+                    <h4> <span class="pct-counter">50</span>% increase </h4>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3">
+            <div class="tile-progress tile-aqua">
+                <div class="tile-header">
+                    <h5>Feedbacks</h5>
+                    <h3>530</h3>
+                </div>
+                <div class="tile-progressbar"> <span data-fill="75.5%" style="width: 75.5%;"></span> </div>
+                <div class="tile-footer">
+                    <h4> <span class="pct-counter">75.5</span>% increase </h4>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@* <div class="content">
+    <div class="card">
+        <div class="card-header">
+        </div>
+    </div>
+</div>
+ *@
