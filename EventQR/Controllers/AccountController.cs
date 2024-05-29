@@ -93,13 +93,31 @@ namespace EventQR.Controllers
                     else if (role.Contains("EventOrganizer"))
                         return RedirectToAction("Dashboard", "Home", new { Area = "EventOrganizer" });
 
-                    else if (role.Contains("Scanner"))
-                    {
-                        var ts = await _context.TicketScanners.Where(ts => ts.UserLoginId.ToString() == user.Id).FirstOrDefaultAsync();
-                        var thisEvent = await _context.Events.FindAsync(ts.EventId);
-                        _eventService.SetCurrentEvent(thisEvent);
-                        return RedirectToAction("Dashboard", "Home", new { Area = "Scanner" });
-                    }
+                    //optimize these query so that it hit databaseonce and fetch the details
+                        //var ts = await _context.TicketScanners.Where(ts => ts.UserLoginId.ToString() == user.Id).FirstOrDefaultAsync();
+                        //var thisEvent = await _context.Events.FindAsync(ts.EventId);
+
+                            //_eventService.SetCurrentEvent(thisEvent);
+
+                        else if (role.Contains("Scanner"))
+                        {
+                            var scannerWithEvent = await _context.TicketScanners
+                                .Where(ts => ts.UserLoginId.ToString() == user.Id)
+                                .Join(
+                                    _context.Events,
+                                    ts => ts.EventId,
+                                    e => e.UniqueId,
+                                    (ts, e) => new { TicketScanner = ts, Event = e }
+                                )
+                                .FirstOrDefaultAsync();
+
+                            if (scannerWithEvent != null)
+                            {
+                                _eventService.SetCurrentEvent(scannerWithEvent.Event);
+                                return RedirectToAction("Dashboard", "Home", new { Area = "Scanner" });
+                            }
+                        }
+                    
                 }
                 else { ModelState.AddModelError("", "Invalid Email Id or Password"); }
             }
