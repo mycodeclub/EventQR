@@ -118,13 +118,15 @@ namespace EventQR.Services
         public async Task<Event> GetEventDetails(Guid eventId)
         {
             var _event = await _dbContext.Events.FindAsync(eventId);
-
-            _event.SubEvents = await _dbContext.SubEvents.Where(s => s.EventId == eventId).ToListAsync();
-            _event.Guests = await _dbContext.Guests.Where(g => g.EventId == eventId).ToListAsync();
-            foreach (var se in _event.SubEvents)
+            if (_event.IsSubEvents)
             {
-                se.TotalGuests = _event.Guests
-                    .Where(g => g.AllowedSubEventsIdsCommaList.Contains(se.UniqueId.ToString())).Count();
+                _event.SubEvents = await _dbContext.SubEvents.Where(s => s.EventId == eventId).ToListAsync();
+                _event.Guests = await _dbContext.Guests.Where(g => g.EventId == eventId).ToListAsync();
+                foreach (var se in _event.SubEvents)
+                {
+                    se.TotalGuests = _event.Guests
+                        .Where(g => !string.IsNullOrWhiteSpace(g.AllowedSubEventsIdsCommaList) && g.AllowedSubEventsIdsCommaList.Contains(se.UniqueId.ToString())).Count();
+                }
             }
 
             return _event;

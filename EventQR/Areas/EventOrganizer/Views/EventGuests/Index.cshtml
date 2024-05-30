@@ -15,9 +15,20 @@
     <div class="card">
         <div class="card-header">
             <div class="row">
-                <div class="col-6"><h4>Guest List</h4></div>
-                <div class="col-6">
+                <div class="col-3"><h4>Guest List</h4></div>
+                <div class="col-3"><h4></h4></div>
+                <div class="col-3">
+
+                    <form method="post" asp-controller="EventGuests" asp-action="Import" enctype="multipart/form-data">
+
+                        <input type="file" name="file" />
+                        <button type="submit" class="btn btn-primary">Import Excel</button>
+
+                    </form>
+                </div>
+                <div class="col-3">
                     <a href="/EventOrganizer/EventGuests/Create" class="float-right">
+                       
                         <button type="button" class="btn btn-primary">Add New</button>
                     </a>
                 </div>
@@ -54,7 +65,7 @@
                     }
                 </tbody>
             </table>
-
+            
         </div>
     </div>
 </div>

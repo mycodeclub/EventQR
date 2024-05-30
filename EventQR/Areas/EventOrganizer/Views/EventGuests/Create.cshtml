@@ -44,7 +44,18 @@
                 </div>
 
 
- 
+
+
+
+
+
+
+
+
+
+
+
+
 
                 <div class="row">
                     <div class="col-sm-1"></div>
@@ -84,6 +95,16 @@
         </div>
     </div>
 </div>
+
+
+<form method="post" asp-controller="EventGuests" asp-action="Import" enctype="multipart/form-data">
+
+    <input type="file" name="file" />
+    <button type="submit">Import Excel</button>
+
+</form>
+
+
 
 @section Scripts {
 

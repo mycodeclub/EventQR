@@ -4,6 +4,7 @@ using EventQR.EF;
 using EventQR.Models;
 using EventQR.Services;
 using Microsoft.AspNetCore.Authorization;
+using OfficeOpenXml;
 
 
 namespace EventQR.Areas.EventOrganizer.Controllers
@@ -216,5 +217,43 @@ namespace EventQR.Areas.EventOrganizer.Controllers
 
             return View(_guest);
         }
+
+        public async Task<IActionResult> Import()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<List<EventGuest>> Import(IFormFile file)
+        {
+            var _thisEvent = _eventService.GetCurrentEvent();
+            var list = new List<EventGuest>();
+            using (var stream = new MemoryStream())
+            {
+                await file.CopyToAsync(stream);
+                using (var package = new ExcelPackage(stream))
+                {
+                    ExcelWorksheet worksheet = package.Workbook.Worksheets[0];
+                    var rowcount = worksheet.Dimension.Rows;
+                    for (int row = 2; row <= rowcount; row++)
+                    {
+                        var guest = new EventGuest();
+                        guest.Name = worksheet.Cells[row, 1].Value.ToString().Trim();
+                        guest.Email = worksheet.Cells[row, 2].Value.ToString().Trim();
+                        guest.MobileNo1 = worksheet.Cells[row, 3].Value.ToString().Trim();
+                        guest.MobileNo2 = worksheet.Cells[row, 4].Value.ToString().Trim();
+                        guest.EventId = _thisEvent.UniqueId;
+                        guest.CreatedDate = DateTime.UtcNow;
+                        _context.Guests.Add(guest);
+                    }
+                     await _context.SaveChangesAsync();
+                } 
+            }
+            return list;
+
+
+
+        }
+
     }
 }
