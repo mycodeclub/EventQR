@@ -16,6 +16,7 @@ namespace EventQR.Areas.EventOrganizer.Controllers
     [Area("EventOrganizer")]
     public class ProfileController : Controller
     {
+        private readonly SignInManager<AppUser> _signInManager;
         private readonly AppDbContext _context;
         private readonly UserManager<AppUser> _userManager;
 
@@ -23,13 +24,14 @@ namespace EventQR.Areas.EventOrganizer.Controllers
         private readonly Organizer _org;
         private readonly IWebHostEnvironment _environment;
 
-        public ProfileController(AppDbContext context, IEventOrganizer eventService, IWebHostEnvironment environment, UserManager<AppUser> userManager)
+        public ProfileController(AppDbContext context, IEventOrganizer eventService, SignInManager<AppUser> signInManager, IWebHostEnvironment environment, UserManager<AppUser> userManager)
         {
             _userManager = userManager;
             _context = context;
             _eventService = eventService;
             _org = eventService.GetLoggedInEventOrg();
             _environment = environment;
+            _signInManager = signInManager;
         }
 
         public async Task<IActionResult> Index()
@@ -70,12 +72,61 @@ namespace EventQR.Areas.EventOrganizer.Controllers
             return View();
         }
 
-
+        [HttpGet]
         public IActionResult ChangeLogInId()
         {
 
             return View(_org);
         }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> ChangeLogInId(string existingLoginId, string newLoginId)
+        {
+            // Validate the input
+            if (string.IsNullOrWhiteSpace(existingLoginId) || string.IsNullOrWhiteSpace(newLoginId))
+            {
+                ModelState.AddModelError(string.Empty, "Existing login ID and new login ID cannot be empty.");
+                return View(_org);
+            }
+
+            // Find the user by existing login ID
+            var user = await _userManager.FindByNameAsync(existingLoginId);
+
+            if (user == null)
+            {
+                ModelState.AddModelError(string.Empty, "User with the existing login ID not found.");
+                return View(_org);
+            }
+
+            // Update the username (login ID)
+            user.UserName = newLoginId;
+            user.NormalizedUserName = _userManager.NormalizeName(newLoginId);
+
+            // Save the changes
+            var result = await _userManager.UpdateAsync(user);
+
+            if (result.Succeeded)
+            {
+                // Optionally, sign the user out and sign them back in with the new username
+                await _signInManager.SignOutAsync();
+                await _signInManager.SignInAsync(user, isPersistent: false);
+
+                // Redirect to a confirmation page or back to the profile page
+                return RedirectToAction(nameof(MyProfile));
+            }
+            else
+            {
+                // Add errors to the model state to display in the view
+                foreach (var error in result.Errors)
+                {
+                    ModelState.AddModelError(string.Empty, error.Description);
+                }
+            }
+
+            return View(_org);
+        }
+
 
         // GET: Organizer/Merchants/Edit/5
         public async Task<IActionResult> Edit(Guid? id)
@@ -214,3 +265,7 @@ namespace EventQR.Areas.EventOrganizer.Controllers
         }
     }
 }
+
+
+
+
