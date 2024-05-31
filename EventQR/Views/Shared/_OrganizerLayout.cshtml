@@ -124,6 +124,9 @@
                                 </li>
 
                             }
+
+                            @if (activeTabName.Equals("Reports")) { activeTab = "active"; } else { activeTab = string.Empty; }
+                            <li class="@activeTab"><a href="/EventOrganizer/Report/Index"> <i class="fa fa-angle-right"></i>Reports</a></li>
                         }
                         <hr />
                     }

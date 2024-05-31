@@ -11,6 +11,7 @@ using EventQR.Services;
 using Newtonsoft.Json;
 using Microsoft.AspNetCore.Authorization;
 using EventQR.Models.VM.Reports;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 namespace EventQR.Areas.EventOrganizer.Controllers
 {
@@ -195,6 +196,26 @@ namespace EventQR.Areas.EventOrganizer.Controllers
                 g.CheckInTime = c.CheckIn;
             }
             return View(checkinLogs);
+        }
+
+        /// <summary>
+        /// id = EventId,
+        /// We are getting all the subEvents on the bases of receved event id. and passing dropdown list HTML as partial view.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public async Task<IActionResult> GetSubEventsDDLPartial(Guid id)
+        {
+            try
+            {
+                var subevents = await _context.SubEvents.Where(s => s.EventId.Equals(id)).ToListAsync();
+                return View(subevents);
+            }
+            catch (Exception ex)
+            {
+                var msg = ex.Message;
+            }
+            return View();
         }
 
     }
