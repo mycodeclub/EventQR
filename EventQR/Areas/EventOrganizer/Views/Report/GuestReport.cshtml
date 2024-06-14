@@ -1,0 +1,107 @@
+﻿@{
+    ViewData["Title"] = "GuestReport";
+    Layout = "~/Views/Shared/_OrganizerLayout.cshtml";
+    ViewBag.activeTabName = "Reports";
+}
+@await Html.PartialAsync("_eventPartial")
+
+<link href="~/uitemplate/admintemp/dist/plugins/datatables/css/datatables.bootstrap.min.css" rel="stylesheet" />
+<link href="https://cdn.datatables.net/fixedcolumns/4.0.1/css/fixedColumns.dataTables.min.css" rel="stylesheet" />
+
+<div class="content">
+    <div class="card">
+        <div class="card-body">
+            <div class="row">
+                <div class="col-12">
+                    <h4>Events Report</h4>
+                </div>
+            </div>
+            <br>
+            <div style="overflow-x:auto;">
+                <table class="table" id="tblGuestList">
+                    <thead>
+                        <tr>
+                            <th>Guests</th>
+                            <th>Sub Events (D1 Breakfast)</th>
+                            <th>Sub Events (D1 Lunch)</th>
+                            <th>Sub Events (D1 Dinner)</th>
+                            <th>Sub Events (D2 Breakfast)</th>
+                            <th>Sub Events (D2 Lunch)</th>
+                            <th>Sub Events (D2 Dinner)</th>
+                            <th>Sub Events (D3 Breakfast)</th>
+                            <th>Sub Events (D3 Lunch)</th>
+                            <th>Sub Events (D3 Dinner)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Shyam</td>
+                            <td>NA</td>
+                            <td>NA</td>
+                            <td>NA</td>
+                            <td>NA</td>
+                            <td>NA</td>
+                            <td>NA</td>
+                            <td>NA</td>
+                            <td>NA</td>
+                            <td>NA</td>
+                        </tr>
+                        <tr>
+                            <td>Shyam</td>
+                            <td>NA</td>
+                            <td>NA</td>
+                            <td>NA</td>
+                            <td>NA</td>
+                            <td>NA</td>
+                            <td>NA</td>
+                            <td>NA</td>
+                            <td>NA</td>
+                            <td>NA</td>
+                        </tr>
+                        <tr>
+                            <td>Shyam</td>
+                            <td>NA</td>
+                            <td>NA</td>
+                            <td>NA</td>
+                            <td>NA</td>
+                            <td>NA</td>
+                            <td>NA</td>
+                            <td>NA</td>
+                            <td>NA</td>
+                            <td>NA</td>
+                        </tr>
+                        <tr>
+                            <td>Shyam</td>
+                            <td>NA</td>
+                            <td>NA</td>
+                            <td>NA</td>
+                            <td>NA</td>
+                            <td>NA</td>
+                            <td>NA</td>
+                            <td>NA</td>
+                            <td>NA</td>
+                            <td>NA</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <!-- DataTable -->
+    <script src="~/uitemplate/admintemp/dist/plugins/datatables/jquery.dataTables.min.js"></script>
+    <script src="~/uitemplate/admintemp/dist/plugins/datatables/dataTables.bootstrap.min.js"></script>
+    <script src="https://cdn.datatables.net/fixedcolumns/4.0.1/js/dataTables.fixedColumns.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('#tblGuestList').DataTable({
+                scrollX: true,
+                fixedColumns: {
+                    leftColumns: 1
+                }
+            });
+        });
+    </script>
+}

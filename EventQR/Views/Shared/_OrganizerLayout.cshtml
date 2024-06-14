@@ -125,9 +125,16 @@
 
                             }
 
-                            @if (activeTabName.Equals("Reports")) { activeTab = "active"; } else { activeTab = string.Empty; }
-                            <li class="@activeTab"><a href="/EventOrganizer/Report/Index"> <i class="fa fa-angle-right"></i>Reports</a></li>
-                        }
+                            <li class="treeview @activeTab">
+                                <a href="/EventOrganizer/Report/Index"> <i class="icon-note"></i> <span>Reports</span> </a>
+
+                                <ul class="treeview-menu">
+                                    @if (activeTabName.Equals("Reports")) { activeTab = "active"; } else { activeTab = string.Empty; }
+                                    <li class="@activeTab"><a href="/EventOrganizer/Report/GuestReport"> <i class="fa fa-angle-right"></i>Event Report</a></li>
+
+                                </ul>
+                            </li>
+                             }
                         <hr />
                     }
                     @if (activeTabName.Equals("MyProfile")) { activeTab = "active"; } else { activeTab = string.Empty; }

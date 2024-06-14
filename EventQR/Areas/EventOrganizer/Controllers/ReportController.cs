@@ -31,7 +31,10 @@ namespace EventQR.Areas.EventOrganizer.Controllers
 
             return View(events);
         }
-
+        public async Task<IActionResult> GuestReport()
+        {
+            return View();
+        }
         private IActionResult View(List<Event> events, List<SubEvent> subevent)
         {
             throw new NotImplementedException();

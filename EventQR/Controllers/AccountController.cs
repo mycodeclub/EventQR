@@ -155,6 +155,7 @@ namespace EventQR.Controllers
                 AppUser appUser = new AppUser()
                 {
                     UserName = "admin@bpst.com",
+                    Email= "admin@bpst.com",
                     Password = "Admin@20",
                     ConfirmPassword = "Admin@20",
                     PhoneNumber = "9999999999",
@@ -200,14 +201,14 @@ namespace EventQR.Controllers
 
         private async Task<bool> AutoAdminLogin()
         {
-            var result = await _signInManager.PasswordSignInAsync("ankit2@bpst.com", "ankit2@bpst.com", true, lockoutOnFailure: false);
+            var result = await _signInManager.PasswordSignInAsync("admin@bpst.com", "Admin@20", true, lockoutOnFailure: false);
             return result.Succeeded;
         }
 
 
         private async Task<IdentityResult> RegisterOrg(AppUser appUser)
         {
-            appUser.UserName = appUser.Email;
+        //    appUser.UserName = appUser.Email;
             var result = await _userManager.CreateAsync(appUser, appUser.Password);
             if (result.Succeeded)
             {
