@@ -4,6 +4,18 @@
     Layout = "~/Views/Shared/_OrganizerLayout.cshtml";
     ViewBag.activeTabName = "Events";
 }
+<style>
+    #ticketImage {
+        display: none;  
+        margin-top: 20px;
+        width: 200px;  
+        height: 130px; 
+        border: 1px solid #ddd;  
+        padding: 5px;  
+        border-radius: 4px;  
+    }
+
+</style>
 <div class="content">
     <div class="card">
         <div class="card-header">
@@ -34,7 +46,7 @@
                         <span asp-validation-for="EndDate" class="text-danger"></span>
                     </div>
                 </div>
-
+             
                 <div class="row">
                     <div class="col-md-6  form-group">
                         <label asp-for="Venue" class="control-label"> Venue (Address) </label>
@@ -48,17 +60,21 @@
                         <span asp-validation-for="Description" class="text-danger"></span>
                     </div>
                 </div>
-                <div class="col-md-4 form-control">
-                    <label asp-for="TicketViewName" class="control-label">TicketViewName</label>
-
-                    <select asp-for="TicketViewName" class="form-control">
-                        <option>--Select option--</option>
-                        @foreach (var ticket in EventQR.Common.Static.Variables.TicketViewNamesList)
-                        {
-                            <option value="@ticket">@ticket</option>
-                        }
-                    </select>
-
+                <div class="row">
+                    <div class="col-md-4 form-group">
+                        <label asp-for="TicketViewName" class="control-label">TicketViewName</label>
+                        <select asp-for="TicketViewName" class="form-control" id="ticketViewSelect">
+                            <option>--Select option--</option>
+                            @foreach (var ticket in EventQR.Common.Static.Variables.TicketViewNamesList)
+                            {
+                                <option value="@ticket">@ticket</option>
+                            }
+                        </select>
+                    </div>
+                    <div class="col-md-4 form-group"></div>
+                    <div class="col-md-4 form-group">
+                        <img id="ticketImage" src="" alt="Ticket Image" class="img-responsive img-thumbnail" />
+                    </div>
                 </div>
 
                 <div class="row text-center">
@@ -96,3 +112,31 @@
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
 }
+<script>
+    $(document).ready(function () {
+        $('#ticketViewSelect').change(function () {
+            var selectedValue = $(this).val();
+
+            if (selectedValue !== "--Select option--") {
+                $.ajax({
+                    type: "POST",
+                    url: '@Url.Action("TicketShow", "Report", new { area = "EventOrganizer" })',
+                    data: { ticketName: selectedValue },
+                    success: function (response) {
+                        if (response.success) {
+                            $('#ticketImage').attr('src', response.imageUrl);
+                            $('#ticketImage').show();
+                        } else {
+                            console.error(response.message);
+                        }
+                    },
+                    error: function (xhr, status, error) {
+                        console.error(error);
+                    }
+                });
+            } else {
+                $('#ticketImage').hide();
+            }
+        });
+    });
+</script>
