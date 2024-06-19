@@ -37,25 +37,12 @@ namespace EventQR.Areas.EventOrganizer.Controllers
 
         public async Task<IActionResult> EventReport(Guid eventId)
         {
-        {
             if (eventId.Equals(Guid.Empty))
             {
                 var thisEvent = _eventService.GetCurrentEvent();
                 eventId = thisEvent.UniqueId;
-              .Select(g=> g.AllowedSubEventsIdsCommaList).ToListAsync();
-
-            var SubEvents = await _context.SubEvents.Where(ts => ts.EventId == currentEvent.UniqueId).ToListAsync();
-
-            var viewmodel = new ReportView 
-            {
-                Guests=totalGuests, SubEvents = SubEvents ,AllowedSubEventsIdsCommaList=totalAllowedGuestsIds.ToString(),
-            };
-
-
-            return View(viewmodel);
-
             }
-            //-----------------------------------------------------------------------------------
+            //            var SubEvents = await _context.SubEvents.Where(ts => ts.EventId == eventId).ToListAsync();
 
             EventReportVM eventReportVM = new EventReportVM()
             {
@@ -65,7 +52,6 @@ namespace EventQR.Areas.EventOrganizer.Controllers
 
             var dbSubEvent = await _context.SubEvents.Where(s => s.EventId == eventId).ToListAsync();
             foreach (var s in dbSubEvent)
-            {
                 eventReportVM.SubEvents.Add(new SubEventVM()
                 {
                     SubEventName = s.SubEventName,
@@ -73,8 +59,6 @@ namespace EventQR.Areas.EventOrganizer.Controllers
                     Start = s.StartDateTime.Value,
                     End = s.EndDateTime.Value,
                 });
-            }
-
 
             var dbGuests = await _context.Guests.Where(ts => ts.EventId == eventId).ToListAsync();
 
@@ -90,7 +74,6 @@ namespace EventQR.Areas.EventOrganizer.Controllers
                 {
                     var sbEvents = dbSubEvent.Where(e => g.AllowedSubEventsIdsCommaList.Split(',').Select(Guid.Parse).Contains(e.UniqueId)).ToList();
                     foreach (var se in sbEvents)
-                    {
                         vmGuest.MySubEvents.Add(new SubEventVM()
                         {
                             SubEventName = se.SubEventName,
@@ -98,15 +81,10 @@ namespace EventQR.Areas.EventOrganizer.Controllers
                             End = se.EndDateTime.Value,
                             Start = se.StartDateTime.Value,
                         });
-                    }
                 }
                 eventReportVM.Guests.Add(vmGuest);
-
-
             }
             var sz = JsonConvert.SerializeObject(eventReportVM);
-
-            //-----------------------------------------------------------------------------------
             return View(eventReportVM);
         }
 
