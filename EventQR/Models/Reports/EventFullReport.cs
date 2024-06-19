@@ -23,4 +23,9 @@
         public string Name { get; set; }
         public List<Guest> Guests { get; set; }
     }
+    public class GuestReprot
+    {
+        public List<SubEvent> GetSubEvents { get; set; }
+        public List<Guest> Guests { get; set; }
+    }
 }

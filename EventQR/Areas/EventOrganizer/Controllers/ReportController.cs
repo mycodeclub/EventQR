@@ -1,9 +1,12 @@
 ﻿using EventQR.EF;
 using EventQR.Models;
+using EventQR.Models.Reports;
 using EventQR.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Linq;
+using System.Xml;
 
 namespace EventQR.Areas.EventOrganizer.Controllers
 {
@@ -30,9 +33,25 @@ namespace EventQR.Areas.EventOrganizer.Controllers
 
             return View(events);
         }
+     
         public async Task<IActionResult> GuestReport()
         {
-            return View();
+            var currentEvent = _eventService.GetCurrentEvent();
+            var totalGuests = await _context.Guests.Where(ts => ts.EventId == currentEvent.UniqueId).ToListAsync();
+
+            var totalAllowedGuestsIds = await _context.Guests.Where(ts => ts.EventId == currentEvent.UniqueId)
+              .Select(g=> g.AllowedSubEventsIdsCommaList).ToListAsync();
+
+            var SubEvents = await _context.SubEvents.Where(ts => ts.EventId == currentEvent.UniqueId).ToListAsync();
+
+            var viewmodel = new ReportView 
+            {
+                Guests=totalGuests, SubEvents = SubEvents ,AllowedSubEventsIdsCommaList=totalAllowedGuestsIds.ToString(),
+            };
+
+
+            return View(viewmodel);
+
         }
         [HttpPost]
         public IActionResult TicketShow(string ticketName)
@@ -66,19 +85,10 @@ namespace EventQR.Areas.EventOrganizer.Controllers
 
             return Json(new { success = true, message = "Ticket processed successfully!", ticketName, imageUrl });
         }
-        private readonly Dictionary<string, string> _ticketImages = new()
-        {
-            { "ShowMyTicket", "~/eventqrimages/tickets/t1.png" },
-            { "ShowMyTicket1", "~/eventqrimages/tickets/t2.png" },
-            { "ShowMyTicket2", "~/eventqrimages/tickets/t3.png" },
-            { "ShowMyTicket3", "~/eventqrimages/tickets/t4.png" },
-            { "ShowMyTicket4", "~/eventqrimages/tickets/t.png" }
-        };
-
-
-        private IActionResult View(List<Event> events, List<SubEvent> subevent)
-        {
-            throw new NotImplementedException();
-        }
+       
+        //private IActionResult View(List<Event> events, List<SubEvent> subevent)
+        //{
+        //    throw new NotImplementedException();
+        //}
     }
 }
