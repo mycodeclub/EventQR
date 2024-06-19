@@ -2,11 +2,12 @@
 using EventQR.Models;
 using EventQR.Models.Reports;
 using EventQR.Services;
+using EventQR.ViewModels.Reports;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using System.Linq;
-using System.Xml;
+using Newtonsoft.Json;
+using System.Data.Common;
 
 namespace EventQR.Areas.EventOrganizer.Controllers
 {
@@ -26,20 +27,21 @@ namespace EventQR.Areas.EventOrganizer.Controllers
             _org = eventService.GetLoggedInEventOrg();
 
         }
-        public  async Task< IActionResult> Index()
+        public async Task<IActionResult> Index()
         {
             var events = await _context.Events.Where(e => e.EventOrganizerId == _org.UniqueId).ToListAsync();
 
 
             return View(events);
         }
-     
-        public async Task<IActionResult> GuestReport()
-        {
-            var currentEvent = _eventService.GetCurrentEvent();
-            var totalGuests = await _context.Guests.Where(ts => ts.EventId == currentEvent.UniqueId).ToListAsync();
 
-            var totalAllowedGuestsIds = await _context.Guests.Where(ts => ts.EventId == currentEvent.UniqueId)
+        public async Task<IActionResult> EventReport(Guid eventId)
+        {
+        {
+            if (eventId.Equals(Guid.Empty))
+            {
+                var thisEvent = _eventService.GetCurrentEvent();
+                eventId = thisEvent.UniqueId;
               .Select(g=> g.AllowedSubEventsIdsCommaList).ToListAsync();
 
             var SubEvents = await _context.SubEvents.Where(ts => ts.EventId == currentEvent.UniqueId).ToListAsync();
@@ -52,7 +54,63 @@ namespace EventQR.Areas.EventOrganizer.Controllers
 
             return View(viewmodel);
 
+            }
+            //-----------------------------------------------------------------------------------
+
+            EventReportVM eventReportVM = new EventReportVM()
+            {
+                SubEvents = new List<SubEventVM>(),
+                Guests = new List<GuestVM>()
+            };
+
+            var dbSubEvent = await _context.SubEvents.Where(s => s.EventId == eventId).ToListAsync();
+            foreach (var s in dbSubEvent)
+            {
+                eventReportVM.SubEvents.Add(new SubEventVM()
+                {
+                    SubEventName = s.SubEventName,
+                    SubEventId = s.UniqueId,
+                    Start = s.StartDateTime.Value,
+                    End = s.EndDateTime.Value,
+                });
+            }
+
+
+            var dbGuests = await _context.Guests.Where(ts => ts.EventId == eventId).ToListAsync();
+
+            foreach (var g in dbGuests)
+            {
+                var vmGuest = new GuestVM()
+                {
+                    GuestId = g.UniqueId,
+                    Name = g.Name,
+                    MySubEvents = new List<SubEventVM>() { }
+                };
+                if (!string.IsNullOrWhiteSpace(g.AllowedSubEventsIdsCommaList))
+                {
+                    var sbEvents = dbSubEvent.Where(e => g.AllowedSubEventsIdsCommaList.Split(',').Select(Guid.Parse).Contains(e.UniqueId)).ToList();
+                    foreach (var se in sbEvents)
+                    {
+                        vmGuest.MySubEvents.Add(new SubEventVM()
+                        {
+                            SubEventName = se.SubEventName,
+                            SubEventId = se.UniqueId,
+                            End = se.EndDateTime.Value,
+                            Start = se.StartDateTime.Value,
+                        });
+                    }
+                }
+                eventReportVM.Guests.Add(vmGuest);
+
+
+            }
+            var sz = JsonConvert.SerializeObject(eventReportVM);
+
+            //-----------------------------------------------------------------------------------
+            return View(eventReportVM);
         }
+
+
         [HttpPost]
         public IActionResult TicketShow(string ticketName)
         {
@@ -65,11 +123,11 @@ namespace EventQR.Areas.EventOrganizer.Controllers
             else if (ticketName == "ShowMyTicket1")
             {
                 imageUrl = Url.Content("~/eventqrimages/tickets/t2.png");
-            }  
+            }
             else if (ticketName == "ShowMyTicket2")
             {
                 imageUrl = Url.Content("~/eventqrimages/tickets/t3.png");
-            } 
+            }
             else if (ticketName == "ShowMyTicket3")
             {
                 imageUrl = Url.Content("~/eventqrimages/tickets/t4.png");
@@ -80,13 +138,11 @@ namespace EventQR.Areas.EventOrganizer.Controllers
             }
             else
             {
-                imageUrl = Url.Content(""); 
+                imageUrl = Url.Content("");
             }
 
             return Json(new { success = true, message = "Ticket processed successfully!", ticketName, imageUrl });
         }
-       
-        //private IActionResult View(List<Event> events, List<SubEvent> subevent)
         //{
         //    throw new NotImplementedException();
         //}
