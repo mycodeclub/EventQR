@@ -33,55 +33,128 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td>Shyam</td>
-                            <td>NA</td>
-                            <td>NA</td>
-                            <td>NA</td>
-                            <td>NA</td>
-                            <td>NA</td>
-                            <td>NA</td>
-                            <td>NA</td>
-                            <td>NA</td>
-                            <td>NA</td>
-                        </tr>
-                        <tr>
-                            <td>Shyam</td>
-                            <td>NA</td>
-                            <td>NA</td>
-                            <td>NA</td>
-                            <td>NA</td>
-                            <td>NA</td>
-                            <td>NA</td>
-                            <td>NA</td>
-                            <td>NA</td>
-                            <td>NA</td>
-                        </tr>
-                        <tr>
-                            <td>Shyam</td>
-                            <td>NA</td>
-                            <td>NA</td>
-                            <td>NA</td>
-                            <td>NA</td>
-                            <td>NA</td>
-                            <td>NA</td>
-                            <td>NA</td>
-                            <td>NA</td>
-                            <td>NA</td>
-                        </tr>
-                        <tr>
-                            <td>Shyam</td>
-                            <td>NA</td>
-                            <td>NA</td>
-                            <td>NA</td>
-                            <td>NA</td>
-                            <td>NA</td>
-                            <td>NA</td>
-                            <td>NA</td>
-                            <td>NA</td>
-                            <td>NA</td>
-                        </tr>
+                        @if (Model.Guests != null)
+                        {
+                            foreach (var guest in Model.Guests)
+                            {
+                                var allowedSubEventIds = guest.AllowedSubEventsIdsCommaList.Split(',').ToList();
+
+                                bool isDay2BreakfastAllowed = false;
+                                bool isDay2LunchAllowed = false;
+                                bool isDay2DinnerAllowed = false;
+                                bool isDay1BreakfastAllowed = false;
+                                bool isDay1LunchAllowed = false;
+                                bool isDay1DinnerAllowed = false;
+                                foreach (var allowedGuestId in allowedSubEventIds)
+                                {
+                                    foreach (var subevent in Model.SubEvents)
+                                    {
+                                        if (allowedGuestId == subevent.UniqueId.ToString())
+                                        {
+                                            if (subevent.SubEventName == "Day 2 Breakfast")
+                                            {
+                                                isDay2BreakfastAllowed = true;
+                                            }
+                                            else if (subevent.SubEventName == "Day 2 Lunch")
+                                            {
+                                                isDay2LunchAllowed = true;
+                                            }
+                                            else if (subevent.SubEventName == "Day 2 Dinner")
+                                            {
+                                                isDay2DinnerAllowed = true;
+                                            }
+                                            if (subevent.SubEventName == "Day 1 Breakfast")
+                                            {
+                                                isDay2BreakfastAllowed = true;
+                                            }
+                                            else if (subevent.SubEventName == "Day 1 Lunch")
+                                            {
+                                                isDay2LunchAllowed = true;
+                                            }
+                                            else if (subevent.SubEventName == "Day 1 Dinner")
+                                            {
+                                                isDay2DinnerAllowed = true;
+                                            }
+                                        }
+                                        if (isDay2BreakfastAllowed && isDay2LunchAllowed && isDay2DinnerAllowed)
+                                        {
+                                            break;
+                                        }
+                                    }
+                                    if (isDay2BreakfastAllowed && isDay2LunchAllowed && isDay2DinnerAllowed)
+                                    {
+                                        break;
+                                    }
+                                }
+
+                                <tr>
+                                    <td>@guest.Name</td>
+                                    <td>
+                                        @if (isDay2BreakfastAllowed)
+                                        {
+                                            <b>yes</b>
+                                        }
+                                        else
+                                        {
+                                            <b>NA</b>
+                                        }
+                                    </td>
+                                    <td>
+                                        @if (isDay2LunchAllowed)
+                                        {
+                                            <b>yes</b>
+                                        }
+                                        else
+                                        {
+                                            <b>NA</b>
+                                        }
+                                    </td>
+                                    <td>
+                                        @if (isDay2DinnerAllowed)
+                                        {
+                                            <b>yes</b>
+                                        }
+                                        else
+                                        {
+                                            <b>NA</b>
+                                        }
+                                    </td>
+                                    <td>
+                                        @if (isDay1BreakfastAllowed)
+                                        {
+                                            <b>yes</b>
+                                        }
+                                        else
+                                        {
+                                            <b>NA</b>
+                                        }
+                                    </td>
+                                    <td>
+                                        @if (isDay1LunchAllowed)
+                                        {
+                                            <b>yes</b>
+                                        }
+                                        else
+                                        {
+                                            <b>NA</b>
+                                        }
+                                    </td>
+                                    <td>
+                                        @if (isDay1DinnerAllowed)
+                                        {
+                                            <b>yes</b>
+                                        }
+                                        else
+                                        {
+                                            <b>NA</b>
+                                        }
+                                    </td>
+                                </tr>
+                            }
+                        }
                     </tbody>
+
+
                 </table>
             </div>
         </div>
