@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+﻿using EventQR.Models;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace EventQR.ViewModels.Reports
 {
@@ -7,8 +8,11 @@ namespace EventQR.ViewModels.Reports
          
         public Guid GuestId { get; set; }
         public string Name { get; set; }
+        public string allowedSubEventsIdsCommaList { get; set; }
 
         public List<SubEventVM> MySubEvents { get; set; }
+        public List<GuestCheckIn> dbCheckIn { get; set; }
+
 
     }
 }

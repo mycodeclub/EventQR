@@ -51,6 +51,7 @@ namespace EventQR.Areas.EventOrganizer.Controllers
             };
 
             var dbSubEvent = await _context.SubEvents.Where(s => s.EventId == eventId).ToListAsync();
+            var dbCheckIn = await _context.CheckIns.Where(s => s.EventId == eventId).ToListAsync();
             foreach (var s in dbSubEvent)
                 eventReportVM.SubEvents.Add(new SubEventVM()
                 {
@@ -68,11 +69,14 @@ namespace EventQR.Areas.EventOrganizer.Controllers
                 {
                     GuestId = g.UniqueId,
                     Name = g.Name,
-                    MySubEvents = new List<SubEventVM>() { }
+                    allowedSubEventsIdsCommaList=g.AllowedSubEventsIdsCommaList,
+                    MySubEvents = new List<SubEventVM>() { }  ,
+                     dbCheckIn = dbCheckIn.Where(ts => ts.GuestId == g.UniqueId).ToList()
                 };
                 if (!string.IsNullOrWhiteSpace(g.AllowedSubEventsIdsCommaList))
                 {
                     var sbEvents = dbSubEvent.Where(e => g.AllowedSubEventsIdsCommaList.Split(',').Select(Guid.Parse).Contains(e.UniqueId)).ToList();
+     
                     foreach (var se in sbEvents)
                         vmGuest.MySubEvents.Add(new SubEventVM()
                         {
@@ -80,9 +84,13 @@ namespace EventQR.Areas.EventOrganizer.Controllers
                             SubEventId = se.UniqueId,
                             End = se.EndDateTime.Value,
                             Start = se.StartDateTime.Value,
+                            
                         });
                 }
                 eventReportVM.Guests.Add(vmGuest);
+                
+
+
             }
             var sz = JsonConvert.SerializeObject(eventReportVM);
             return View(eventReportVM);

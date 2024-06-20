@@ -1,12 +1,45 @@
 ﻿@model EventQR.ViewModels.Reports.EventReportVM
+
 @{
     ViewData["Title"] = "EventReport";
     Layout = "~/Views/Shared/_OrganizerLayout.cshtml";
     ViewBag.activeTabName = "Reports";
 }
+
 @await Html.PartialAsync("_eventPartial")
+
 <link href="~/uitemplate/admintemp/dist/plugins/datatables/css/datatables.bootstrap.min.css" rel="stylesheet" />
 <link href="https://cdn.datatables.net/fixedcolumns/4.0.1/css/fixedColumns.dataTables.min.css" rel="stylesheet" />
+
+<style>
+    table {
+        border: none; /* Remove table border */
+    }
+
+    th, td {
+        padding: 8px; /* Adjust padding as needed */
+        border: 1px solid #ddd; /* Add thin border to cells */
+    }
+
+    tr:nth-child(odd) {
+        background-color: #f9fafc; /* Light background for odd rows */
+    }
+
+    .date-time {
+        font-size: 0.7em;
+        color: gray;
+    }
+
+    tr.checked-in {
+        background-color: #dff0d8; /* Greenish background for checked-in rows */
+    }
+
+    .date-time {
+        ...
+    }
+
+</style>
+
 <div class="content">
     <div class="card">
         <div class="card-body">
@@ -15,15 +48,15 @@
                     <h4>Events Report</h4>
                 </div>
             </div>
-            <br>
-            <div style="overflow-x:auto;">
+            <br />
+            <div style="overflow-x: auto;">
                 <table class="table" id="tblGuestList">
                     <thead>
                         <tr>
-                            <th>Guest Name </th>
+                            <th>Guest Name</th>
                             @foreach (var e in Model.SubEvents)
                             {
-                                <th>@e.SubEventName </th>
+                                <th>@e.SubEventName</th>
                             }
                         </tr>
                     </thead>
@@ -31,23 +64,36 @@
                         @foreach (var g in Model.Guests)
                         {
                             <tr>
-                                <td> @g.Name</td>
+                                <td>@g.Name</td>
                                 @foreach (var se in Model.SubEvents)
                                 {
-                                    var mySe = g.MySubEvents.Where(mse => mse.SubEventId == se.SubEventId).FirstOrDefault();
+                                    var mySe = g.MySubEvents.FirstOrDefault(mse => mse.SubEventId == se.SubEventId);
                                     if (mySe != null)
                                     {
-                                        <td>Invited</td>
+                                        var checkInGuest = g.dbCheckIn
+                                        .Where(s => s.GuestId == g.GuestId && s.SubEventId == mySe.SubEventId)
+                                        .Select(s => s.CheckIn)
+                                        .SingleOrDefault();
+
+                                        <td>
+                                            <p>Invited</p>
+                                            @if (checkInGuest != null)
+                                            {
+                                                <span class="date-time">@checkInGuest.ToString("dd/MM/yyyy HH:mm")</span>
+                                            }
+                                            else
+                                            {
+                                                <p>Guest Check-In Pending</p>
+                                            }
+                                        </td>
                                     }
                                     else
                                     {
-                                        <td> Not Invited </td>
+                                        <td>Not Invited</td>
                                     }
                                 }
                             </tr>
                         }
-                        </tr>
-
                     </tbody>
                 </table>
             </div>
@@ -55,12 +101,11 @@
     </div>
 </div>
 
-
 @section Scripts {
-    <!-- DataTable -->
     <script src="~/uitemplate/admintemp/dist/plugins/datatables/jquery.dataTables.min.js"></script>
     <script src="~/uitemplate/admintemp/dist/plugins/datatables/dataTables.bootstrap.min.js"></script>
     <script src="https://cdn.datatables.net/fixedcolumns/4.0.1/js/dataTables.fixedColumns.min.js"></script>
+
     <script>
         $(document).ready(function () {
             $('#tblGuestList').DataTable({
@@ -71,4 +116,4 @@
             });
         });
     </script>
-} 
+}
