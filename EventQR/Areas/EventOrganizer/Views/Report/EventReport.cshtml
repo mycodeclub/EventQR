@@ -10,7 +10,7 @@
 
 <link href="~/uitemplate/admintemp/dist/plugins/datatables/css/datatables.bootstrap.min.css" rel="stylesheet" />
 <link href="https://cdn.datatables.net/fixedcolumns/4.0.1/css/fixedColumns.dataTables.min.css" rel="stylesheet" />
-
+<div id="body">
 <style>
     table {
         border: none; /* Remove table border */
@@ -35,7 +35,7 @@
     }
 
     .date-time {
-        ...
+        
     }
 
 </style>
@@ -44,19 +44,26 @@
     <div class="card">
         <div class="card-body">
             <div class="row">
-                <div class="col-12">
-                    <h4>Events Report</h4>
-                </div>
+                <div class="col-sm-4">
+                    <h4 class="a">Events Report</h4>
+                            </div>
+                            <div class="col-sm-6"></div>
+               <div class="col-sm-2">
+                        <button class="btn btn-primary" onclick="demo()">Download Pdf</button>
+
+                    </div>
             </div>
             <br />
-            <div style="overflow-x: auto;">
+            <div >
                 <table class="table" id="tblGuestList">
                     <thead>
                         <tr>
-                            <th>Guest Name</th>
+                            <th style="width:100px;">Guest Name</th>
+                           
                             @foreach (var e in Model.SubEvents)
                             {
-                                <th>@e.SubEventName</th>
+                                
+                                <th style="width:150px;">@e.SubEventName</th>
                             }
                         </tr>
                     </thead>
@@ -76,14 +83,21 @@
                                         .SingleOrDefault();
 
                                         <td>
-                                            <p>Invited</p>
-                                            @if (checkInGuest != null)
+                                            
+                                            @if (checkInGuest != null && checkInGuest != DateTime.MinValue)
                                             {
-                                                <span class="date-time">@checkInGuest.ToString("dd/MM/yyyy HH:mm")</span>
+
+                                                <b>CheckIn/</b>
+                                                <span class="date-time"  style="color:green;display:none;">
+                                                    @checkInGuest.ToString("MM/dd/yyyy")</span>
+                                                <span style="color:green;">@checkInGuest.ToString("hh:mmtt")</span>
+
                                             }
+                                            
                                             else
                                             {
-                                                <p>Guest Check-In Pending</p>
+                                                <b>Invited/</b>
+                                                <i style="color:red;">No CheckIn</i>
                                             }
                                         </td>
                                     }
@@ -100,7 +114,7 @@
         </div>
     </div>
 </div>
-
+</div>
 @section Scripts {
     <script src="~/uitemplate/admintemp/dist/plugins/datatables/jquery.dataTables.min.js"></script>
     <script src="~/uitemplate/admintemp/dist/plugins/datatables/dataTables.bootstrap.min.js"></script>
@@ -115,5 +129,12 @@
                 }
             });
         });
+    </script>
+    <script>
+        var demo = () => {
+            var x = document.getElementById("body").innerHTML
+            document.body.innerHTML = x          
+            window.print()
+        }
     </script>
 }
