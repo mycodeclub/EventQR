@@ -30,73 +30,18 @@ namespace EventQR.Areas.EventOrganizer.Controllers
         public async Task<IActionResult> Index()
         {
             var events = await _context.Events.Where(e => e.EventOrganizerId == _org.UniqueId).ToListAsync();
-
-
             return View(events);
         }
-
-        public async Task<IActionResult> EventReport(Guid eventId)
+        public IActionResult EventReport(Guid eventId)
         {
-            if (eventId.Equals(Guid.Empty))
-            {
-                var thisEvent = _eventService.GetCurrentEvent();
-                eventId = thisEvent.UniqueId;
-            }
-            //            var SubEvents = await _context.SubEvents.Where(ts => ts.EventId == eventId).ToListAsync();
-
-            EventReportVM eventReportVM = new EventReportVM()
-            {
-                SubEvents = new List<SubEventVM>(),
-                Guests = new List<GuestVM>()
-            };
-
-            var dbSubEvent = await _context.SubEvents.Where(s => s.EventId == eventId).ToListAsync();
-            var dbCheckIn = await _context.CheckIns.Where(s => s.EventId == eventId).ToListAsync();
-            foreach (var s in dbSubEvent)
-                eventReportVM.SubEvents.Add(new SubEventVM()
-                {
-                    SubEventName = s.SubEventName,
-                    SubEventId = s.UniqueId,
-                    Start = s.StartDateTime.Value,
-                    End = s.EndDateTime.Value,
-                });
-
-            var dbGuests = await _context.Guests.Where(ts => ts.EventId == eventId).ToListAsync();
-
-            foreach (var g in dbGuests)
-            {
-                var vmGuest = new GuestVM()
-                {
-                    GuestId = g.UniqueId,
-                    Name = g.Name,
-                    allowedSubEventsIdsCommaList=g.AllowedSubEventsIdsCommaList,
-                    MySubEvents = new List<SubEventVM>() { }  ,
-                     dbCheckIn = dbCheckIn.Where(ts => ts.GuestId == g.UniqueId).ToList()
-                };
-                if (!string.IsNullOrWhiteSpace(g.AllowedSubEventsIdsCommaList))
-                {
-                    var sbEvents = dbSubEvent.Where(e => g.AllowedSubEventsIdsCommaList.Split(',').Select(Guid.Parse).Contains(e.UniqueId)).ToList();
-     
-                    foreach (var se in sbEvents)
-                        vmGuest.MySubEvents.Add(new SubEventVM()
-                        {
-                            SubEventName = se.SubEventName,
-                            SubEventId = se.UniqueId,
-                            End = se.EndDateTime.Value,
-                            Start = se.StartDateTime.Value,
-                            
-                        });
-                }
-                eventReportVM.Guests.Add(vmGuest);
-                
-
-
-            }
-            var sz = JsonConvert.SerializeObject(eventReportVM);
-            return View(eventReportVM);
+            var report = GetReportData(eventId);
+            return View(report);
         }
-
-
+        public IActionResult EventReportHtml(Guid eventId)
+        {
+            var report = GetReportData(eventId);
+            return View(report);
+        }
         [HttpPost]
         public IActionResult TicketShow(string ticketName)
         {
@@ -128,9 +73,61 @@ namespace EventQR.Areas.EventOrganizer.Controllers
             }
 
             return Json(new { success = true, message = "Ticket processed successfully!", ticketName, imageUrl });
-        }
-        //{
-        //    throw new NotImplementedException();
-        //}
+        } 
+        private async Task<EventReportVM> GetReportData(Guid eventId)
+        {
+
+            if (eventId.Equals(Guid.Empty))
+            {
+                var thisEvent = _eventService.GetCurrentEvent();
+                eventId = thisEvent.UniqueId;
+            }
+            EventReportVM eventReportVM = new EventReportVM()
+            {
+                SubEvents = new List<SubEventVM>(),
+                Guests = new List<GuestVM>()
+            };
+
+            var dbSubEvent = await _context.SubEvents.Where(s => s.EventId == eventId).ToListAsync();
+            var dbCheckIn = await _context.CheckIns.Where(s => s.EventId == eventId).ToListAsync();
+            foreach (var s in dbSubEvent)
+                eventReportVM.SubEvents.Add(new SubEventVM()
+                {
+                    SubEventName = s.SubEventName,
+                    SubEventId = s.UniqueId,
+                    Start = s.StartDateTime.Value,
+                    End = s.EndDateTime.Value,
+                });
+
+            var dbGuests = await _context.Guests.Where(ts => ts.EventId == eventId).ToListAsync();
+
+            foreach (var g in dbGuests)
+            {
+                var vmGuest = new GuestVM()
+                {
+                    GuestId = g.UniqueId,
+                    Name = g.Name,
+                    allowedSubEventsIdsCommaList = g.AllowedSubEventsIdsCommaList,
+                    MySubEvents = new List<SubEventVM>() { },
+                    dbCheckIn = dbCheckIn.Where(ts => ts.GuestId == g.UniqueId).ToList()
+                };
+                if (!string.IsNullOrWhiteSpace(g.AllowedSubEventsIdsCommaList))
+                {
+                    var sbEvents = dbSubEvent.Where(e => g.AllowedSubEventsIdsCommaList.Split(',').Select(Guid.Parse).Contains(e.UniqueId)).ToList();
+
+                    foreach (var se in sbEvents)
+                        vmGuest.MySubEvents.Add(new SubEventVM()
+                        {
+                            SubEventName = se.SubEventName,
+                            SubEventId = se.UniqueId,
+                            End = se.EndDateTime.Value,
+                            Start = se.StartDateTime.Value,
+
+                        });
+                }
+                eventReportVM.Guests.Add(vmGuest);
+            }
+            return eventReportVM;
+        } 
     }
 }
