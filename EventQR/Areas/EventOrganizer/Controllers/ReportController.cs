@@ -32,48 +32,17 @@ namespace EventQR.Areas.EventOrganizer.Controllers
             var events = await _context.Events.Where(e => e.EventOrganizerId == _org.UniqueId).ToListAsync();
             return View(events);
         }
-        public IActionResult EventReport(Guid eventId)
+        public async Task<IActionResult> EventReport(Guid eventId)
         {
-            var report = GetReportData(eventId);
+            var report = await GetReportData(eventId);
             return View(report);
         }
-        public IActionResult EventReportHtml(Guid eventId)
+        public async Task<IActionResult> EventReportHtml(Guid eventId)
         {
-            var report = GetReportData(eventId);
+            var report = await GetReportData(eventId);
             return View(report);
         }
-        [HttpPost]
-        public IActionResult TicketShow(string ticketName)
-        {
-            string imageUrl = string.Empty;
 
-            if (ticketName == "ShowMyTicket")
-            {
-                imageUrl = Url.Content("~/eventqrimages/tickets/t1.png");
-            }
-            else if (ticketName == "ShowMyTicket1")
-            {
-                imageUrl = Url.Content("~/eventqrimages/tickets/t2.png");
-            }
-            else if (ticketName == "ShowMyTicket2")
-            {
-                imageUrl = Url.Content("~/eventqrimages/tickets/t3.png");
-            }
-            else if (ticketName == "ShowMyTicket3")
-            {
-                imageUrl = Url.Content("~/eventqrimages/tickets/t4.png");
-            }
-            else if (ticketName == "ShowMyTicket4")
-            {
-                imageUrl = Url.Content("~/eventqrimages/tickets/t.png");
-            }
-            else
-            {
-                imageUrl = Url.Content("");
-            }
-
-            return Json(new { success = true, message = "Ticket processed successfully!", ticketName, imageUrl });
-        } 
         private async Task<EventReportVM> GetReportData(Guid eventId)
         {
 
@@ -114,7 +83,6 @@ namespace EventQR.Areas.EventOrganizer.Controllers
                 if (!string.IsNullOrWhiteSpace(g.AllowedSubEventsIdsCommaList))
                 {
                     var sbEvents = dbSubEvent.Where(e => g.AllowedSubEventsIdsCommaList.Split(',').Select(Guid.Parse).Contains(e.UniqueId)).ToList();
-
                     foreach (var se in sbEvents)
                         vmGuest.MySubEvents.Add(new SubEventVM()
                         {
@@ -122,12 +90,44 @@ namespace EventQR.Areas.EventOrganizer.Controllers
                             SubEventId = se.UniqueId,
                             End = se.EndDateTime.Value,
                             Start = se.StartDateTime.Value,
-
                         });
                 }
                 eventReportVM.Guests.Add(vmGuest);
             }
             return eventReportVM;
-        } 
+        }
+
+        [HttpPost]
+        public IActionResult TicketShow(string ticketName)
+        {
+            string imageUrl = string.Empty;
+
+            if (ticketName == "ShowMyTicket")
+            {
+                imageUrl = Url.Content("~/eventqrimages/tickets/t1.png");
+            }
+            else if (ticketName == "ShowMyTicket1")
+            {
+                imageUrl = Url.Content("~/eventqrimages/tickets/t2.png");
+            }
+            else if (ticketName == "ShowMyTicket2")
+            {
+                imageUrl = Url.Content("~/eventqrimages/tickets/t3.png");
+            }
+            else if (ticketName == "ShowMyTicket3")
+            {
+                imageUrl = Url.Content("~/eventqrimages/tickets/t4.png");
+            }
+            else if (ticketName == "ShowMyTicket4")
+            {
+                imageUrl = Url.Content("~/eventqrimages/tickets/t.png");
+            }
+            else
+            {
+                imageUrl = Url.Content("");
+            }
+
+            return Json(new { success = true, message = "Ticket processed successfully!", ticketName, imageUrl });
+        }
     }
 }
