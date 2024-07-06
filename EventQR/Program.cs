@@ -31,6 +31,10 @@ builder.Services.AddScoped<IClaimsTransformation, CustomClaimsTransformer>();
 builder.Services.AddScoped<IEventOrganizer, EventOrganizer>();
 builder.Services.AddScoped<IQrCodeGenerator, QrCodeGenerator>();
 
+builder.Services.AddHttpClient("EventQrClient", client =>
+{
+    client.BaseAddress = new Uri("https://localhost:7098");
+});
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

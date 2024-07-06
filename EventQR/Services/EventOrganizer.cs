@@ -32,8 +32,10 @@ namespace EventQR.Services
         public Organizer GetLoggedInEventOrg()
         {
             var loggedInEventOrg = _httpContextAccessor
-                 .HttpContext.User.FindFirst("organizer").Value;
-            return JsonConvert.DeserializeObject<Organizer>(loggedInEventOrg);
+                 .HttpContext.User?.FindFirst("organizer")?.Value;
+            if (loggedInEventOrg == null)
+                return null;
+            else return JsonConvert.DeserializeObject<Organizer>(loggedInEventOrg);
         }
 
         //-------------------------------------------------------------------------------

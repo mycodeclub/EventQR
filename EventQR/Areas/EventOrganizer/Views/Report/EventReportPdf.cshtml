@@ -2,12 +2,12 @@
 
 @{
     ViewData["Title"] = "EventReport";
-    Layout = "~/Views/Shared/_OrganizerLayout.cshtml";
+    Layout = null;
     ViewBag.activeTabName = "Reports";
 }
 
-@await Html.PartialAsync("_eventPartial")
-
+@* @await Html.PartialAsync("_eventPartial")
+ *@
 <link href="~/uitemplate/admintemp/dist/plugins/datatables/css/datatables.bootstrap.min.css" rel="stylesheet" />
 <link href="https://cdn.datatables.net/fixedcolumns/4.0.1/css/fixedColumns.dataTables.min.css" rel="stylesheet" />
 <div id="body">
@@ -21,9 +21,11 @@
             border: 1px solid #ddd; /* Add thin border to cells */
         }
 
-        tr:nth-child(odd) {
-            background-color: #f9fafc; /* Light background for odd rows */
+        /* tr:nth-child(odd) {
+                    background-color: #f9fafc; /* Light background for odd rows */
         }
+
+        */
 
         .date-time {
             font-size: 0.7em;
@@ -49,7 +51,6 @@
                     <div class="col-sm-6"></div>
                     <div class="col-sm-2">
                         <button class="btn btn-primary" onclick="downloadPdf()">Download Pdf</button>
-                        <input type="hidden" id="eventId" value="@Model.EventId" />
                     </div>
                 </div>
                 <br />
@@ -58,8 +59,10 @@
                         <thead>
                             <tr>
                                 <th style="width:100px;">Guest Name</th>
+
                                 @foreach (var e in Model.SubEvents)
                                 {
+
                                     <th style="width:150px;">@e.SubEventName</th>
                                 }
                             </tr>
@@ -80,14 +83,18 @@
                                             .SingleOrDefault();
 
                                             <td>
+
                                                 @if (checkInGuest != null && checkInGuest != DateTime.MinValue)
                                                 {
+
                                                     <b>CheckIn/</b>
                                                     <span class="date-time" style="color:green;display:none;">
                                                         @checkInGuest.ToString("MM/dd/yyyy")
                                                     </span>
                                                     <span style="color:green;">@checkInGuest.ToString("hh:mmtt")</span>
+
                                                 }
+
                                                 else
                                                 {
                                                     <b>Invited/</b>
@@ -109,7 +116,6 @@
         </div>
     </div>
 </div>
-
 @section Scripts {
     <script src="~/uitemplate/admintemp/dist/plugins/datatables/jquery.dataTables.min.js"></script>
     <script src="~/uitemplate/admintemp/dist/plugins/datatables/dataTables.bootstrap.min.js"></script>
@@ -124,11 +130,12 @@
                 }
             });
         });
-
-        var downloadPdf = () => {
-            var eventId = document.getElementById('eventId').value;
-            window.location.href = `/EventOrganizer/Report/PdfReport?eventId=${eventId}`;
-        };
     </script>
-
+    <script>
+        var demo = () => {
+            var x = document.getElementById("body").innerHTML
+            document.body.innerHTML = x
+            window.print()
+        }
+    </script>
 }
