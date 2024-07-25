@@ -9,10 +9,24 @@
 @await Html.PartialAsync("_eventPartial")
 
 
+
+
 <div class="content">
 
     <div class="card">
         <div class="card-body">
+            <div class="col-md-4">
+            <form method="post" asp-controller="EventGuests" asp-action="Import" enctype="multipart/form-data">
+                <div class="input-group">
+@*                 <input type="file" name="file" />
+ *@                <input type="file" name="file" class="form-control" id="fileInput">
+
+@*                 <button type="submit">Import Excel</button>
+ *@                <button type="submit" class="btn btn-success" id="submitButton">Download</button>
+                </div>
+            </form>
+            </div>
+
             <form asp-action="Create">
                 <div class="col-md-12">
                     <div asp-validation-summary=All class="text-danger"></div>
@@ -96,13 +110,6 @@
     </div>
 </div>
 
-
-<form method="post" asp-controller="EventGuests" asp-action="Import" enctype="multipart/form-data">
-
-    <input type="file" name="file" />
-    <button type="submit">Import Excel</button>
-
-</form>
 
 
 

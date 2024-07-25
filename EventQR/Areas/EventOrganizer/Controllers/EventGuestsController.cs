@@ -122,7 +122,7 @@ namespace EventQR.Areas.EventOrganizer.Controllers
                             dbGuest.MobileNo1 = eventGuest.MobileNo1;
                             dbGuest.MobileNo2 = eventGuest.MobileNo2;
                             dbGuest.Email = eventGuest.Email;
-                            eventGuest.AllowedSubEventsIdsCommaList = selectedIds == null ? null : string.Join(",", selectedIds);
+                            dbGuest.AllowedSubEventsIdsCommaList = selectedIds == null ? null : string.Join(",", selectedIds);
                             dbGuest.LastUpdatedDate = DateTime.Now;
                         }
                     }
@@ -224,35 +224,36 @@ namespace EventQR.Areas.EventOrganizer.Controllers
         }
 
         [HttpPost]
-        public async Task<List<EventGuest>> Import(IFormFile file)
+        public async Task<IActionResult> Import(IFormFile file)
         {
-            var _thisEvent = _eventService.GetCurrentEvent();
-            var list = new List<EventGuest>();
-            using (var stream = new MemoryStream())
+            if (file != null)
             {
-                await file.CopyToAsync(stream);
-                using (var package = new ExcelPackage(stream))
+                var _thisEvent = _eventService.GetCurrentEvent();
+                var list = new List<EventGuest>();
+                using (var stream = new MemoryStream())
                 {
-                    ExcelWorksheet worksheet = package.Workbook.Worksheets[0];
-                    var rowcount = worksheet.Dimension.Rows;
-                    for (int row = 2; row <= rowcount; row++)
+                    await file.CopyToAsync(stream);
+                    using (var package = new ExcelPackage(stream))
                     {
-                        var guest = new EventGuest();
-                        guest.Name = worksheet.Cells[row, 1].Value.ToString().Trim();
-                        guest.Email = worksheet.Cells[row, 2].Value.ToString().Trim();
-                        guest.MobileNo1 = worksheet.Cells[row, 3].Value.ToString().Trim();
-                        guest.MobileNo2 = worksheet.Cells[row, 4].Value.ToString().Trim();
-                        guest.EventId = _thisEvent.UniqueId;
-                        guest.CreatedDate = DateTime.UtcNow;
-                        _context.Guests.Add(guest);
+                        ExcelWorksheet worksheet = package.Workbook.Worksheets[0];
+                        var rowcount = worksheet.Dimension.Rows;
+                        for (int row = 2; row <= rowcount; row++)
+                        {
+                            var guest = new EventGuest();
+                            guest.Name = worksheet.Cells[row, 1].Value.ToString().Trim();
+                            guest.Email = worksheet.Cells[row, 2].Value.ToString().Trim();
+                            guest.MobileNo1 = worksheet.Cells[row, 3].Value.ToString().Trim();
+                            guest.MobileNo2 = worksheet.Cells[row, 4].Value.ToString().Trim();
+                            guest.EventId = _thisEvent.UniqueId;
+                            guest.CreatedDate = DateTime.UtcNow;
+                            _context.Guests.Add(guest);
+                        }
+                        await _context.SaveChangesAsync();
                     }
-                     await _context.SaveChangesAsync();
-                } 
+                }
+                TempData["GuestListUploadSuccess"] = true;
             }
-            return list;
-
-
-
+            return RedirectToAction("Index");
         }
 
     }

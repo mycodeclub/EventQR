@@ -3,8 +3,12 @@
 @{
     ViewData["Title"] = "Index";
     Layout = "~/Views/Shared/_OrganizerLayout.cshtml";
-    ViewBag.activeTabName = "thisEventGuests";
-    string ticketLink;
+    ViewBag.activeTabName = "thisEventGuests"; 
+    bool isGuestExcelUploadSuccess = false;
+    if (TempData["GuestListUploadSuccess"] != null)
+    {
+        isGuestExcelUploadSuccess = (bool)TempData["GuestListUploadSuccess"];
+    }
 }@await Html.PartialAsync("_eventPartial")
 
 <style>
@@ -25,25 +29,46 @@
 
     <div class="card">
         <div class="card-header">
-<div class="row align-items-center">
-    <div class="col-md-4">
-        <h4>Guest List</h4>
-    </div>
+            <div class="row align-items-center">
                 <div class="col-md-4">
+                    <h3> Upload Guest List </h3>
+                </div>
+                @if (isGuestExcelUploadSuccess == true)
+                {
+                    <div class="alert-success"> Record Updated Successfully </div>
+                }
+                <div class="col-md-12">
                     <form method="post" asp-controller="EventGuests" asp-action="Import" enctype="multipart/form-data" class="d-flex align-items-center gap-2">
-                        <div class="input-group">
-                            <input type="file" name="file" class="form-control" id="fileInput">
-                            <button type="submit" class="btn btn-success" id="submitButton">Submit</button>
+
+                        <div class="col-md-4">
+                            <div class="input-group">
+
+                                <a href="~/guestlistsample.xlsx" target="_blank" class="btn btn-success">Download Sample </a>
+                            </div>
                         </div>
+
+
+                        <div class="col-md-4">
+
+                            <div class="input-group">
+                                <input type="file" name="file" required class="form-control" id="fileInput">
+                                <button type="submit" class="btn btn-success" id="submitButton">Submit</button>
+
+
+                            </div>
+                        </div>
+
                     </form>
+
+
                 </div>
 
-    <div class="col-md-4 text-right">
-        <a href="/EventOrganizer/EventGuests/Create" class="btn btn-primary">
-            Add New
-        </a>
-    </div>
-</div>
+                <div class="col-md-12 text-right">
+                    <a href="/EventOrganizer/EventGuests/Create" class="btn btn-primary">
+                        Add New
+                    </a>
+                </div>
+            </div>
 
             <br>
             <table class="table" id="tblGuestList">
@@ -79,7 +104,7 @@
                 </tbody>
 
             </table>
-            
+
         </div>
     </div>
 </div>
@@ -91,7 +116,10 @@
     <script src="~/uitemplate/admintemp/dist/plugins/datatables/dataTables.bootstrap.min.js"></script>
     <script>
         $(document).ready(function () {
-            $('#tblGuestList').DataTable()
+            $('#tblGuestList').
+                                                                ({
+                "pageLength": 50
+            });
 
         });
     </script>
