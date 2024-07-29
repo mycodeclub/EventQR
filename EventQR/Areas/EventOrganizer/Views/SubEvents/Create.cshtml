@@ -14,7 +14,7 @@
                         <input asp-for="UniqueId" type="hidden" />
                         <input asp-for="EventId" type="hidden" />
                     <div class="form-group col-md-4">
-                            <label asp-for="SubEventName" class="control-label">Sub Event Name </label>
+                            <label asp-for="SubEventName" class="control-label">Sub Event Name<span class="mandatory text-danger">*</span> </label>
                             <input asp-for="SubEventName" class="form-control" />
                             <span asp-validation-for="SubEventName" class="text-danger"></span>
                         </div>
