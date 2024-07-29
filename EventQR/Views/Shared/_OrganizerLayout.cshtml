@@ -109,6 +109,8 @@
                                     <a href="/EventOrganizer/Events/Index"> <i class="icon-note"></i> <span>This Event</span> </a>
 
                                     <ul class="treeview-menu">
+                                        @if (activeTabName.Equals("thisEvent")) { activeTab = "active"; } else { activeTab = string.Empty; }
+                                        <li class="@activeTab"><a href="/EventOrganizer/Events/Details/@currentEvent.UniqueId"> <i class="fa fa-angle-right"></i>Event Details </a></li>
                                         @if (currentEvent.IsSubEvents)
                                         {
                                             @if (activeTabName.Equals("thisEventSubEvents")) { activeTab = "active"; } else { activeTab = string.Empty; }
@@ -121,10 +123,8 @@
                                         <li class="@activeTab"><a href="/EventOrganizer/TicketScanners/Index"> <i class="fa fa-angle-right"></i>Ticket Access </a></li>
 
                                     </ul>
-                                </li>
-
+                                </li> 
                             }
-
                             <li class="treeview @activeTab">
                                 <a href="/EventOrganizer/Report/Index"> <i class="icon-note"></i> <span>Reports</span> </a>
 
@@ -137,6 +137,8 @@
                              }
                         <hr />
                     }
+                    @if (activeTabName.Equals("Reports")) { activeTab = "active"; } else { activeTab = string.Empty; }
+                    <li class="@activeTab"><a href="/EventOrganizer/Report/Index"> <i class="fa fa-angle-right"></i>Reports</a></li>
                     @if (activeTabName.Equals("MyProfile")) { activeTab = "active"; } else { activeTab = string.Empty; }
                     <li class="@activeTab"><a href="/EventOrganizer/Profile/MyProfile"> My Profile </a></li>
 

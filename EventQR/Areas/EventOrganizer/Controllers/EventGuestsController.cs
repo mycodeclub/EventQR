@@ -122,6 +122,7 @@ namespace EventQR.Areas.EventOrganizer.Controllers
                             dbGuest.MobileNo1 = eventGuest.MobileNo1;
                             dbGuest.MobileNo2 = eventGuest.MobileNo2;
                             dbGuest.Email = eventGuest.Email;
+                            dbGuest.Address = eventGuest.Address;
                             dbGuest.AllowedSubEventsIdsCommaList = selectedIds == null ? null : string.Join(",", selectedIds);
                             dbGuest.LastUpdatedDate = DateTime.Now;
                         }
