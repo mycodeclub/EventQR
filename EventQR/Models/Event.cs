@@ -25,6 +25,9 @@ namespace EventQR.Models
         [DisplayName("Venue (Address)")]
         public string Venue { get; set; } = string.Empty;
 
+        [DisplayName("Host (Mobile No)")]
+        public string HostMobileNo {  get; set; } = string.Empty;
+
         //@ToDo  Rename StartDate to EventStartDate
         [DisplayName("Event Start Date")]
         public DateTime? StartDate { get; set; }

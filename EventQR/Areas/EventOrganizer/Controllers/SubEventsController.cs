@@ -78,7 +78,6 @@ namespace EventQR.Areas.EventOrganizer.Controllers
                 && s.EventId == currentEvent.UniqueId).FirstOrDefaultAsync();
 
                 _subEvent ??= new SubEvent() { StartDateTime = currentEvent.StartDate.Value.AddHours(1), EndDateTime = currentEvent.EndDate.Value.AddHours(-1) };
-
             }
             else _subEvent ??= new SubEvent() { StartDateTime = DateTime.Now.AddHours(1), EndDateTime = DateTime.Now.AddHours(2), };
             return View(_subEvent);

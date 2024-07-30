@@ -111,6 +111,8 @@
                                     <ul class="treeview-menu">
                                         @if (activeTabName.Equals("thisEvent")) { activeTab = "active"; } else { activeTab = string.Empty; }
                                         <li class="@activeTab"><a href="/EventOrganizer/Events/Details/@currentEvent.UniqueId"> <i class="fa fa-angle-right"></i>Event Details </a></li>
+                                        @if(activeTabName.Equals("thisHostDetails")) { activeTab = "active"; } else { activeTab = string.Empty; }
+                                        <li class="@activeTab"><a href="/EventOrganizer/HostDetails/Index"><i class="fa fa-angle-right"></i>Host Details</a></li>
                                         @if (currentEvent.IsSubEvents)
                                         {
                                             @if (activeTabName.Equals("thisEventSubEvents")) { activeTab = "active"; } else { activeTab = string.Empty; }

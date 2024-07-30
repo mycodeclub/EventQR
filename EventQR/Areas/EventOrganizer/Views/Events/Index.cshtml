@@ -20,6 +20,7 @@
                             <th> @Html.DisplayNameFor(model => model.DaysToGo) </th>
                             <th> Starting On </th>
                             <th> @Html.DisplayNameFor(model => model.Status) </th>
+                            <th> @Html.DisplayNameFor(model=> model.HostMobileNo)</th>
                             <th> @Html.DisplayNameFor(model => model.IsSubEvents) </th>
                             <th>Action</th>
                         </tr>
@@ -38,6 +39,7 @@
                                 <td> @Html.DisplayFor(modelItem => item.DaysToGo) </td>
                                 <td> @item.StartDate?.ToString("dd/MM/yyyy hh:mmtt") </td>
                                 <td> @Html.DisplayFor(modelItem => item.Status) </td>
+                                <td> @Html.DisplayFor(modelItem => item.HostMobileNo)</td>
                                 <td> @Html.DisplayFor(modelItem => item.IsSubEvents) </td>
                                 <td>
                                     <a asp-action="Create" asp-route-id="@item.UniqueId">Edit</a> |

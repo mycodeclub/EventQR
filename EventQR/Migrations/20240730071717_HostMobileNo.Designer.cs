@@ -4,6 +4,7 @@ using EventQR.EF;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace EventQR.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240730071717_HostMobileNo")]
+    partial class HostMobileNo
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -237,38 +240,6 @@ namespace EventQR.Migrations
                     b.HasIndex("UserLoginId");
 
                     b.ToTable("CheckIns");
-                });
-
-            modelBuilder.Entity("EventQR.Models.HostDetails", b =>
-                {
-                    b.Property<Guid>("UniqueId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("ContactNumberOne")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("ContactNumberTwo")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<Guid?>("EventId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("HostOne")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("HostOneDesignation")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("HostTwo")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("HostTwoDesignation")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("UniqueId");
-
-                    b.ToTable("HostDetails");
                 });
 
             modelBuilder.Entity("EventQR.Models.Inquery", b =>
