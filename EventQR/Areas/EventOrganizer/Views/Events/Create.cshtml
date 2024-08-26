@@ -30,7 +30,7 @@
                 </div>
                 <div class="row">
                     <div class="col-md-4 form-group">
-                        <label asp-for="Title" class="control-label">Event Title </label>
+                        <label asp-for="Title" class="control-label">Event Title<span class="mandatory text-danger">*</span></label>
                         <input asp-for="Title" class="form-control" />
                         <span asp-validation-for="Title" class="text-danger"></span>
                     </div>
@@ -49,15 +49,16 @@
              
                 <div class="row">
                     <div class="col-md-6  form-group">
-                        <label asp-for="Venue" class="control-label"> Venue (Address) </label>
+                        <label asp-for="Venue" class="control-label">Venue (Address)<span class="mandatory text-danger">*</span></label>
                         <textarea asp-for="Venue" class="form-control" rows="3"></textarea>
                         <span asp-validation-for="Venue" class="text-danger"></span>
                     </div>
 
                     <div class="col-md-6 form-group">
                         <label asp-for="Description" class="control-label"></label>
+                        <span asp-validation-for="Description" class="text-danger">*</span>
                         <textarea asp-for="Description" class="form-control" rows="3"></textarea>
-                        <span asp-validation-for="Description" class="text-danger"></span>
+                        
                     </div>
                 </div>
                 <div class="row">
@@ -71,7 +72,11 @@
                             }
                         </select>
                     </div>
-                    <div class="col-md-4 form-group"></div>
+                    <div class="col-md-4 form-group">
+                        <label asp-for="HostMobileNo" class="control-label"></label>
+                        <input asp-for="HostMobileNo" class="form-control" />
+
+                    </div>
                     <div class="col-md-4 form-group">
                         <img id="ticketImage" src="" alt="Ticket Image" class="img-responsive img-thumbnail" />
                     </div>

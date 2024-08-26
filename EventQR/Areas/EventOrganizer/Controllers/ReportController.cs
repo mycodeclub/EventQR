@@ -55,8 +55,9 @@ namespace EventQR.Areas.EventOrganizer.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> EventReportHtml(Guid eventId)
         {
+           
             if (Guid.Empty.Equals(eventId))
-            {
+            {    
                 return null;
             }
             else

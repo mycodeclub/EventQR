@@ -1,0 +1,84 @@
+﻿@model IEnumerable<EventQR.Models.HostDetails>
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_OrganizerLayout.cshtml";
+    ViewBag.activeTabName = "thisHostDetails";
+}
+@await Html.PartialAsync("_eventPartial")
+
+<link href="~/uitemplate/admintemp/dist/plugins/datatables/css/datatables.bootstrap.min.css" rel="stylesheet" />
+
+<div class="content">
+    <div class="card">
+        <div class="card-body">
+            <p>
+
+                <a class="float-right" asp-action="Create"> <button type="button" class="btn btn-primary">Create New</button></a>
+            </p>
+            <table class="table " id="tblGuestList">
+
+                <thead>
+                    <tr>
+                        <th>
+                            @Html.DisplayNameFor(model => model.HostOne)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.HostTwo)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.ContactNumberOne)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.ContactNumberTwo)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.HostOneDesignation)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.HostTwoDesignation)
+                        </th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                @if (Model!=null)
+                {
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td> @Html.DisplayFor(modelItem => item.HostOne) </td>
+                                <td> @Html.DisplayFor(modelItem => item.HostTwo) </td>
+                                <td> @Html.DisplayFor(modelItem => item.ContactNumberOne) </td>
+                                <td> @Html.DisplayFor(modelItem => item.ContactNumberTwo) </td>
+                                <td> @Html.DisplayFor(modelItem => item.HostOneDesignation) </td>
+                                <td> @Html.DisplayFor(modelItem => item.HostTwoDesignation) </td>
+
+                                <td>
+
+                                    <a asp-action="Create" asp-route-id="@item.UniqueId">Edit</a> |
+                                    <a asp-action="Details" asp-route-id="@item.UniqueId">Details</a> |
+                                    <a asp-action="Delete" asp-route-id="@item.UniqueId">Delete</a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                }
+            </table>
+        </div>
+    </div>
+</div>
+
+
+
+@section Scripts {
+    <!-- DataTable -->
+    <script src="~/uitemplate/admintemp/dist/plugins/datatables/jquery.dataTables.min.js"></script>
+    <script src="~/uitemplate/admintemp/dist/plugins/datatables/dataTables.bootstrap.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('#tblGuestList').DataTable()
+
+        });
+    </script>
+}
+
